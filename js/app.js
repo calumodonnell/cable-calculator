@@ -54,10 +54,10 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
         $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
         $scope.clength = parseInt(localStorage.getItem('clength'), 10);
     } else {
-        $scope.search_freq = parseInt('', 10);
+        $scope.search_freq = parseInt(1, 10);
         $scope.clength = parseInt(6, 10);
 
-        localStorage.setItem('max_freq', '');
+        localStorage.setItem('max_freq', '1');
         localStorage.setItem('clength', '6');
     }
 
@@ -140,8 +140,6 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
             rowHide = jQuery('#selector-table tbody tr.ng-hide').length,
             rowTotal = rowCount - rowHide;
 
-        localStorage.setItem('rowTotal', rowTotal);
-        $scope.rowTotal = rowTotal;
         return rowTotal;
     };
 

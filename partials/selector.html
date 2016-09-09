@@ -78,12 +78,8 @@
                 <td><span class="next"></span></a></td>
               </tr>
             </tbody>
-            <tfoot ng-hide="rowTotal > 0">
-              <tr id="no_cables">
-                <td colspan="7">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</td>
-              </tr>
-            </tfoot>
           </table>
+          <p ng-hide="totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
           <p id="count_cables">{{ totalRows() }} out of {{cables.length}} cables</p>
         </div>
       </div>
