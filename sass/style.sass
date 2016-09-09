@@ -1,0 +1,458 @@
+@import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600'
+@import 'https://fonts.googleapis.com/css?family=Raleway:300'
+
+$lg-device: "screen and (min-width: 74.9em)"
+$md-device: "screen and (max-width: 61.9em)"
+$sm-device: "screen and (max-width: 47.9em)"
+$xs-device: "screen and (max-width: 33.9em)"
+
+//app
+.cable-wizard
+  background-color: #D3D8DA
+  color: #58595B
+  font-weight: 300
+  font-size: 14px
+  margin-bottom: 30px
+  border: 1px solid #D3D8DA
+  position: relative
+  font-family: "Source Sans Pro", sans-serif
+
+  button, input, select, textarea
+    font-family: "Source Sans Pro", sans-serif
+
+  h1, h2, h3, h4, h5, h6
+    color: #1A1A1A
+    font-family: "Raleway", Arial, sans-serif
+    font-weight: 300
+    letter-spacing: 3px
+    text-transform: uppercase
+
+  b, strong
+    font-weight: 400!important
+
+  label
+    font-size: 12px
+
+  img
+    user-drag: none
+    -webkit-user-drag: none
+    max-width: none
+
+  a
+    text-decoration: none
+    color: #0b406b
+    box-shadow: none!important
+    &:hover,
+    &:focus
+      text-decoration: none
+
+  .row
+    margin-left: -10px
+    margin-right: -10px
+
+  .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9
+    padding-right: 10px
+    padding-left: 10px
+
+  .container
+    padding-left: 10px
+    padding-right: 10px
+
+  .cable-content
+    padding: 10px 0
+    min-height: 500px
+    display: block
+
+  //sidebar
+  .sidebar
+    margin-left: 0!important
+    h3
+      font-size: 14px
+      font-weight: 600
+      span
+        font-size: 12px
+    p
+      font-size: 12px
+      margin-bottom: 10px
+
+  //configurator
+  .widget
+    margin-bottom: 20px
+    padding: 20px
+    background-color: #FFFFFF
+    box-shadow: 0 1px 7px rgba(0,0,0,0.15)
+    border-top: 0
+    table
+      tr
+        td
+          font-size: 12px
+          border-bottom: 1px solid #d8d8d8
+          padding: 8px 2px
+          &:last-child
+            text-align: right
+
+  //content
+  .content
+    background-color: #FFFFFF
+    box-shadow: 0 1px 7px rgba(0,0,0,0.15)
+
+  //nav
+  .navbar-header
+    background-color: #FFFFFF
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12)
+    .navbar
+      border-radius: 0
+      padding: 0
+      a
+        font-weight: 300
+        font-size: 12px
+        color: #58595B
+        padding: 20px 10px
+        text-transform: uppercase
+        letter-spacing: 1px
+        display: inline-block
+        position: relative
+        transition: 0.2s ease
+        cursor: pointer
+        &:hover,
+        &:focus
+          color: #2a2a2a
+      .cartbar
+        float: right
+
+  //home
+  #home
+    display: flex
+    align-items: center
+    justify-content: center
+    float: left
+    width: 100%
+    #welcome-title
+      background-color: #FFFFFF
+      box-shadow: 0 1px 7px rgba(0,0,0,0.15)
+      padding: 40px
+      p
+        margin-bottom: 40px
+
+  //selector
+  #selector
+    .table-content
+      #selector-table
+        width: 100%
+      #count_cables
+        font-size: 12px
+        margin-bottom: 0
+
+  //cable configurator
+  .cable-configurator
+    margin-bottom: 20px
+    padding: 20px
+    .cable-assembly
+      table-layout: auto
+      td
+        border: 0
+        padding: 0
+      .cable-holder
+        height: 180px
+        .image-holder
+          text-align: center
+          position: relative
+          .cable-base
+            position: absolute
+            top: 40%
+            .cable-img
+              text-align: center
+              height: auto
+              max-width: 280px
+              width: 100%
+              min-width: 200px
+          .cable-covering
+            position: absolute
+            top: 40%
+            z-index: 10
+            .cover-img
+              text-align: center
+              height: auto
+              max-width: 280px
+              width: 100%
+              min-width: 200px
+        .bin
+          min-height: 150px
+          width: 140px
+          border: 1px solid #FFFFFF
+          @media #{$md-device}
+            width: 120px
+          .conn-title
+            display: none
+          .conn-image
+            position: relative
+            top: 7px
+            img
+              z-index: 0
+        #conn_1
+          .conn-image
+            img
+              float: right
+              position: relative
+              left: 6px
+              top: 1px
+        #conn_2
+          .conn-image
+            img
+              float: left
+              transform: scaleX(-1)
+              filter: FlipH
+              position: relative
+              right: 6px
+              top: 1px
+      #cable-spec
+        td
+          text-align: center
+          font-size: 13px
+          font-weight: 300
+    .cable-info
+      p
+        font-size: 13px
+        margin-bottom: 10px
+
+  //connector selection
+  .connector-selection
+    background-color: #FFFFFF
+    padding: 20px
+    .row
+      margin-right: 0
+      margin-left: 0
+      .conn-box
+        display: inline-block
+        cursor: move
+        transition: 0.2s ease
+        padding: 5px
+        height: 140px
+        .item
+          background-color: #F2F2F2
+          .conn-image
+            height: 100px
+            display: flex
+            align-items: center
+            justify-content: center
+            img
+              padding: 10px
+              text-align: center
+          .conn-title
+            background-color: #0b406b
+            text-align: center
+            color: #FFFFFF
+            padding: 4px 0
+            p
+              margin-bottom: 0
+              font-size: 12px
+
+  //cart
+  .order-items
+    padding: 20px
+
+  //print
+  .print-preview
+    height: 400px
+
+  //buttons
+  .btn-primary
+    background-color: #0b406b
+    border-color: #0b406b
+    color: #FFFFFF
+    &:hover,
+    &:focus
+      background-color: #0f558f
+  .btn
+    padding: 12px 16px
+    font-size: 11px
+    letter-spacing: 2px
+    text-transform: uppercase
+    font-weight: 300
+    border-radius: 0
+    transition: 0.2s
+
+  //tables
+  .table
+    font-size: 12px
+    width: auto
+    max-width: 100%
+    table-layout: auto
+    thead
+      th
+        background-color: #003A5C
+        color: #FFFFFF
+        border-bottom: 0
+        border-top: 0
+        a
+          color: #FFFFFF
+          &:hover,
+          &:focus
+            color: #FFFFFF
+    tbody
+      tr
+        transition: 0.2s ease
+        &:hover,
+        &:focus
+          background-color: #F2F2F2
+    tfoot
+      td
+        font-weight: 400
+    td, th
+      border: 0
+      border-top: 1px solid #ECEEEF
+      font-weight: 300
+      padding: 0
+      padding: 16px 14px
+      color: #58595B
+      vertical-align: middle
+
+  .table#selector-table
+    tbody, thead
+      tr
+        cursor: pointer
+    tfoot
+      tr
+        td
+          font-weight: 300
+
+  .arrow-down,
+  .arrow-up
+    padding-left: 5px
+
+  .arrow-down
+    &:after
+      font-family: 'FontAwesome'
+      content: '\f0d7'
+
+  .arrow-up
+    &:after
+      font-family: 'FontAwesome'
+      content: '\f0d8'
+
+
+  #no_cables
+    padding: 16px 14px
+    text-align: center
+
+  table.cart
+    width: 100%
+    tr
+      td
+        padding: 16px 14px
+        vertical-align: top
+        a
+          display: inline-block
+          padding: 0
+          width: auto
+          height: auto
+          color: #0b406b
+          &:hover,
+          &:focus
+            color: #0f558f
+
+  //form
+  input, select
+    background-color: #FFFFFF!important
+    border: solid 1px #9C9C9C!important
+    color: #9C9C9C!important
+    padding: 10px 10px!important
+    margin-bottom: 10px
+    outline: none
+    border-radius: 0!important
+    font-size: 12px
+    font-weight: 300
+    width: 100%
+    box-sizing: border-box
+    transition: 0.2s ease
+    &:hover,
+    &:focus
+      border-color: #0b406b!important
+  .form-group
+    margin-bottom: 10px
+
+  select
+    -webkit-appearance: none
+
+  select.minimal
+    background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc)
+    background-position: calc(100% - 15px) calc(1.2em + 2px), calc(100% - 10px) calc(1.2em + 2px), calc(100% - 2.5em) 0.7em
+    background-size: 5px 5px, 5px 5px, 1px 1.5em
+    background-repeat: no-repeat
+
+  .next
+    &:after
+      font-family: "FontAwesome"
+      content: "\f054"
+      font-size: 12px
+
+  //footer
+  footer
+    padding: 10px 0
+    clear: both
+    cite
+      font-size: 11px
+      font-style: normal
+
+  //icons
+  .icons
+    padding: 0 6px
+    font-size: 18px
+    &:after
+      &:hover,
+      &:focus
+        color: #3278ad
+
+  .edit
+    &:after
+      font-family: "FontAwesome"
+      content: "\f044"
+
+  .print
+    &:after
+      font-family: "FontAwesome"
+      content: "\f02f"
+
+  .delete
+    &:after
+      font-family: "FontAwesome"
+      content: "\f014"
+
+  .caret
+    margin-left: 4px
+
+  .no-script
+    padding: 20px 10px
+    p
+      margin-bottom: 0
+
+  .error-notification
+    z-index: 10
+    background-color: #FFFFFF
+    box-shadow: 0 1px 7px rgba(0,0,0,0.15)
+    width: 100%
+    max-width: 280px
+    padding: 30px
+    box-sizing: content-box
+    position: absolute
+    margin: auto
+    left: 0
+    right: 0
+    top: 140px
+    transition: 0.2s ease
+    .error-content
+      .error-title
+        font-size: 16px
+        letter-spacing: 1px
+        margin-bottom: 10px
+      p
+        font-size: 13px
+      .btn
+        float: right
+
+  .darkness
+    background-color: rgba(0, 0, 0, 0.5)
+    position: absolute
+    z-index: 8
+    width: 100%
+    height: 100%

@@ -1,0 +1,150 @@
+<div ng-controller="connectorCtrl">
+  <div class="darkness" ng-show="err"></div>
+  <div class="navbar-header">
+    <div class="container">
+      <nav class="navbar" id="configurator-nav" role="navigation">
+        <ul class="nav navbar-nav">
+          <li class="nav-item"><a href="#/selector">Back</a></li>
+          <li class="nav-item"><a href="#/print-drawing">Print</a></li>
+          <li class="nav-item"><a ng-click="metric = !metric; updateLength()" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
+          <li class="nav-item"><a href="#/cart">Cancel</a></li>
+        </ul>
+        <div class="cartbar">
+          <a href="#/cart" class="cart-icon">Cart ({{ cartLength() }})</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+  <div class="cable-content" id="configurator" ng-repeat="cable in cables">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-sm-12 sidebar">
+          <div class="widget">
+            <form>
+              <div class="form-group">
+                <label for="max_freq">Max. Frequency (GHz)</label>
+                <input type="number" class="form-control" id="max_freq" ng-model="max_freq" min="0" ng-change="storeFreq(max_freq)">
+              </div>
+              <div class="form-group">
+                <label for="assem_length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+                <input type="number" class="form-control" id="clength" ng-model="clength" min="0" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
+              </div>
+              <div class="form-group">
+                <label for="coating">Covering</label>
+                <select class="form-control minimal" id="covering" ng-model="covering">
+                  <option value="">None</option>
+                  <option value="W" ng-if="cable.coat_w_cable_base !== '0.00'">Weatherized</option>
+                  <option value="TV" ng-if="cable.coat_tv_cable_base !== '0.00'">Thermal Vacuum</option>
+                  <option value="A" ng-if="cable.coat_a_cable_base !== '0.00'">Armor</option>
+                  <option value="AW" ng-if="cable.coat_aw_cable_base !== '0.00'">Armor/Weatherized</option>
+                  <option value="AN" ng-if="cable.coat_an_cable_base !== '0.00'">Armor/Neoprene</option>
+                  <option value="E" ng-if="cable.coat_ej_cable_base !== '0.00'">Extended Boot</option>
+                  <option value="EW" ng-if="cable.coat_ew_cable_base !== '0.00'">Extended Boot/Weatherized</option>
+                  <option value="MC" ng-if="cable.coat_mc_cable_base !== '0.00'">Monocoil</option>
+                </select>
+              </div>
+              <a href="" class="btn btn-primary" role="button" ng-click="addCart()">Add to Cart</a>
+            </form>
+          </div>
+          <div class="widget">
+            <h3>Overview</h3>
+            <p>{{ cable.name }}</p>
+            <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(max_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
+            <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1 === connector.con_part_no">{{conn_1}} - {{ connector.con_description }}</p>
+            <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{conn_2}} - {{ connector.con_description }}</p>
+          </div>
+          <div class="widget" ng-show="conn_1 !== undefined && conn_2 !== undefined">
+            <h3>Pricing <span>(By quanity)</span></h3>
+            <table>
+              <tbody>
+                <tr>
+                  <td>1 - 3</td>
+                  <td>${{ cableCost(cable.qm1) }}</td>
+                </tr>
+                <tr>
+                  <td>4 - 9</td>
+                  <td>${{ cableCost(cable.qm2) }}</td>
+                </tr>
+                <tr>
+                  <td>10 - 24</td>
+                  <td>${{ cableCost(cable.qm3) }}</td>
+                </tr>
+                <tr>
+                  <td>25 - 49</td>
+                  <td>${{ cableCost(cable.qm4) }}</td>
+                </tr>
+                <tr>
+                  <td>50 - 99</td>
+                  <td>${{ cableCost(cable.qm5) }}</td>
+                </tr>
+                <tr>
+                  <td>100 - 249</td>
+                  <td>${{ cableCost(cable.qm6) }}</td>
+                </tr>
+                <tr>
+                  <td>250 - 499</td>
+                  <td>${{ cableCost(cable.qm7) }}</td>
+                </tr>
+                <tr>
+                  <td>500 - 1000</td>
+                  <td>${{ cableCost(cable.qm8) }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>($250 per line item min.)</p>
+          </div>
+        </div>
+        <div class="col-md-9 col-sm-12">
+          <div class="cable-configurator content">
+            <table class="cable-assembly">
+              <tbody>
+                <tr class="cable-holder">
+                  <td class="bin" id="conn_1" droppable drop="handleDrop_1" bin="bin">{{ bin }}</td>
+                  <td class="image-holder">
+                    <div class="cable-covering">
+                      <img class="cover-img" ng-src="../wp-content/plugins/cable-wizard/img/covering/{{ cableCover(covering) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'" ng-if="covering">
+                    </div>
+                    <div class="cable-base">
+                      <img class="cable-img" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'">
+                    </div>
+                  </td>
+                  <td class="bin" id="conn_2" droppable drop="handleDrop_2" bin="bin">{{ bin }}</td>
+                </tr>
+                <tr id="cable-spec">
+                  <td id="conn_1_part">{{ conn_1 }} <span ng-if="conn_1 !== defined">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
+                  <td id="cable-length" ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? clength + ' cm' : clength + ' in' }} </td>
+                  <td id="conn_2_part">{{ conn_2 }} <span ng-if="conn_2 !== defined">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="cable-info">
+              <p ng-model="macola">Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1 === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | numberFixedLen: 5 }}{{ covering }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
+              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ conn_1 }}-{{ cable.part_no }}{{ covering }}-{{ clength }}-{{ conn_2 }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
+            </div>
+          </div>
+          <div class="connector-selection content">
+            <div class="row">
+              <div class="col-sm-3 conn-box" droppable ng-repeat="conn in cable.connectors">
+                <div class="item" id="{{ conn.con_part_no }}" draggable item="item">
+                  <div class="conn-image">
+                    <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'"/>
+                  </div>
+                  <div class="conn-title">
+                    <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="error-notification" ng-show="err">
+        <div class="error-content">
+          <h3 class="error-title">Error</h3>
+          <p>{{ error_message }}</p>
+          <a href="" class="btn btn-primary" ng-click="errorHide()">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
