@@ -361,7 +361,7 @@ function cw_application() {
   ?>
   <div class='cable-wizard' ng-app='cable-wizard'>
     <div ng-view></div>
-    <div ng-include="'../wp-content/plugins/cable-wizard/templates/footer.html'"></div>
+    <div ng-include="'./wp-content/plugins/cable-wizard/templates/footer.html'"></div>
     <noscript>
       <div class='no-script'>
         <p>You must have JavaScript enabled to use this app.</p>

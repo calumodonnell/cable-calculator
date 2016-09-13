@@ -23,7 +23,7 @@
             <form>
               <div class="form-group">
                 <label for="max_freq">Max. Frequency (GHz)</label>
-                <input type="number" class="form-control" id="max_freq" ng-model="max_freq" min="0" ng-change="storeFreq(max_freq)">
+                <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" ng-change="storeFreq(search_freq)">
               </div>
               <div class="form-group">
                 <label for="assem_length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>

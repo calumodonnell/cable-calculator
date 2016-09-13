@@ -8,14 +8,14 @@ app.config(['$routeProvider', function ($routeProvider) {
     "use strict";
 
     $routeProvider
-        .when("/", {templateUrl: "../wp-content/plugins/cable-wizard/partials/home.html", controller: "PageCtrl"})
-        .when("/home", {templateUrl: "../wp-content/plugins/cable-wizard/partials/home.html", controller: "PageCtrl"})
-        .when("/selector", {templateUrl: "../wp-content/plugins/cable-wizard/partials/selector.html", controller: "PageCtrl"})
-        .when("/configurator", {templateUrl: "../wp-content/plugins/cable-wizard/partials/configurator.html", controller: "PageCtrl"})
-        .when("/cart", {templateUrl: "../wp-content/plugins/cable-wizard/partials/cart.html", controller: "PageCtrl"})
-        .when("/print-drawing", {templateUrl: "../wp-content/plugins/cable-wizard/partials/print-drawing.html", controller: "PageCtrl"})
-        .when("/print-quotation", {templateUrl: "../wp-content/plugins/cable-wizard/partials/print-quotation.html", controller: "PageCtrl"})
-        .otherwise("/home", {templateUrl: "../wp-content/plugins/cable-wizard/partials/404.html", controller: "PageCtrl"});
+        .when("/", {templateUrl: "./wp-content/plugins/cable-wizard/partials/home.html", controller: "PageCtrl"})
+        .when("/home", {templateUrl: "./wp-content/plugins/cable-wizard/partials/home.html", controller: "PageCtrl"})
+        .when("/selector", {templateUrl: "./wp-content/plugins/cable-wizard/partials/selector.html", controller: "PageCtrl"})
+        .when("/configurator", {templateUrl: "./wp-content/plugins/cable-wizard/partials/configurator.html", controller: "PageCtrl"})
+        .when("/cart", {templateUrl: "./wp-content/plugins/cable-wizard/partials/cart.html", controller: "PageCtrl"})
+        .when("/print-drawing", {templateUrl: "./wp-content/plugins/cable-wizard/partials/print-drawing.html", controller: "PageCtrl"})
+        .when("/print-quotation", {templateUrl: "./wp-content/plugins/cable-wizard/partials/print-quotation.html", controller: "PageCtrl"})
+        .otherwise("/home", {templateUrl: "./wp-content/plugins/cable-wizard/partials/404.html", controller: "PageCtrl"});
 }]);
 
 // pageCtrl controller
@@ -46,9 +46,9 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
 
     $scope.toggleSort = false;
 
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-list.php").then(function (response) { $scope.cables = response.data.cables; });
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-connectors.php").then(function (response) { $scope.series = response.data.series; });
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/series-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-list.php").then(function (response) { $scope.cables = response.data.cables; });
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-connectors.php").then(function (response) { $scope.series = response.data.series; });
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/series-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
         $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
@@ -199,12 +199,13 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
 
     // store frequency to use on config page
     $scope.storeFreq = function (val) {
-        if ($scope.search_freq > 70) {
+        if (val > 65) {
             $scope.err = true;
-            $scope.error_message = "The application has a minimum max frequency of 70 GHz.";
-            $scope.search_freq = 70;
+            $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.search_freq = 65;
         }
-        localStorage.setItem('max_freq', val);
+
+        localStorage.setItem('max_freq', va);
     };
 
     // store length to use on config page
@@ -252,11 +253,11 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     $location.search();
     $scope.part_id = $location.search().part_id;
 
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
 
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
 
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/connector-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/connector-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
 
     $scope.sortType     = 'name';
     $scope.sortReverse  = false;
@@ -266,15 +267,15 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         return num;
     };
 
-    var max_freq = "",
+    var search_freq = "",
         clength = "";
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
-        max_freq = localStorage.getItem('max_freq');
+        search_freq = localStorage.getItem('max_freq');
         clength = localStorage.getItem('clength');
     }
 
-    $scope.max_freq = parseInt(max_freq, 10);
+    $scope.search_freq = parseInt(search_freq, 10);
     $scope.clength = parseInt(clength, 10);
 
     $scope.cartLength = function () {
@@ -293,6 +294,12 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 
     $scope.storeFreq = function (val) {
+        if (val > 65) {
+            $scope.err = true;
+            $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.search_freq = 65;
+        }
+
         localStorage.setItem('max_freq', val);
     };
 
@@ -300,12 +307,14 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         if (val > 3024 && jQuery("#clength").hasClass("metric")) {
             $scope.err = true;
             $scope.error_message = "This program has a maxiumum length of 3048 cm. Please contact the factory for custom lengths.";
-            $scope.clength = 3024;
+            val = 3024;
         } else if (val > 1200 && jQuery("#clength").hasClass("imperial")) {
             $scope.err = true;
             $scope.error_message = "This program has a maxiumum length of 1200 in. Please contact the factory for custom lengths.";
-            $scope.clength = 1200;
+            val = 1200;
         }
+
+        $scope.ca.length = val;
 
         if (val === null) {
             localStorage.setItem('clength', 6);
@@ -328,7 +337,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         $scope.conn_2 = item;
     };
 
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/default.php")
+    $http.get("./wp-content/plugins/cable-wizard/admin/includes/default.php")
         .then(function (response) { $scope.material = response.data.material; });
 
     $scope.cableCost = function (qm) {
@@ -390,7 +399,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 
     $scope.addCart = function () {
-        if (!$scope.max_freq || $scope.max_freq === null) {
+        if (!$scope.search_freq || $scope.search_freq === null) {
             $scope.err = true;
             $scope.error_message = "You have not specified the maximum frequency.";
         } else if (!$scope.clength || $scope.clength === null) {
@@ -408,7 +417,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         } else if (!$scope.conn_1 || !$scope.conn_2) {
             $scope.err = true;
             $scope.error_message = "You need to add one more connector to the cable.";
-        } else if ($scope.max_freq && $scope.clength && $scope.conn_1 && $scope.conn_2) {
+        } else if ($scope.search_freq && $scope.clength && $scope.conn_1 && $scope.conn_2) {
             if (!$scope.covering) {
                 $scope.covering = "";
             }
@@ -427,7 +436,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
                         'length': $scope.clength,
                         'covering': $scope.covering,
                         'price': '',
-                        'max_freq': $scope.max_freq
+                        'max_freq': $scope.search_freq
                     };
 
             cart.push(newCart);

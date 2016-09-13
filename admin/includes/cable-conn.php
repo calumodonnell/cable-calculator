@@ -5,7 +5,8 @@ if (isset($_GET['part_id'])) {
     $part_id = $_GET['part_id'];
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'] . "/micro/wp-load.php");
+$parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
+require_once( $parse_uri[0] . 'wp-load.php' );
 
 global $wpdb;
 
