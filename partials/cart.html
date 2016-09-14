@@ -5,7 +5,7 @@
       <nav class="navbar" id="cart-nav" role="navigation">
         <ul class="nav navbar-nav">
           <li class="nav-item"><a href="#/selector">Add Cable</a></li>
-          <li class="nav-item"><a href="#/print-quotation">Print Quotation</a></li>
+          <li class="nav-item"><a href="" ng-click='printDiv()'>Print Quotation</a></li>
           <li class="nav-item"><a ng-click="metric = !metric; updateLength()" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
           <li class="nav-item"><a href="#/" back>Close Cart</a></li>
         </ul>

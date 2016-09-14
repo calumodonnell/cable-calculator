@@ -520,6 +520,65 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
 });
 
 
+
+var drag = angular.module('drag', ['ngDraggable']);
+
+app.controller('controller', function($scope) {
+    $scope.listItems = [{
+        name: "some name",
+        title: "title1"
+    }, {
+        name: "some name2",
+        title: "title2"
+    }, {
+        name: "some name3",
+        title: "title3"
+    }, ];
+
+    $scope.droppedObjects = [];
+    $scope.input = {};
+
+    $scope.onDragComplete = function(data, evt) {
+        console.log("drag success, data:", data);
+        var index = $scope.droppedObjects.indexOf(data);
+        if (index > -1) {
+            $scope.droppedObjects.splice(index, 1);
+        }
+    };
+
+    $scope.onDropComplete = function(data, evt) {
+        console.log("drop success, data:", data);
+        var index = $scope.droppedObjects.indexOf(data);
+        if (index == -1) {
+            $scope.droppedObjects.push(data);
+        }
+    };
+
+    $scope.onDropCompleteInput = function(data, evt) {
+        console.log("drop on input success, data:", data);
+        $scope.input = data;
+    };
+
+    $scope.onDropCompleteRemove = function(data, evt) {
+        console.log("drop success - remove, data:", data);
+        var index = $scope.droppedObjects.indexOf(data);
+        if (index != -1) {
+            $scope.droppedObjects.splice(index);
+        }
+    };
+
+    var onDraggableEvent = function(evt, data) {
+        console.log("128", "onDraggableEvent", evt, data);
+    };
+
+    $scope.$on('draggable:start', onDraggableEvent);
+    //$scope.$on('draggable:move', onDraggableEvent);
+    $scope.$on('draggable:end', onDraggableEvent);
+});
+
+
+
+
 app.controller('cartCtrl', function ($scope) {
     "use strict";
 
@@ -701,19 +760,38 @@ app.controller('cartCtrl', function ($scope) {
     $scope.errorHide = function () {
         $scope.err = false;
     };
-});
-
-app.controller('printQuotationCtrl', function ($scope) {
-    "use strict";
 
     $scope.printDiv = function () {
-        var printContents = document.getElementById('print-preview').innerHTML,
-            printWindow = window.open();
+        var pdf = new jsPDF('p', 'pt', 'a4'),
+            source = "<html> <head> <title>Cable Assembly Cart Summary</title> <style type='text/css'> .pdf-container{font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; color: #58595B; font-weight: 300; font-size: 12px;}.pdf-header{margin-bottom: 20px;}.address-header{display: inline-block;}p{margin: 0; margin-bottom: 5px;}b{font-weight: 600}.logo-header{display: inline-block; vertical-align: top; float: right;}.logo-header img{width: 80px; height: auto;}.pdf-content{margin-bottom: 20px;}table{width: 100%;}td, th{padding: 4px 8px}tbody tr:nth-child(even){background-color: #F2F2F2;}.pdf-footer{clear: both;}.pdf-footer .sales-disclaimer{display: inline-block;}.pdf-footer .printed-date{display: inline-block;}</style> </head> <body> <div class='pdf-container'> <header class='pdf-header'> <div class='address-header'> <p><b>Florida RF Labs, Inc.</b></p><p>8851 SW Old Kansas Ave.</p><p>Stuart, FL 34997</p><p>Tel: (772) 286-9300</p><p>Fax: (772) 283-5286</p><p><a href='http://www.emc-rflabs.com'>www.emc-rflabs.com</a></p></div><div class='logo-header'> <img src='./wp-content/plugins/cable-wizard/img/rflabs.png'> </div></header> <div class='pdf-content'> <h1>Cable Assembly Cart Summary</h1> <table> <thead> <tr> <th>Order Number</th> <th>Part Number</th> <th>Quantity</th> <th>Unit Price</th> <th>Ext. Amount</th> </tr></thead> <tbody> <tr> <td>AL141LLSPS1S1#00060</td><td>SMS-AL141LLSP-6.0-SMS</td><td>1</td><td>$124.49</td><td>$124.49</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$124.49</td><td>4 - 9 <br>$100.58</td><td>10 - 24 <br>$78.68</td><td>25 - 49 <br>$68.55</td><td>50 - 99 <br>$60.67</td><td>100+ <br>$52.78</td></tr></table> </td></tr><tr> <td>085S1S2#00060</td><td>SMS-085-6.0-SMR</td><td>1</td><td>$85.33</td><td>$85.33</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$85.33</td><td>4 - 9 <br>$68.49</td><td>10 - 24 <br>$51.65</td><td>25 - 49 <br>$45.92</td><td>50 - 99 <br>$40.37</td><td>100+ <br>$34.81</td></tr></table> </td></tr></tbody> <tfoot> <tr> <td></td><td></td><td></td><td></td><td>Total: $209.82</td></tr></tfoot> </table> </div><footer class='pdf-footer'> <div class='sales-disclaimer'> <p>THIS QUOTE IS SUBJECT TO ALL EXPORT CONTROL REGULATIONS OF THE UNITED STATES.</p><p>Cable Assemblies have a $250.00 line item minimum requirement.</p><p>Component Product line has a $1000.00 line item minimum requirement.</p><p>Lead times quoted are ARO (after receipt of order) and does not include transit time.</p><p>Prices are based on the information available at the time of quotation. Quality Assurance provisions, First Article Verification, Source Inspection and Special Packaging requirements not quoted and appear on the purchase order may affect prices quoted herein. Florida RF Labs reserves the right to amend this quotation if these requirements are not quoted and appear on the purchase order.</p><p>Click <a href='http://www.emc-rflabs.com/Rflabs/media/Generic-Library/General%20Information/432F024-EMC-RF-LABS-SALES-TERMS-AND-CONDITIONS.pdf' target='_blank'>here</a> for T&Cs</p></div><div class='printed-date'> <p>PRINTED: <span id='currentdate'>09/14/2016</span></p></div></footer> </div></body></html>",
+            //source = jQuery('.print-preview')[0],
+            specialElementHandlers = {
+                'print-preview': function (element, renderer) {
+                    return true;
+                }
+            },
+            margins = {
+                top: 40,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
 
-        printWindow.document.write(printContents);
-        printWindow.print();
+        pdf.fromHTML(
+            source,
+            margins.left,
+            margins.top, {
+                'width': margins.width,
+                'elementHandlers': specialElementHandlers
+            },
+
+            function (dispose) {
+                pdf.save('cable-wizard-quotation.pdf');
+            }, margins
+        );
     };
 });
+
 
 // add additional zero before number, if required
 app.filter('numberFixedLen', function () {
@@ -732,6 +810,7 @@ app.filter('numberFixedLen', function () {
     };
 });
 
+/*
 // draggable connectors
 app.directive('draggable', function () {
     "use strict";
@@ -831,6 +910,7 @@ app.directive('droppable', function () {
         }
     };
 });
+*/
 
 // detects previous page for back button to work
 app.directive('back', ['$window', function ($window) {
