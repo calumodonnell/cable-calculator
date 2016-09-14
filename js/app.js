@@ -43,6 +43,7 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
     "use strict";
 
     $scope.cart = localStorage.getItem('cart');
+    $scope.measurement = localStorage.getItem('measure');
 
     $scope.toggleSort = false;
 
@@ -167,22 +168,37 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
         $scope.err = false;
     };
 
+    $scope.measure = true;
+
     // update length depending on measurement type
-    $scope.updateLength = function () {
-        var len;
+    $scope.$watch('measure', function () {
+        $scope.measurement = $scope.measure ? 'metric' : 'imperial';
+
+        if ($scope.measurement === 'imperial') {
+            localStorage.setItem('measure', 'metric');
+        } else if ($scope.measurement === 'metric') {
+            localStorage.setItem('measure', 'imperial');
+        }
+
+
+
+        /*
+        var len,
+            val = $scope.clength;
 
         if ($scope.clength) {
             if (jQuery("#clength").hasClass("metric")) {
-                $scope.clength = $scope.clength / 2.52;
+                $scope.clength = $scope.clength * 2.52;
                 localStorage.setItem('measure', 'metric');
             } else if (jQuery("#clength").hasClass("imperial")) {
-                $scope.clength = $scope.clength * 2.52;
+                $scope.clength = $scope.clength / 2.52;
                 localStorage.setItem('measure', 'imperial');
             }
             len = $scope.clength.toFixed(0);
             $scope.clength = parseInt(len, 10);
         }
-    };
+        */
+    });
 
     // calcalate db loss
     $scope.calcLoss = function (freq, k1, k2, len) {
@@ -202,17 +218,23 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
         if (val > 65) {
             $scope.err = true;
             $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
-            $scope.search_freq = 65;
+            val = 65;
         }
 
-        localStorage.setItem('max_freq', va);
+        $scope.search_freq = val;
+
+        if (val === null) {
+            localStorage.setItem('max_freq', 1);
+        } else {
+            localStorage.setItem('max_freq', $scope.search_freq);
+        }
     };
 
     // store length to use on config page
     $scope.storeLength = function (val) {
         if (val > 3024 && jQuery("#clength").hasClass("metric")) {
             $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 3048 cm. Please contact the factory for custom lengths.";
+            $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
             val = 3024;
         } else if (val > 1200 && jQuery("#clength").hasClass("imperial")) {
             $scope.err = true;
@@ -267,16 +289,16 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         return num;
     };
 
-    var search_freq = "",
-        clength = "";
-
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
+        var search_freq = "",
+            clength = "";
+
         search_freq = localStorage.getItem('max_freq');
         clength = localStorage.getItem('clength');
-    }
 
-    $scope.search_freq = parseInt(search_freq, 10);
-    $scope.clength = parseInt(clength, 10);
+        $scope.search_freq = parseInt(search_freq, 10);
+        $scope.clength = parseInt(clength, 10);
+    }
 
     $scope.cartLength = function () {
         var total,
@@ -293,20 +315,28 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         return total;
     };
 
-    $scope.storeFreq = function (val) {
+    $scope.storeFreq = function () {
         if (val > 65) {
             $scope.err = true;
             $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
+            val = 65;
             $scope.search_freq = 65;
         }
 
-        localStorage.setItem('max_freq', val);
+        $scope.search_freq = val;
+
+
+        if (val === null) {
+            localStorage.setItem('max_freq', 1);
+        } else {
+            localStorage.setItem('max_freq', val);
+        }
     };
 
     $scope.storeLength = function (val) {
         if (val > 3024 && jQuery("#clength").hasClass("metric")) {
             $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 3048 cm. Please contact the factory for custom lengths.";
+            $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
             val = 3024;
         } else if (val > 1200 && jQuery("#clength").hasClass("imperial")) {
             $scope.err = true;
@@ -314,12 +344,12 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
             val = 1200;
         }
 
-        $scope.ca.length = val;
+        $scope.clength = val;
 
         if (val === null) {
             localStorage.setItem('clength', 6);
         } else {
-            localStorage.setItem('clength', $scope.clength);
+            localStorage.setItem('clength', val);
         }
     };
 
@@ -614,7 +644,7 @@ app.controller('cartCtrl', function ($scope) {
 
         if (val > 3024 && jQuery("#length").hasClass("metric")) {
             $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 3048 cm. Please contact the factory for custom lengths.";
+            $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
             $scope.clength = 3024;
         } else if (val > 1200 && jQuery("#length").hasClass("imperial")) {
             $scope.err = true;
@@ -673,16 +703,15 @@ app.controller('cartCtrl', function ($scope) {
     };
 });
 
-app.controller('printDrawingCtrl', function ($scope) {
+app.controller('printQuotationCtrl', function ($scope) {
     "use strict";
 
-    $scope.printDiv = function (divName) {
-        var printContents = document.getElementById(divName).innerHTML,
-            popupWin = window.open('', '_blank', 'width=300,height=300');
+    $scope.printDiv = function () {
+        var printContents = document.getElementById('print-preview').innerHTML,
+            printWindow = window.open();
 
-        popupWin.document.open();
-        popupWin.document.write('<html><head><link rel="stylesheet" type="text/css" href="style.css" /></head><body onload="window.print()">' + printContents + '</body></html>');
-        popupWin.document.close();
+        printWindow.document.write(printContents);
+        printWindow.print();
     };
 });
 

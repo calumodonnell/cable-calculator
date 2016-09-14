@@ -4,7 +4,8 @@
     <div class="container">
       <nav class="navbar" id="selector-nav" role="navigation">
         <ul class="nav navbar-nav">
-          <li class="nav-item"><a ng-click="metric = !metric; updateLength()" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
+          <!-- <li class="nav-item"><a ng-click="metric = !metric; updateLength()" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Metric' : 'Select Imperial' }}</a></li> -->
+          <li class="nav-item"><a ng-click="measure = !measure">Select {{ measurement }}</a></li>
         </ul>
         <div class="cartbar">
           <a href="#/cart" class="cart-icon">Cart ({{ cartLength() }})</a>
@@ -20,7 +21,7 @@
             <form>
               <div class="form-group">
                 <label for="max_freq">Max. Frequency (GHz)</label>
-                <input type="number" class="form-control" id="search_freq" ng-model="search_freq" maxlength="2" min="0" ng-change="storeFreq(search_freq)">
+                <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" ng-change="storeFreq(search_freq)">
               </div>
               <div class="form-group">
                 <label for="conn_1">Connector 1</label>
@@ -57,7 +58,7 @@
             <thead>
               <tr>
                 <th ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></th>
-                <th ng-click="sortData('db loss')">dB Loss <span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? '(cm)' : '(in)' }}</span> <span ng-class="getSortItem('db loss')"></span></th>
+                <th ng-click="sortData('db loss')">dB Loss <span ng-if="measure === metric">(cm)</span><span ng-if="measure === imperial">(in)</span><span ng-class="getSortItem('db loss')"></span></th>
                 <th ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></th>
                 <th ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></th>
                 <th ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></th>

@@ -49,7 +49,7 @@
           <div class="widget">
             <h3>Overview</h3>
             <p>{{ cable.name }}</p>
-            <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(max_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
+            <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
             <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1 === connector.con_part_no">{{conn_1}} - {{ connector.con_description }}</p>
             <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{conn_2}} - {{ connector.con_description }}</p>
           </div>
@@ -102,10 +102,10 @@
                   <td class="bin" id="conn_1" droppable drop="handleDrop_1" bin="bin">{{ bin }}</td>
                   <td class="image-holder">
                     <div class="cable-covering">
-                      <img class="cover-img" ng-src="../wp-content/plugins/cable-wizard/img/covering/{{ cableCover(covering) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'" ng-if="covering">
+                      <img class="cover-img" ng-src="./wp-content/plugins/cable-wizard/img/covering/{{ cableCover(covering) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'" ng-if="covering">
                     </div>
                     <div class="cable-base">
-                      <img class="cable-img" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'">
+                      <img class="cable-img" ng-src="./wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'">
                     </div>
                   </td>
                   <td class="bin" id="conn_2" droppable drop="handleDrop_2" bin="bin">{{ bin }}</td>
@@ -127,7 +127,7 @@
               <div class="col-sm-3 conn-box" droppable ng-repeat="conn in cable.connectors">
                 <div class="item" id="{{ conn.con_part_no }}" draggable item="item">
                   <div class="conn-image">
-                    <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'"/>
+                    <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>
                   </div>
                   <div class="conn-title">
                     <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
