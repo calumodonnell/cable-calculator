@@ -31,7 +31,7 @@ app.controller('homeCtrl', function () {
     localStorage.setItem('max_freq', '');
     localStorage.setItem('conn_1', '');
     localStorage.setItem('conn_2', '');
-    localStorage.setItem('measure', '');
+    localStorage.setItem('measure', 'false');
 
     if (!localStorage.getItem('cart')) {
         localStorage.setItem('cart', '[]');
@@ -43,8 +43,6 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
     "use strict";
 
     $scope.cart = localStorage.getItem('cart');
-    $scope.measurement = localStorage.getItem('measure');
-
     $scope.toggleSort = false;
 
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-list.php").then(function (response) { $scope.cables = response.data.cables; });
@@ -168,36 +166,35 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
         $scope.err = false;
     };
 
-    $scope.measure = true;
+    var initializing = true;
+
+    if (localStorage.getItem('measure') === 'true') {
+        $scope.metric = true;
+    } else {
+        $scope.metric = false;
+    }
 
     // update length depending on measurement type
-    $scope.$watch('measure', function () {
-        $scope.measurement = $scope.measure ? 'metric' : 'imperial';
+    $scope.$watch('metric', function () {
+        if (initializing) {
+            initializing = false;
+        } else {
+            localStorage.setItem('measure', $scope.metric);
 
-        if ($scope.measurement === 'imperial') {
-            localStorage.setItem('measure', 'metric');
-        } else if ($scope.measurement === 'metric') {
-            localStorage.setItem('measure', 'imperial');
-        }
+            var len;
 
+            if ($scope.clength) {
+                if ($scope.metric === true) {
+                    $scope.clength = $scope.clength * 2.52;
+                } else if ($scope.metric === false) {
+                    $scope.clength = $scope.clength / 2.52;
+                }
+                len = $scope.clength.toFixed(0);
+                $scope.clength = parseInt(len, 10);
 
-
-        /*
-        var len,
-            val = $scope.clength;
-
-        if ($scope.clength) {
-            if (jQuery("#clength").hasClass("metric")) {
-                $scope.clength = $scope.clength * 2.52;
-                localStorage.setItem('measure', 'metric');
-            } else if (jQuery("#clength").hasClass("imperial")) {
-                $scope.clength = $scope.clength / 2.52;
-                localStorage.setItem('measure', 'imperial');
+                localStorage.setItem('clength', $scope.clength);
             }
-            len = $scope.clength.toFixed(0);
-            $scope.clength = parseInt(len, 10);
         }
-        */
     });
 
     // calcalate db loss
@@ -414,19 +411,36 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         return loss.toFixed(2);
     };
 
-    $scope.updateLength = function () {
-        var len;
+    var initializing = true;
 
-        if ($scope.clength) {
-            if (jQuery("#clength").hasClass("metric")) {
-                $scope.clength = $scope.clength / 2.52;
-            } else if (jQuery("#clength").hasClass("imperial")) {
-                $scope.clength = $scope.clength * 2.52;
+    if (localStorage.getItem('measure') === 'true') {
+        $scope.metric = true;
+    } else {
+        $scope.metric = false;
+    }
+
+    // update length depending on measurement type
+    $scope.$watch('metric', function () {
+        if (initializing) {
+            initializing = false;
+        } else {
+            localStorage.setItem('measure', $scope.metric);
+
+            var len;
+
+            if ($scope.clength) {
+                if ($scope.metric === true) {
+                    $scope.clength = $scope.clength * 2.52;
+                } else if ($scope.metric === false) {
+                    $scope.clength = $scope.clength / 2.52;
+                }
+                len = $scope.clength.toFixed(0);
+                $scope.clength = parseInt(len, 10);
+
+                localStorage.setItem('clength', $scope.clength);
             }
-            len = $scope.clength.toFixed(0);
-            $scope.clength = parseInt(len, 10);
         }
-    };
+    });
 
     $scope.addCart = function () {
         if (!$scope.search_freq || $scope.search_freq === null) {
@@ -701,11 +715,11 @@ app.controller('cartCtrl', function ($scope) {
         localStorage.cart = localStorage.getItem('cart');
         var cart = JSON.parse(localStorage.cart);
 
-        if (val > 3024 && jQuery("#length").hasClass("metric")) {
+        if (val > 3024 && $scope.metric === true) {
             $scope.err = true;
             $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
             $scope.clength = 3024;
-        } else if (val > 1200 && jQuery("#length").hasClass("imperial")) {
+        } else if (val > 1200 && $scope.metric === false) {
             $scope.err = true;
             $scope.error_message = "This program has a maxiumum length of 1200 in. Please contact the factory for custom lengths.";
             $scope.clength = 1200;
@@ -761,6 +775,35 @@ app.controller('cartCtrl', function ($scope) {
         $scope.err = false;
     };
 
+    var initializing = true;
+
+    if (localStorage.getItem('measure') === 'true') {
+        $scope.metric = true;
+    } else {
+        $scope.metric = false;
+    }
+
+    // update length depending on measurement type
+    $scope.$watch('metric', function () {
+        if (initializing) {
+            initializing = false;
+        } else {
+            localStorage.setItem('measure', $scope.metric);
+
+            var len;
+
+            if ($scope.clength) {
+                if ($scope.metric === true) {
+                    $scope.clength = $scope.clength * 2.52;
+                } else if ($scope.metric === false) {
+                    $scope.clength = $scope.clength / 2.52;
+                }
+                len = $scope.clength.toFixed(0);
+                $scope.clength = parseInt(len, 10);
+            }
+        }
+    });
+
     $scope.printDiv = function () {
         var pdf = new jsPDF('p', 'pt', 'a4'),
             source = "<html> <head> <title>Cable Assembly Cart Summary</title> <style type='text/css'> .pdf-container{font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; color: #58595B; font-weight: 300; font-size: 12px;}.pdf-header{margin-bottom: 20px;}.address-header{display: inline-block;}p{margin: 0; margin-bottom: 5px;}b{font-weight: 600}.logo-header{display: inline-block; vertical-align: top; float: right;}.logo-header img{width: 80px; height: auto;}.pdf-content{margin-bottom: 20px;}table{width: 100%;}td, th{padding: 4px 8px}tbody tr:nth-child(even){background-color: #F2F2F2;}.pdf-footer{clear: both;}.pdf-footer .sales-disclaimer{display: inline-block;}.pdf-footer .printed-date{display: inline-block;}</style> </head> <body> <div class='pdf-container'> <header class='pdf-header'> <div class='address-header'> <p><b>Florida RF Labs, Inc.</b></p><p>8851 SW Old Kansas Ave.</p><p>Stuart, FL 34997</p><p>Tel: (772) 286-9300</p><p>Fax: (772) 283-5286</p><p><a href='http://www.emc-rflabs.com'>www.emc-rflabs.com</a></p></div><div class='logo-header'> <img src='./wp-content/plugins/cable-wizard/img/rflabs.png'> </div></header> <div class='pdf-content'> <h1>Cable Assembly Cart Summary</h1> <table> <thead> <tr> <th>Order Number</th> <th>Part Number</th> <th>Quantity</th> <th>Unit Price</th> <th>Ext. Amount</th> </tr></thead> <tbody> <tr> <td>AL141LLSPS1S1#00060</td><td>SMS-AL141LLSP-6.0-SMS</td><td>1</td><td>$124.49</td><td>$124.49</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$124.49</td><td>4 - 9 <br>$100.58</td><td>10 - 24 <br>$78.68</td><td>25 - 49 <br>$68.55</td><td>50 - 99 <br>$60.67</td><td>100+ <br>$52.78</td></tr></table> </td></tr><tr> <td>085S1S2#00060</td><td>SMS-085-6.0-SMR</td><td>1</td><td>$85.33</td><td>$85.33</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$85.33</td><td>4 - 9 <br>$68.49</td><td>10 - 24 <br>$51.65</td><td>25 - 49 <br>$45.92</td><td>50 - 99 <br>$40.37</td><td>100+ <br>$34.81</td></tr></table> </td></tr></tbody> <tfoot> <tr> <td></td><td></td><td></td><td></td><td>Total: $209.82</td></tr></tfoot> </table> </div><footer class='pdf-footer'> <div class='sales-disclaimer'> <p>THIS QUOTE IS SUBJECT TO ALL EXPORT CONTROL REGULATIONS OF THE UNITED STATES.</p><p>Cable Assemblies have a $250.00 line item minimum requirement.</p><p>Component Product line has a $1000.00 line item minimum requirement.</p><p>Lead times quoted are ARO (after receipt of order) and does not include transit time.</p><p>Prices are based on the information available at the time of quotation. Quality Assurance provisions, First Article Verification, Source Inspection and Special Packaging requirements not quoted and appear on the purchase order may affect prices quoted herein. Florida RF Labs reserves the right to amend this quotation if these requirements are not quoted and appear on the purchase order.</p><p>Click <a href='http://www.emc-rflabs.com/Rflabs/media/Generic-Library/General%20Information/432F024-EMC-RF-LABS-SALES-TERMS-AND-CONDITIONS.pdf' target='_blank'>here</a> for T&Cs</p></div><div class='printed-date'> <p>PRINTED: <span id='currentdate'>09/14/2016</span></p></div></footer> </div></body></html>",
@@ -810,7 +853,7 @@ app.filter('numberFixedLen', function () {
     };
 });
 
-/*
+
 // draggable connectors
 app.directive('draggable', function () {
     "use strict";
@@ -897,7 +940,7 @@ app.directive('droppable', function () {
 
                     // call the passed drop function
                     scope.$apply(function (scope) {
-                        var fn = scope.drop();
+                        var fn = function() { scope.drop(); };
                         if ('undefined' !== fn) {
                             fn(item.id, binId);
                         }
@@ -910,7 +953,7 @@ app.directive('droppable', function () {
         }
     };
 });
-*/
+
 
 // detects previous page for back button to work
 app.directive('back', ['$window', function ($window) {
