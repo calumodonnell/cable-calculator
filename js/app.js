@@ -143,7 +143,7 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
     };
 
     // direct to config if conditions met
-    $scope.toConfig = function (id) {
+    $scope.toConfig = function (id, conn_1, conn_2) {
         if (!$scope.search_freq || $scope.search_freq === null) {
             $scope.err = true;
             $scope.error_message = "You have not specified the maximum frequency.";
@@ -157,7 +157,7 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
             $scope.err = true;
             $scope.error_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
         } else if (localStorage.getItem("max_freq") && localStorage.getItem("clength")) {
-            $location.path("/configurator").search("part_id", id);
+            $location.path("/configurator").search("part_id", id).search("conn_1", conn_1).search("conn_2", conn_2);
         }
     };
 
@@ -272,6 +272,9 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     $location.search();
     $scope.part_id = $location.search().part_id;
 
+    $scope.c_1 = $location.search().conn_1;
+    $scope.c_2 = $location.search().conn_2;
+
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
 
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
@@ -284,6 +287,15 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     $scope.round = function (num) {
         num = num.toFixed(2);
         return num;
+    };
+
+    $scope.showConnector = function (conn) {
+        if ($scope.c_1 || $scope.c_2) {
+            return conn.con_series === $scope.c_1 ||
+                   conn.con_series === $scope.c_2;
+        } else {
+            return true;
+        }
     };
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
@@ -331,11 +343,11 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 
     $scope.storeLength = function (val) {
-        if (val > 3024 && jQuery("#clength").hasClass("metric")) {
+        if (val > 3024 && $scope.metric === true) {
             $scope.err = true;
             $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
             val = 3024;
-        } else if (val > 1200 && jQuery("#clength").hasClass("imperial")) {
+        } else if (val > 1200 && $scope.metric === false) {
             $scope.err = true;
             $scope.error_message = "This program has a maxiumum length of 1200 in. Please contact the factory for custom lengths.";
             val = 1200;
@@ -449,10 +461,10 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         } else if (!$scope.clength || $scope.clength === null) {
             $scope.err = true;
             $scope.error_message = "You have not specified the cable length.";
-        } else if ($scope.clength < 15 && jQuery("#clength").hasClass("metric")) {
+        } else if ($scope.clength < 15 && $scope.metric === true) {
             $scope.err = true;
             $scope.error_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
-        } else if ($scope.clength < 6 && jQuery("#clength").hasClass("imperial")) {
+        } else if ($scope.clength < 6 && $scope.metric === false) {
             $scope.err = true;
             $scope.error_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
         } else if (!$scope.conn_1 && !$scope.conn_2) {
@@ -471,6 +483,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
             var cart = JSON.parse(localStorage.getItem('cart')) || [],
                 newCart =
                     {
+                        'id': $scope.part_id,
                         'rf_part': $scope.rf_part,
                         'name': $scope.cable_name,
                         'conn_1': $scope.conn_1_overview,
@@ -533,7 +546,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 });
 
-
+/*
 
 var drag = angular.module('drag', ['ngDraggable']);
 
@@ -589,7 +602,7 @@ app.controller('controller', function($scope) {
     //$scope.$on('draggable:move', onDraggableEvent);
     $scope.$on('draggable:end', onDraggableEvent);
 });
-
+*/
 
 
 

@@ -124,7 +124,7 @@
           </div>
           <div class="connector-selection content">
             <div class="row">
-              <div class="col-sm-3 conn-box" droppable ng-repeat="conn in cable.connectors">
+              <div class="col-sm-3 conn-box" droppable ng-repeat="conn in cable.connectors | filter: showConnector" >
                 <div class="item" id="{{ conn.con_part_no }}" draggable item="item">
                   <div class="conn-image">
                     <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>

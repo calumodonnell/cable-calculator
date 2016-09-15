@@ -65,7 +65,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-click="toConfig(cable.id); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
+              <tr ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
                 <td>{{ cable.name }}
                   <span>
                     <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
