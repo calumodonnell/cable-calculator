@@ -280,10 +280,11 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     $scope.c_1 = $location.search().conn_1;
     $scope.c_2 = $location.search().conn_2;
 
+    $scope.conn_1 = '';
+    $scope.conn_2 = '';
+
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
-
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
-
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/connector-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
 
     $scope.sortType     = 'name';
@@ -527,14 +528,14 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 
     $scope.clearBin_1 = function () {
-        jQuery('.bin#conn_1').html('');
-        jQuery('#conn_1_overview').html('');
+        //jQuery('.bin#conn_1').html('');
+        //jQuery('#conn_1_overview').html('');
         localStorage.setItem('conn_1', '');
     };
 
     $scope.clearBin_2 = function () {
-        jQuery('.bin#conn_2').html('');
-        jQuery('#conn_2_overview').html('');
+        //jQuery('.bin#conn_2').html('');
+        //jQuery('#conn_2_overview').html('');
         localStorage.setItem('conn_2', '');
     };
 
@@ -544,9 +545,6 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         $scope.conn_2 = item;
     };
     */
-
-    $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
-    $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
 
     $scope.centerAnchor = true;
     $scope.toggleCenterAnchor = function () { $scope.centerAnchor = !$scope.centerAnchor; };
@@ -563,6 +561,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         var jsonString = JSON.stringify(data);
 
         localStorage.setItem('conn_1', jsonString);
+        $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
     };
 
     $scope.onDrop_2 = function (data, evt) {
@@ -574,6 +573,7 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         var jsonString = JSON.stringify(data);
 
         localStorage.setItem('conn_2', jsonString);
+        $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
     };
 
     $scope.onDragSuccess1 = function (data, evt) {

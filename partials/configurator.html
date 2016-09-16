@@ -51,11 +51,11 @@
             <p>{{ cable.name }}</p>
             <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
             <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
-            <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{conn_2}} - {{ connector.con_description }}</p>
+            <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{conn_2.con_part_no}} - {{ connector.con_description }}</p>
           </div>
           <div class="widget" ng-show="conn_1 !== undefined && conn_2 !== undefined">
             <h3>Pricing <span>(By quanity)</span></h3>
-            <table>
+            <table id="cable-prices">
               <tbody>
                 <tr>
                   <td>1 - 3</td>
@@ -129,15 +129,15 @@
                   </td>
                 </tr>
                 <tr id="cable-spec">
-                  <td id="conn_1_part">{{ conn_1.con_part_no }} <span ng-if="conn_1 !== defined">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
+                  <td id="conn_1_part">{{ conn_1.con_part_no }} <span ng-if="conn_1 !== defined && conn_1 !== ''">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
                   <td id="cable-length" ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? clength + ' cm' : clength + ' in' }} </td>
-                  <td id="conn_2_part">{{ conn_2.con_part_no }} <span ng-if="conn_2 !== defined">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
+                  <td id="conn_2_part">{{ conn_2.con_part_no }} <span ng-if="conn_2 !== defined && conn_2 !== ''">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
                 </tr>
               </tbody>
             </table>
             <div class="cable-info">
-              <p ng-model="macola">Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | numberFixedLen: 5 }}{{ covering }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
-              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ conn_1.con_part_no }}-{{ cable.part_no }}{{ covering }}-{{ clength }}-{{ conn_2.con_part_no }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
+              <p ng-model="macola">Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | numberFixedLen: 5 }}{{ covering }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
+              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ conn_1.con_part_no }}-{{ cable.part_no }}{{ covering }}-{{ clength | number: 1 }}-{{ conn_2.con_part_no }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
             </div>
           </div>
           <div class="connector-selection content">
