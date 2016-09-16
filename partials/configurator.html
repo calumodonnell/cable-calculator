@@ -50,7 +50,7 @@
             <h3>Overview</h3>
             <p>{{ cable.name }}</p>
             <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
-            <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1 === connector.con_part_no">{{conn_1}} - {{ connector.con_description }}</p>
+            <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
             <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{conn_2}} - {{ connector.con_description }}</p>
           </div>
           <div class="widget" ng-show="conn_1 !== undefined && conn_2 !== undefined">
@@ -99,7 +99,7 @@
             <table class="cable-assembly">
               <tbody>
                 <tr class="cable-holder">
-                  <td class="bin" id="conn_1" ng-drop-success="onDropComplete1($data,$event)" ng-drop="true">
+                  <td class="bin" id="conn_1" ng-drop-success="onDrop_1($data, $event)" ng-drop="true">
                     <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
                         <div class="conn-image">
                           <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>
@@ -117,7 +117,7 @@
                       <img class="cable-img" ng-src="./wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'">
                     </div>
                   </td>
-                  <td class="bin" id="conn_2" ng-drop-success="onDropComplete2($data,$event)" ng-drop="true">
+                  <td class="bin" id="conn_2" ng-drop-success="onDrop_2($data, $event)" ng-drop="true">
                     <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
                         <div class="conn-image">
                           <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>
@@ -129,15 +129,15 @@
                   </td>
                 </tr>
                 <tr id="cable-spec">
-                  <td id="conn_1_part">{{ conn_1 }} <span ng-if="conn_1 !== defined">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
+                  <td id="conn_1_part">{{ conn_1.con_part_no }} <span ng-if="conn_1 !== defined">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
                   <td id="cable-length" ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? clength + ' cm' : clength + ' in' }} </td>
-                  <td id="conn_2_part">{{ conn_2 }} <span ng-if="conn_2 !== defined">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
+                  <td id="conn_2_part">{{ conn_2.con_part_no }} <span ng-if="conn_2 !== defined">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
                 </tr>
               </tbody>
             </table>
             <div class="cable-info">
-              <p ng-model="macola">Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1 === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | numberFixedLen: 5 }}{{ covering }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
-              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ conn_1 }}-{{ cable.part_no }}{{ covering }}-{{ clength }}-{{ conn_2 }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
+              <p ng-model="macola">Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2 === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | numberFixedLen: 5 }}{{ covering }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
+              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_2 !== undefined">{{ conn_1.con_part_no }}-{{ cable.part_no }}{{ covering }}-{{ clength }}-{{ conn_2.con_part_no }}</span><span ng-if="conn_1 === undefined && conn_2 === undefined">2 Parts Missing</span><span ng-if="conn_1 !== undefined && conn_2 === undefined || conn_1 === undefined && conn_2 !== undefined">1 Part Missing</span></p>
             </div>
           </div>
           <div class="connector-selection content">

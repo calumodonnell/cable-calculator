@@ -370,13 +370,6 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         $scope.err = false;
     };
 
-    /*
-    $scope.handleDrop_2 = function (item, conn) {
-        localStorage.setItem(conn, item);
-        $scope.conn_2 = item;
-    };
-    */
-
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/default.php")
         .then(function (response) { $scope.material = response.data.material; });
 
@@ -545,17 +538,42 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         localStorage.setItem('conn_2', '');
     };
 
+    /*
+    $scope.handleDrop_2 = function (item, conn) {
+        localStorage.setItem(conn, item);
+        $scope.conn_2 = item;
+    };
+    */
+
+    $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+    $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
+
     $scope.centerAnchor = true;
     $scope.toggleCenterAnchor = function () { $scope.centerAnchor = !$scope.centerAnchor; };
     $scope.draggableObjects = [{name: 'subject1'}, {name: 'subject2'}, {name: 'subject3'}];
     $scope.droppedObjects1 = [];
     $scope.droppedObjects2 = [];
 
-    $scope.onDropComplete1 = function (data, evt) {
+    $scope.onDrop_1 = function (data, evt) {
         var index = $scope.droppedObjects1.indexOf(data);
         if (index === -1) {
             $scope.droppedObjects1.push(data);
         }
+
+        var jsonString = JSON.stringify(data);
+
+        localStorage.setItem('conn_1', jsonString);
+    };
+
+    $scope.onDrop_2 = function (data, evt) {
+        var index = $scope.droppedObjects2.indexOf(data);
+        if (index === -1) {
+            $scope.droppedObjects2.push(data);
+        }
+
+        var jsonString = JSON.stringify(data);
+
+        localStorage.setItem('conn_2', jsonString);
     };
 
     $scope.onDragSuccess1 = function (data, evt) {
@@ -570,13 +588,6 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         var index = $scope.droppedObjects2.indexOf(data);
         if (index > -1) {
             $scope.droppedObjects2.splice(index, 1);
-        }
-    };
-
-    $scope.onDropComplete2 = function (data, evt) {
-        var index = $scope.droppedObjects2.indexOf(data);
-        if (index === -1) {
-            $scope.droppedObjects2.push(data);
         }
     };
 
