@@ -68,7 +68,7 @@
                   <td><input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
                   <td><input class="form-control" id="length" ng-model="ca.length" type="number" min="1" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(ca.length, $index)"></td>
                   <td>${{ cablePrice(ca.length, ca.covering, ca.quantity, $index) }} USD</td>
-                  <td><a href="#/configurator"><span class="icons edit"></span></a><a href="#/print-drawing"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)"></span></a></td>
+                  <td><a href="#/configurator"><span class="icons edit"></span></a><a href="" ng-click="printDrawing()"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)"></span></a></td>
                 </tr>
                 <tr ng-hide="cart.length">
                   <td id="no_cables" colspan="6">You have no cables in your cart.<br>To add cables to your cart please click 'Add Cable' in the top left of the application.</td>
@@ -86,7 +86,6 @@
             </table>
             <div class="order-functions">
               <a href="" class="btn btn-primary" role="button" ng-click="clearCart()" aria-disabled="true">Clear Cart</a>
-              <!--<a href="" class="btn btn-primary" role="button" ng-click="checkoutCart()" aria-disabled="true">Check Out</a>-->
             </div>
           </div>
         </div>

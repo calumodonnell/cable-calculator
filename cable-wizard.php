@@ -169,7 +169,7 @@ function cw_load() {
 	wp_enqueue_script('angularjs', '//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular.min.js');
 	wp_enqueue_script('angularjs-route', '//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js');
 	wp_enqueue_script('angularjs-storage', '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js');
-	wp_enqueue_script('angularjs-draggable', '//rawgit.com/fatlinesofcode/ngDraggable/master/ngDraggable.js');
+	wp_enqueue_script('angularjs-draggable', SR_URL . '/libs/ngDraggable.js');
 	wp_enqueue_script('bootstrap-tether', '//cdnjs.cloudflare.com/ajax/libs/tether/1.3.4/js/tether.min.js');
 	wp_enqueue_script('bootstrap-js', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js');
 	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');

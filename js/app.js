@@ -1,7 +1,7 @@
 /*jslint browser:true*/
 /*global $, jQuery, alert, angular, console*/
 
-var app = angular.module('cable-wizard', ['ngRoute']);
+var app = angular.module('cable-wizard', ['ngRoute', 'ngDraggable']);
 
 // config app pages
 app.config(['$routeProvider', function ($routeProvider) {
@@ -19,8 +19,10 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 // pageCtrl controller
-app.controller('PageCtrl', function () {
+app.controller('PageCtrl', function ($scope) {
     "use strict";
+
+    $scope.cart = localStorage.getItem('cart');
 });
 
 // homeCtrl controller
@@ -42,7 +44,6 @@ app.controller('homeCtrl', function () {
 app.controller('cableCtrl', function ($scope, $http, $location) {
     "use strict";
 
-    $scope.cart = localStorage.getItem('cart');
     $scope.toggleSort = false;
 
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-list.php").then(function (response) { $scope.cables = response.data.cables; });
@@ -269,6 +270,10 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
 app.controller('connectorCtrl', function ($scope, $http, $location) {
     "use strict";
 
+    var initializing = true,
+        search_freq = "",
+        clength = "";
+
     $location.search();
     $scope.part_id = $location.search().part_id;
 
@@ -293,15 +298,12 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         if ($scope.c_1 || $scope.c_2) {
             return conn.con_series === $scope.c_1 ||
                    conn.con_series === $scope.c_2;
-        } else {
-            return true;
         }
+
+        return true;
     };
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
-        var search_freq = "",
-            clength = "";
-
         search_freq = localStorage.getItem('max_freq');
         clength = localStorage.getItem('clength');
 
@@ -325,6 +327,8 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 
     $scope.storeFreq = function () {
+        var val;
+
         if (val > 65) {
             $scope.err = true;
             $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
@@ -366,15 +370,16 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         $scope.err = false;
     };
 
+    /*
     $scope.handleDrop_1 = function (item, conn) {
-        localStorage.setItem(conn, item);
-        $scope.conn_1 = item;
+
     };
 
     $scope.handleDrop_2 = function (item, conn) {
         localStorage.setItem(conn, item);
         $scope.conn_2 = item;
     };
+    */
 
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/default.php")
         .then(function (response) { $scope.material = response.data.material; });
@@ -422,8 +427,6 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
 
         return loss.toFixed(2);
     };
-
-    var initializing = true;
 
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;
@@ -510,21 +513,22 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     };
 
     $scope.cableCover = function (covering) {
-        if (covering === 'W') {
+        switch (covering) {
+        case 'W':
             return "large_neowea.png";
-        } else if (covering === 'TV') {
+        case 'TV':
             return "med_armor.png";
-        } else if (covering === 'A') {
+        case 'A':
             return "med_armor.png";
-        } else if (covering === 'AW') {
+        case 'AW':
             return "med_armorblack.png";
-        } else if (covering === 'AN') {
+        case 'AN':
             return "med_armorblack.png";
-        } else if (covering === 'E') {
+        case 'E':
             return "med_boot.png";
-        } else if (covering === 'EW') {
+        case 'EW':
             return "med_boot_black.png";
-        } else if (covering === 'MC') {
+        case 'MC':
             return "large_neowea.png";
         }
     };
@@ -543,6 +547,48 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
         jQuery('.bin#conn_2').html('');
         jQuery('#conn_2_overview').html('');
         localStorage.setItem('conn_2', '');
+    };
+
+
+
+
+    $scope.centerAnchor = true;
+    $scope.toggleCenterAnchor = function () { $scope.centerAnchor = !$scope.centerAnchor; };
+    $scope.draggableObjects = [{name: 'subject1'}, {name: 'subject2'}, {name: 'subject3'}];
+    $scope.droppedObjects1 = [];
+    $scope.droppedObjects2 = [];
+
+    $scope.onDropComplete1 = function (data, evt) {
+        var index = $scope.droppedObjects1.indexOf(data);
+        if (index === -1) {
+            $scope.droppedObjects1.push(data);
+        }
+    };
+
+    $scope.onDragSuccess1 = function (data, evt) {
+        console.log("133", "$scope", "onDragSuccess1", "", evt);
+        var index = $scope.droppedObjects1.indexOf(data);
+        if (index > -1) {
+            $scope.droppedObjects1.splice(index, 1);
+        }
+    };
+
+    $scope.onDragSuccess2 = function (data, evt) {
+        var index = $scope.droppedObjects2.indexOf(data);
+        if (index > -1) {
+            $scope.droppedObjects2.splice(index, 1);
+        }
+    };
+
+    $scope.onDropComplete2 = function (data, evt) {
+        var index = $scope.droppedObjects2.indexOf(data);
+        if (index === -1) {
+            $scope.droppedObjects2.push(data);
+        }
+    };
+
+    var inArray = function (array, conn) {
+        var index = array.indexOf(conn);
     };
 });
 
@@ -612,19 +658,6 @@ app.controller('cartCtrl', function ($scope) {
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
     $scope.quantity = parseInt(localStorage.getItem('cart', 'quantity'), 10);
     $scope.clength = parseInt(localStorage.getItem('cart', 'length'), 10);
-
-    $scope.totalPrice = function () {
-        var total = 0,
-            i,
-            product;
-
-        for (i = 0; i < $scope.cart.length; i += 1) {
-            product = $scope.cart[i];
-            total = total + product.price;
-        }
-
-        return total;
-    };
 
     $scope.cartLength = function () {
         var total,
@@ -714,6 +747,39 @@ app.controller('cartCtrl', function ($scope) {
         return total;
     };
 
+    $scope.errorHide = function () {
+        $scope.err = false;
+    };
+
+    $scope.deleteItem = function (index) {
+        $scope.cart.splice(index, 1);
+
+        localStorage.cart = localStorage.getItem('cart');
+
+        var cart = JSON.parse(localStorage.cart);
+
+        cart.splice(index, 1);
+
+        localStorage.cart = JSON.stringify(cart);
+    };
+
+    $scope.clearCart = function () {
+        $scope.cart = "";
+        localStorage.removeItem('cart');
+    };
+
+    $scope.errorHide = function () {
+        $scope.err = false;
+    };
+
+    var initializing = true;
+
+    if (localStorage.getItem('measure') === 'true') {
+        $scope.metric = true;
+    } else {
+        $scope.metric = false;
+    }
+
     $scope.storeQuantity = function (quantity, index) {
         localStorage.cart = localStorage.getItem('cart');
 
@@ -748,53 +814,18 @@ app.controller('cartCtrl', function ($scope) {
         localStorage.cart = JSON.stringify(cart);
     };
 
-    $scope.errorHide = function () {
-        $scope.err = false;
-    };
+    $scope.totalPrice = function () {
+        var total = 0,
+            i,
+            product;
 
-    $scope.deleteItem = function (index) {
-        $scope.cart.splice(index, 1);
-
-        localStorage.cart = localStorage.getItem('cart');
-
-        var cart = JSON.parse(localStorage.cart);
-
-        cart.splice(index, 1);
-
-        localStorage.cart = JSON.stringify(cart);
-    };
-
-    $scope.clearCart = function () {
-        $scope.cart = "";
-        localStorage.removeItem('cart');
-    };
-
-    $scope.checkoutCart = function () {
-        $scope.err = true;
-        $scope.error_message = "This function is not available.";
-
-        /*
-        if (jQuery("#length").hasClass("metric") && $scope.clength < 15) {
-            $scope.err = true;
-            $scope.error_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
-        } else if (jQuery("#length").hasClass("imperial") && $scope.clength < 6) {
-            $scope.err = true;
-            $scope.error_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
+        for (i = 0; i < $scope.cart.length; i += 1) {
+            product = $scope.cart[i];
+            total = total + product.price;
         }
-        */
+
+        return total;
     };
-
-    $scope.errorHide = function () {
-        $scope.err = false;
-    };
-
-    var initializing = true;
-
-    if (localStorage.getItem('measure') === 'true') {
-        $scope.metric = true;
-    } else {
-        $scope.metric = false;
-    }
 
     // update length depending on measurement type
     $scope.$watch('metric', function () {
@@ -821,11 +852,6 @@ app.controller('cartCtrl', function ($scope) {
         var pdf = new jsPDF('p', 'pt', 'a4'),
             source = "<html> <head> <title>Cable Assembly Cart Summary</title> <style type='text/css'> .pdf-container{font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; color: #58595B; font-weight: 300; font-size: 12px;}.pdf-header{margin-bottom: 20px;}.address-header{display: inline-block;}p{margin: 0; margin-bottom: 5px;}b{font-weight: 600}.logo-header{display: inline-block; vertical-align: top; float: right;}.logo-header img{width: 80px; height: auto;}.pdf-content{margin-bottom: 20px;}table{width: 100%;}td, th{padding: 4px 8px}tbody tr:nth-child(even){background-color: #F2F2F2;}.pdf-footer{clear: both;}.pdf-footer .sales-disclaimer{display: inline-block;}.pdf-footer .printed-date{display: inline-block;}</style> </head> <body> <div class='pdf-container'> <header class='pdf-header'> <div class='address-header'> <p><b>Florida RF Labs, Inc.</b></p><p>8851 SW Old Kansas Ave.</p><p>Stuart, FL 34997</p><p>Tel: (772) 286-9300</p><p>Fax: (772) 283-5286</p><p><a href='http://www.emc-rflabs.com'>www.emc-rflabs.com</a></p></div><div class='logo-header'> <img src='./wp-content/plugins/cable-wizard/img/rflabs.png'> </div></header> <div class='pdf-content'> <h1>Cable Assembly Cart Summary</h1> <table> <thead> <tr> <th>Order Number</th> <th>Part Number</th> <th>Quantity</th> <th>Unit Price</th> <th>Ext. Amount</th> </tr></thead> <tbody> <tr> <td>AL141LLSPS1S1#00060</td><td>SMS-AL141LLSP-6.0-SMS</td><td>1</td><td>$124.49</td><td>$124.49</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$124.49</td><td>4 - 9 <br>$100.58</td><td>10 - 24 <br>$78.68</td><td>25 - 49 <br>$68.55</td><td>50 - 99 <br>$60.67</td><td>100+ <br>$52.78</td></tr></table> </td></tr><tr> <td>085S1S2#00060</td><td>SMS-085-6.0-SMR</td><td>1</td><td>$85.33</td><td>$85.33</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$85.33</td><td>4 - 9 <br>$68.49</td><td>10 - 24 <br>$51.65</td><td>25 - 49 <br>$45.92</td><td>50 - 99 <br>$40.37</td><td>100+ <br>$34.81</td></tr></table> </td></tr></tbody> <tfoot> <tr> <td></td><td></td><td></td><td></td><td>Total: $209.82</td></tr></tfoot> </table> </div><footer class='pdf-footer'> <div class='sales-disclaimer'> <p>THIS QUOTE IS SUBJECT TO ALL EXPORT CONTROL REGULATIONS OF THE UNITED STATES.</p><p>Cable Assemblies have a $250.00 line item minimum requirement.</p><p>Component Product line has a $1000.00 line item minimum requirement.</p><p>Lead times quoted are ARO (after receipt of order) and does not include transit time.</p><p>Prices are based on the information available at the time of quotation. Quality Assurance provisions, First Article Verification, Source Inspection and Special Packaging requirements not quoted and appear on the purchase order may affect prices quoted herein. Florida RF Labs reserves the right to amend this quotation if these requirements are not quoted and appear on the purchase order.</p><p>Click <a href='http://www.emc-rflabs.com/Rflabs/media/Generic-Library/General%20Information/432F024-EMC-RF-LABS-SALES-TERMS-AND-CONDITIONS.pdf' target='_blank'>here</a> for T&Cs</p></div><div class='printed-date'> <p>PRINTED: <span id='currentdate'>09/14/2016</span></p></div></footer> </div></body></html>",
             //source = jQuery('.print-preview')[0],
-            specialElementHandlers = {
-                'print-preview': function (element, renderer) {
-                    return true;
-                }
-            },
             margins = {
                 top: 40,
                 bottom: 60,
@@ -836,14 +862,39 @@ app.controller('cartCtrl', function ($scope) {
         pdf.fromHTML(
             source,
             margins.left,
-            margins.top, {
-                'width': margins.width,
-                'elementHandlers': specialElementHandlers
+            margins.top,
+            {
+                'width': margins.width
             },
-
-            function (dispose) {
+            function () {
                 pdf.save('cable-wizard-quotation.pdf');
-            }, margins
+            },
+            margins
+        );
+    };
+
+    $scope.printDrawing = function () {
+        var pdf = new jsPDF('p', 'pt', 'a4'),
+            source = "<html> <head> <title>Cable Assembly Cart Summary</title> <style type='text/css'> .pdf-container{font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; color: #58595B; font-weight: 300; font-size: 12px;}.pdf-header{margin-bottom: 20px;}.address-header{display: inline-block;}p{margin: 0; margin-bottom: 5px;}b{font-weight: 600}.logo-header{display: inline-block; vertical-align: top; float: right;}.logo-header img{width: 80px; height: auto;}.pdf-content{margin-bottom: 20px;}table{width: 100%;}td, th{padding: 4px 8px}tbody tr:nth-child(even){background-color: #F2F2F2;}.pdf-footer{clear: both;}.pdf-footer .sales-disclaimer{display: inline-block;}.pdf-footer .printed-date{display: inline-block;}</style> </head> <body> <div class='pdf-container'> <header class='pdf-header'> <div class='address-header'> <p><b>Florida RF Labs, Inc.</b></p><p>8851 SW Old Kansas Ave.</p><p>Stuart, FL 34997</p><p>Tel: (772) 286-9300</p><p>Fax: (772) 283-5286</p><p><a href='http://www.emc-rflabs.com'>www.emc-rflabs.com</a></p></div><div class='logo-header'> <img src='./wp-content/plugins/cable-wizard/img/rflabs.png'> </div></header> <div class='pdf-content'> <h1>Cable Assembly Cart Summary</h1> <table> <thead> <tr> <th>Order Number</th> <th>Part Number</th> <th>Quantity</th> <th>Unit Price</th> <th>Ext. Amount</th> </tr></thead> <tbody> <tr> <td>AL141LLSPS1S1#00060</td><td>SMS-AL141LLSP-6.0-SMS</td><td>1</td><td>$124.49</td><td>$124.49</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$124.49</td><td>4 - 9 <br>$100.58</td><td>10 - 24 <br>$78.68</td><td>25 - 49 <br>$68.55</td><td>50 - 99 <br>$60.67</td><td>100+ <br>$52.78</td></tr></table> </td></tr><tr> <td>085S1S2#00060</td><td>SMS-085-6.0-SMR</td><td>1</td><td>$85.33</td><td>$85.33</td></tr><tr> <td>Price Breaks</td><td colspan='4'> <table> <tr> <td>1 - 3 <br>$85.33</td><td>4 - 9 <br>$68.49</td><td>10 - 24 <br>$51.65</td><td>25 - 49 <br>$45.92</td><td>50 - 99 <br>$40.37</td><td>100+ <br>$34.81</td></tr></table> </td></tr></tbody> <tfoot> <tr> <td></td><td></td><td></td><td></td><td>Total: $209.82</td></tr></tfoot> </table> </div><footer class='pdf-footer'> <div class='sales-disclaimer'> <p>THIS QUOTE IS SUBJECT TO ALL EXPORT CONTROL REGULATIONS OF THE UNITED STATES.</p><p>Cable Assemblies have a $250.00 line item minimum requirement.</p><p>Component Product line has a $1000.00 line item minimum requirement.</p><p>Lead times quoted are ARO (after receipt of order) and does not include transit time.</p><p>Prices are based on the information available at the time of quotation. Quality Assurance provisions, First Article Verification, Source Inspection and Special Packaging requirements not quoted and appear on the purchase order may affect prices quoted herein. Florida RF Labs reserves the right to amend this quotation if these requirements are not quoted and appear on the purchase order.</p><p>Click <a href='http://www.emc-rflabs.com/Rflabs/media/Generic-Library/General%20Information/432F024-EMC-RF-LABS-SALES-TERMS-AND-CONDITIONS.pdf' target='_blank'>here</a> for T&Cs</p></div><div class='printed-date'> <p>PRINTED: <span id='currentdate'>09/14/2016</span></p></div></footer> </div></body></html>",
+            //source = jQuery('.print-preview')[0],
+            margins = {
+                top: 40,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+
+        pdf.fromHTML(
+            source,
+            margins.left,
+            margins.top,
+            {
+                'width': margins.width
+            },
+            function () {
+                pdf.save('cable-wizard-drawing.pdf');
+            },
+            margins
         );
     };
 });
@@ -854,116 +905,8 @@ app.filter('numberFixedLen', function () {
     "use strict";
     return function (a, b) {
         var num = (1e4 + "" + a).slice(-b);
-            //decimal = /^[-+]?[0-9]+\.[0-9]+$/;
-
-        /*
-        if(!a.value.match(decimal)){
-            num = num + 0;
-        }
-        */
 
         return num;
-    };
-});
-
-
-// draggable connectors
-app.directive('draggable', function () {
-    "use strict";
-    return function (scope, element) {
-        // this gives us the native JS object
-        var el = element[0];
-
-        el.draggable = true;
-
-        el.addEventListener(
-            'dragstart',
-            function (e) {
-                e.dataTransfer.effectAllowed = 'move';
-                e.dataTransfer.setData('Text', this.id);
-                this.classList.add('drag');
-                return false;
-            },
-            false
-        );
-
-        el.addEventListener(
-            'dragend',
-            function () {
-                this.classList.remove('drag');
-                return false;
-            },
-            false
-        );
-    };
-});
-
-// droppable connectors
-app.directive('droppable', function () {
-    "use strict";
-    return {
-        scope: {
-            drop: '&',
-            bin: '='
-        },
-        link: function (scope, element) {
-            var el = element[0];
-
-            el.addEventListener(
-                'dragover',
-                function (e) {
-                    e.dataTransfer.dropEffect = 'move';
-                    // allows us to drop
-                    if (e.preventDefault) { e.preventDefault(); }
-                    this.classList.add('over');
-                    return false;
-                },
-                false
-            );
-
-            el.addEventListener(
-                'dragenter',
-                function () {
-                    this.classList.add('over');
-                    return false;
-                },
-                false
-            );
-
-            el.addEventListener(
-                'dragleave',
-                function () {
-                    this.classList.remove('over');
-                    return false;
-                },
-                false
-            );
-
-            el.addEventListener(
-                'drop',
-                function (e) {
-                    // Stops some browsers from redirecting.
-                    if (e.stopPropagation) { e.stopPropagation(); }
-
-                    this.classList.remove('over');
-
-                    var binId = this.id,
-                        item = document.getElementById(e.dataTransfer.getData('Text'));
-                    this.appendChild(item);
-
-                    // call the passed drop function
-                    scope.$apply(function (scope) {
-                        var fn = function() { scope.drop(); };
-                        if ('undefined' !== fn) {
-                            fn(item.id, binId);
-                        }
-                    });
-
-                    return false;
-                },
-                false
-            );
-        }
     };
 });
 

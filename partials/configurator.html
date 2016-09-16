@@ -99,7 +99,16 @@
             <table class="cable-assembly">
               <tbody>
                 <tr class="cable-holder">
-                  <td class="bin" id="conn_1" droppable drop="handleDrop_1" bin="bin">{{ bin }}</td>
+                  <td class="bin" id="conn_1" ng-drop-success="onDropComplete1($data,$event)" ng-drop="true">
+                    <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
+                        <div class="conn-image">
+                          <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>
+                        </div>
+                        <div class="conn-title">
+                          <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                        </div>
+                    </div>
+                  </td>
                   <td class="image-holder">
                     <div class="cable-covering">
                       <img class="cover-img" ng-src="./wp-content/plugins/cable-wizard/img/covering/{{ cableCover(covering) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'" ng-if="covering">
@@ -108,7 +117,16 @@
                       <img class="cable-img" ng-src="./wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.jpg'">
                     </div>
                   </td>
-                  <td class="bin" id="conn_2" droppable drop="handleDrop_2" bin="bin">{{ bin }}</td>
+                  <td class="bin" id="conn_2" ng-drop-success="onDropComplete2($data,$event)" ng-drop="true">
+                    <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
+                        <div class="conn-image">
+                          <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>
+                        </div>
+                        <div class="conn-title">
+                          <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                        </div>
+                    </div>
+                  </td>
                 </tr>
                 <tr id="cable-spec">
                   <td id="conn_1_part">{{ conn_1 }} <span ng-if="conn_1 !== defined">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
@@ -125,7 +143,7 @@
           <div class="connector-selection content">
             <div class="row">
               <div class="col-sm-3 conn-box" droppable ng-repeat="conn in cable.connectors | filter: showConnector" >
-                <div class="item" id="{{ conn.con_part_no }}" draggable item="item">
+                <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true">
                   <div class="conn-image">
                     <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.jpg'"/>
                   </div>
