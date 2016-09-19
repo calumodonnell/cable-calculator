@@ -29,6 +29,13 @@ function cw_add_cable(){
 
   $cable_img = '';
 
+  $current_date = date("Y-m-d");
+
+  if(isset($_POST['outdoor'])){ $outdoor = $_POST['outdoor']; } else { $outdoor = ""; }
+  if(isset($_POST['indoor'])){ $indoor = $_POST['indoor']; } else { $indoor = ""; }
+  if(isset($_POST['test'])){ $test = $_POST['test']; } else { $test = ""; }
+  if(isset($_POST['available'])){ $available = $_POST['available']; } else { $available = ""; }
+
   if (file_exists($_FILES['cable_img']['tmp_name']) || is_uploaded_file($_FILES['cable_img']['tmp_name'])) :
     if (isset($_FILES["cable_img"]["error"])) :
       if ($_FILES["cable_img"]["error"] > 0) :
@@ -62,7 +69,7 @@ function cw_add_cable(){
   endif;
 
   if (!isset($error)) :
-  	$cable_sql = "INSERT INTO cw_cable_list (`name`, `part_no`, `max_freq`, `diameter`, `min_bend`, `typ_atten_k1`, `typ_atten_k2`, `outdoor`, `indoor`, `test`, `price`, `flex`, `cable_img`, `margin_rate`, `hour_lab_rate`, `overhead_rate`, `ship_handling`, `qm1`, `qm2`, `qm3`, `qm4`, `qm5`, `qm6`, `qm7`, `qm8`, `available`, `coat_n_cable_base`, `coat_n_adder_back`, `coat_n_base`, `coat_n_adder_base_time`, `coat_n_time_rp`, `coat_w_cable_base`, `coat_w_adder_back`, `coat_w_base`, `coat_w_adder_base_time`, `coat_w_time_rp`, `coat_tv_cable_base`, `coat_tv_adder_back`, `coat_tv_base`, `coat_tv_adder_base_time`, `coat_tv_time_rp`, `coat_a_cable_base`, `coat_a_adder_back`, `coat_a_base`, `coat_a_adder_base_time`, `coat_a_time_rp`, `coat_aw_cable_base`, `coat_aw_adder_back`, `coat_aw_base`, `coat_aw_adder_base_time`, `coat_aw_time_rp`, `coat_an_cable_base`, `coat_an_adder_back`, `coat_an_base`, `coat_an_adder_base_time`, `coat_an_time_rp`, `coat_ej_cable_base`, `coat_ej_adder_back`, `coat_ej_base`, `coat_ej_adder_base_time`, `coat_ej_time_rp`, `coat_ew_cable_base`, `coat_ew_adder_back`, `coat_ew_base`, `coat_ew_adder_base_time`, `coat_ew_time_rp`, `coat_mc_cable_base`, `coat_mc_adder_back`, `coat_mc_base`, `coat_mc_adder_base_time`, `coat_mc_time_rp`) VALUES ('" . $_POST['name'] . "', '" . $_POST['part_no'] . "', '" . $_POST['max_freq'] . "', '" . $_POST['diameter'] . "', '" . $_POST['min_bend'] . "', '" . $_POST['typ_atten_k1'] .  "', '" . $_POST['typ_atten_k2'] . "', '" . $_POST['outdoor'] . "', '" . $_POST['indoor'] . "', '" . $_POST['test'] . "', '" . $_POST['price'] . "', '" . $_POST['flex'] . "', '$cable_img', '" . $_POST['margin_rate'] . "', '" . $_POST['hour_lab_rate'] . "', '" . $_POST['overhead_rate'] . "', '" . $_POST['ship_handling'] . "', '" . $_POST['qm1'] . "', '" . $_POST['qm2'] . "', '" . $_POST['qm3'] . "', '" . $_POST['qm4'] . "', '" . $_POST['qm5'] . "', '" . $_POST['qm6'] . "', '" . $_POST['qm7'] . "', '" . $_POST['qm8'] . "', '" . $_POST['available'] . "', '" . $_POST['coat_n_cable_base'] . "', '" . $_POST['coat_n_adder_back'] . "', '" . $_POST['coat_n_base'] . "', '" . $_POST['coat_n_adder_base_time'] . "', '" . $_POST['coat_n_time_rp'] . "', '" . $_POST['coat_w_cable_base'] . "', '" . $_POST['coat_w_adder_back'] . "', '" . $_POST['coat_w_base'] . "', '" . $_POST['coat_w_adder_base_time'] . "', '" . $_POST['coat_w_time_rp'] . "', '" . $_POST['coat_tv_cable_base'] . "', '" . $_POST['coat_tv_adder_back'] . "', '" . $_POST['coat_tv_base'] . "', '" . $_POST['coat_tv_adder_base_time'] . "', '" . $_POST['coat_tv_time_rp'] . "', '" . $_POST['coat_a_cable_base'] . "', '" . $_POST['coat_a_adder_back'] . "', '" . $_POST['coat_a_base'] . "', '" . $_POST['coat_a_adder_base_time'] . "', '" . $_POST['coat_a_time_rp'] . "', '" . $_POST['coat_aw_cable_base'] . "', '" . $_POST['coat_aw_adder_back'] . "', '" . $_POST['coat_aw_base'] . "', '" . $_POST['coat_aw_adder_base_time'] . "', '" . $_POST['coat_aw_time_rp'] . "', '" . $_POST['coat_an_cable_base'] . "', '" . $_POST['coat_an_adder_back'] . "', '" . $_POST['coat_an_base'] . "', '" . $_POST['coat_an_adder_base_time'] . "', '" . $_POST['coat_an_time_rp'] . "', '" . $_POST['coat_ej_cable_base'] . "', '" . $_POST['coat_ej_adder_back'] . "', '" . $_POST['coat_ej_base'] . "', '" . $_POST['coat_ej_adder_base_time'] . "', '" . $_POST['coat_ej_time_rp'] . "', '" . $_POST['coat_ew_cable_base'] . "', '" . $_POST['coat_ew_adder_back'] . "', '" . $_POST['coat_ew_base'] . "', '" . $_POST['coat_ew_adder_base_time'] . "', '" . $_POST['coat_ew_time_rp'] . "', '" . $_POST['coat_mc_cable_base'] . "', '" . $_POST['coat_mc_adder_back'] . "', '" . $_POST['coat_mc_base'] . "', '" . $_POST['coat_mc_adder_base_time'] . "', '" . $_POST['coat_mc_time_rp'] . "')";
+  	$cable_sql = "INSERT INTO cw_cable_list (`name`, `part_no`, `max_freq`, `diameter`, `min_bend`, `typ_atten_k1`, `typ_atten_k2`, `outdoor`, `indoor`, `test`, `price`, `flex`, `cable_img`, `margin_rate`, `hour_lab_rate`, `overhead_rate`, `ship_handling`, `qm1`, `qm2`, `qm3`, `qm4`, `qm5`, `qm6`, `qm7`, `qm8`, `available`, `coat_n_cable_base`, `coat_n_adder_back`, `coat_n_base`, `coat_n_adder_base_time`, `coat_n_time_rp`, `coat_w_cable_base`, `coat_w_adder_back`, `coat_w_base`, `coat_w_adder_base_time`, `coat_w_time_rp`, `coat_tv_cable_base`, `coat_tv_adder_back`, `coat_tv_base`, `coat_tv_adder_base_time`, `coat_tv_time_rp`, `coat_a_cable_base`, `coat_a_adder_back`, `coat_a_base`, `coat_a_adder_base_time`, `coat_a_time_rp`, `coat_aw_cable_base`, `coat_aw_adder_back`, `coat_aw_base`, `coat_aw_adder_base_time`, `coat_aw_time_rp`, `coat_an_cable_base`, `coat_an_adder_back`, `coat_an_base`, `coat_an_adder_base_time`, `coat_an_time_rp`, `coat_ej_cable_base`, `coat_ej_adder_back`, `coat_ej_base`, `coat_ej_adder_base_time`, `coat_ej_time_rp`, `coat_ew_cable_base`, `coat_ew_adder_back`, `coat_ew_base`, `coat_ew_adder_base_time`, `coat_ew_time_rp`, `coat_mc_cable_base`, `coat_mc_adder_back`, `coat_mc_base`, `coat_mc_adder_base_time`, `coat_mc_time_rp`, `date_created`, `date_modified`) VALUES ('" . $_POST['name'] . "', '" . $_POST['part_no'] . "', '" . $_POST['max_freq'] . "', '" . $_POST['diameter'] . "', '" . $_POST['min_bend'] . "', '" . $_POST['typ_atten_k1'] .  "', '" . $_POST['typ_atten_k2'] . "', '" . $outdoor . "', '" . $indoor . "', '" . $test . "', '" . $_POST['price'] . "', '" . $_POST['flex'] . "', '$cable_img', '" . $_POST['margin_rate'] . "', '" . $_POST['hour_lab_rate'] . "', '" . $_POST['overhead_rate'] . "', '" . $_POST['ship_handling'] . "', '" . $_POST['qm1'] . "', '" . $_POST['qm2'] . "', '" . $_POST['qm3'] . "', '" . $_POST['qm4'] . "', '" . $_POST['qm5'] . "', '" . $_POST['qm6'] . "', '" . $_POST['qm7'] . "', '" . $_POST['qm8'] . "', '" . $available . "', '" . $_POST['coat_n_cable_base'] . "', '" . $_POST['coat_n_adder_back'] . "', '" . $_POST['coat_n_base'] . "', '" . $_POST['coat_n_adder_base_time'] . "', '" . $_POST['coat_n_time_rp'] . "', '" . $_POST['coat_w_cable_base'] . "', '" . $_POST['coat_w_adder_back'] . "', '" . $_POST['coat_w_base'] . "', '" . $_POST['coat_w_adder_base_time'] . "', '" . $_POST['coat_w_time_rp'] . "', '" . $_POST['coat_tv_cable_base'] . "', '" . $_POST['coat_tv_adder_back'] . "', '" . $_POST['coat_tv_base'] . "', '" . $_POST['coat_tv_adder_base_time'] . "', '" . $_POST['coat_tv_time_rp'] . "', '" . $_POST['coat_a_cable_base'] . "', '" . $_POST['coat_a_adder_back'] . "', '" . $_POST['coat_a_base'] . "', '" . $_POST['coat_a_adder_base_time'] . "', '" . $_POST['coat_a_time_rp'] . "', '" . $_POST['coat_aw_cable_base'] . "', '" . $_POST['coat_aw_adder_back'] . "', '" . $_POST['coat_aw_base'] . "', '" . $_POST['coat_aw_adder_base_time'] . "', '" . $_POST['coat_aw_time_rp'] . "', '" . $_POST['coat_an_cable_base'] . "', '" . $_POST['coat_an_adder_back'] . "', '" . $_POST['coat_an_base'] . "', '" . $_POST['coat_an_adder_base_time'] . "', '" . $_POST['coat_an_time_rp'] . "', '" . $_POST['coat_ej_cable_base'] . "', '" . $_POST['coat_ej_adder_back'] . "', '" . $_POST['coat_ej_base'] . "', '" . $_POST['coat_ej_adder_base_time'] . "', '" . $_POST['coat_ej_time_rp'] . "', '" . $_POST['coat_ew_cable_base'] . "', '" . $_POST['coat_ew_adder_back'] . "', '" . $_POST['coat_ew_base'] . "', '" . $_POST['coat_ew_adder_base_time'] . "', '" . $_POST['coat_ew_time_rp'] . "', '" . $_POST['coat_mc_cable_base'] . "', '" . $_POST['coat_mc_adder_back'] . "', '" . $_POST['coat_mc_base'] . "', '" . $_POST['coat_mc_adder_base_time'] . "', '" . $_POST['coat_mc_time_rp'] . "', '" . $current_date . "', '" . $current_date . "')";
   	$cable_query = $wpdb->query($cable_sql);
 
     if (isset($cable_query)) :
@@ -71,15 +78,17 @@ function cw_add_cable(){
 
       $cable_id = $cable_id_query[0]['id'];
 
-    	foreach( $_POST['connector_part'] as $row => $value ) :
-        $connector_sql = "SELECT con_series, con_part_no FROM cw_connector_list WHERE id = '" . $_POST['connector_part'][$row] . "' LIMIT 1";
-        $connector = $wpdb->get_results($connector_sql, 'ARRAY_A');
+      if (!empty($_POST['connector_part']) && array_filter($_POST['connector_part'])) :
+      	foreach( $_POST['connector_part'] as $row => $value ) :
+          $connector_sql = "SELECT con_series, con_part_no FROM cw_connector_list WHERE id = '" . $_POST['connector_part'][$row] . "' LIMIT 1";
+          $connector = $wpdb->get_results($connector_sql, 'ARRAY_A');
 
-        if (isset($connector)) :
-      		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, price) VALUES ('" . $cable_id . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "')";
-      		$pricing_query = $wpdb->query($pricing_sql);
-        endif;
-    	endforeach;
+          if (isset($connector)) :
+        		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, price) VALUES ('" . $cable_id . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "')";
+        		$pricing_query = $wpdb->query($pricing_sql);
+          endif;
+      	endforeach;
+      endif;
     endif;
   endif;
 
@@ -99,6 +108,13 @@ function cw_add_cable(){
 
 function cw_edit_cable(){
 	global $wpdb;
+
+  $current_date = date("Y-m-d");
+
+  if(isset($_POST['outdoor'])){ $outdoor = $_POST['outdoor']; } else { $outdoor = ""; }
+  if(isset($_POST['indoor'])){ $indoor = $_POST['indoor']; } else { $indoor = ""; }
+  if(isset($_POST['test'])){ $test = $_POST['test']; } else { $test = ""; }
+  if(isset($_POST['available'])){ $available = $_POST['available']; } else { $available = ""; }
 
   if (file_exists($_FILES['cable_img']['tmp_name']) || is_uploaded_file($_FILES['cable_img']['tmp_name'])) :
     if (isset($_FILES["cable_img"]["error"])) :
@@ -137,21 +153,23 @@ function cw_edit_cable(){
   endif;
 
 	if(isset($_POST['cable_id']) && !isset($error)) :
-		$cable_sql = "UPDATE cw_cable_list SET name = '" . $_POST['name'] . "', part_no = '" . $_POST['part_no'] . "', max_freq = '" . $_POST['max_freq'] . "', diameter = '" . $_POST['diameter'] . "', min_bend = '" . $_POST['min_bend'] . "', typ_atten_k1 = '" . $_POST['typ_atten_k1'] . "', typ_atten_k2 = '" . $_POST['typ_atten_k2'] . "', outdoor = '" . $_POST['outdoor'] . "', indoor = '" . $_POST['indoor'] . "', test = '" . $_POST['test'] . "', price = '" . $_POST['price'] . "', flex = '" . $_POST['flex'] . "', cable_img = '" . $cable_img . "', margin_rate = '" . $_POST['margin_rate'] . "', hour_lab_rate = '" . $_POST['hour_lab_rate'] . "', overhead_rate = '" . $_POST['overhead_rate'] . "', ship_handling = '" . $_POST['ship_handling'] . "', qm1 = '" . $_POST['qm1'] . "', qm2 = '" . $_POST['qm2'] . "', qm3 = '" . $_POST['qm3'] . "', qm4 = '" . $_POST['qm4'] . "', qm5 = '" . $_POST['qm5'] . "', qm6 = '" . $_POST['qm6'] . "', qm7 = '" . $_POST['qm7'] . "', qm8 = '" . $_POST['qm8'] . "', available = '" . $_POST['available'] . "', coat_n_cable_base = '" . $_POST['coat_n_cable_base'] . "', coat_n_adder_back = '" . $_POST['coat_n_adder_back'] . "', coat_n_base = '" . $_POST['coat_n_base'] . "', coat_n_adder_base_time = '" . $_POST['coat_n_adder_base_time'] . "', coat_n_time_rp = '" . $_POST['coat_n_time_rp'] . "', coat_w_cable_base = '" . $_POST['coat_w_cable_base'] . "', coat_w_adder_back = '" . $_POST['coat_w_adder_back'] . "', coat_w_base = '" . $_POST['coat_w_base'] . "', coat_w_adder_base_time = '" . $_POST['coat_w_adder_base_time'] . "', coat_w_time_rp = '" . $_POST['coat_w_time_rp'] . "', coat_tv_cable_base = '" . $_POST['coat_tv_cable_base'] . "', coat_tv_adder_back = '" . $_POST['coat_tv_adder_back'] . "', coat_tv_base = '" . $_POST['coat_tv_base'] . "', coat_tv_adder_base_time = '" . $_POST['coat_tv_adder_base_time'] . "', coat_tv_time_rp = '" . $_POST['coat_tv_time_rp'] . "', coat_a_cable_base = '" . $_POST['coat_a_cable_base'] . "', coat_a_adder_back = '" . $_POST['coat_a_adder_back'] . "', coat_a_base = '" . $_POST['coat_a_base'] . "', coat_a_adder_base_time = '" . $_POST['coat_a_adder_base_time'] . "', coat_a_time_rp = '" . $_POST['coat_a_time_rp'] . "', coat_aw_cable_base = '" . $_POST['coat_aw_cable_base'] . "', coat_aw_adder_back = '" . $_POST['coat_aw_adder_back'] . "', coat_aw_base = '" . $_POST['coat_aw_base'] . "', coat_aw_adder_base_time = '" . $_POST['coat_aw_adder_base_time'] . "', coat_aw_time_rp = '" . $_POST['coat_aw_time_rp'] . "', coat_an_cable_base = '" . $_POST['coat_an_cable_base'] . "', coat_an_adder_back = '" . $_POST['coat_an_adder_back'] . "', coat_an_base = '" . $_POST['coat_an_base'] . "', coat_an_adder_base_time = '" . $_POST['coat_an_adder_base_time'] . "', coat_an_time_rp = '" . $_POST['coat_an_time_rp'] . "', coat_ej_cable_base = '" . $_POST['coat_ej_cable_base'] . "', coat_ej_adder_back = '" . $_POST['coat_ej_adder_back'] . "', coat_ej_base = '" . $_POST['coat_ej_base'] . "', coat_ej_adder_base_time = '" . $_POST['coat_ej_adder_base_time'] . "', coat_ej_time_rp = '" . $_POST['coat_ej_time_rp'] . "', coat_ew_cable_base = '" . $_POST['coat_ew_cable_base'] . "', coat_ew_adder_back = '" . $_POST['coat_ew_adder_back'] . "', coat_ew_base = '" . $_POST['coat_ew_base'] . "', coat_ew_adder_base_time = '" . $_POST['coat_ew_adder_base_time'] . "', coat_ew_time_rp = '" . $_POST['coat_ew_time_rp'] . "', coat_mc_cable_base = '" . $_POST['coat_mc_cable_base'] . "', coat_mc_adder_back = '" . $_POST['coat_mc_adder_back'] . "', coat_mc_base = '" . $_POST['coat_mc_base'] . "', coat_mc_adder_base_time = '" . $_POST['coat_mc_adder_base_time'] . "', coat_mc_time_rp = '" . $_POST['coat_mc_time_rp'] . "' WHERE id = '" . $_POST['cable_id'] . "' ";
+		$cable_sql = "UPDATE cw_cable_list SET name = '" . $_POST['name'] . "', part_no = '" . $_POST['part_no'] . "', max_freq = '" . $_POST['max_freq'] . "', diameter = '" . $_POST['diameter'] . "', min_bend = '" . $_POST['min_bend'] . "', typ_atten_k1 = '" . $_POST['typ_atten_k1'] . "', typ_atten_k2 = '" . $_POST['typ_atten_k2'] . "', outdoor = '" . $outdoor . "', indoor = '" . $indoor . "', test = '" . $test . "', price = '" . $_POST['price'] . "', flex = '" . $_POST['flex'] . "', cable_img = '" . $cable_img . "', margin_rate = '" . $_POST['margin_rate'] . "', hour_lab_rate = '" . $_POST['hour_lab_rate'] . "', overhead_rate = '" . $_POST['overhead_rate'] . "', ship_handling = '" . $_POST['ship_handling'] . "', qm1 = '" . $_POST['qm1'] . "', qm2 = '" . $_POST['qm2'] . "', qm3 = '" . $_POST['qm3'] . "', qm4 = '" . $_POST['qm4'] . "', qm5 = '" . $_POST['qm5'] . "', qm6 = '" . $_POST['qm6'] . "', qm7 = '" . $_POST['qm7'] . "', qm8 = '" . $_POST['qm8'] . "', available = '" . $available . "', coat_n_cable_base = '" . $_POST['coat_n_cable_base'] . "', coat_n_adder_back = '" . $_POST['coat_n_adder_back'] . "', coat_n_base = '" . $_POST['coat_n_base'] . "', coat_n_adder_base_time = '" . $_POST['coat_n_adder_base_time'] . "', coat_n_time_rp = '" . $_POST['coat_n_time_rp'] . "', coat_w_cable_base = '" . $_POST['coat_w_cable_base'] . "', coat_w_adder_back = '" . $_POST['coat_w_adder_back'] . "', coat_w_base = '" . $_POST['coat_w_base'] . "', coat_w_adder_base_time = '" . $_POST['coat_w_adder_base_time'] . "', coat_w_time_rp = '" . $_POST['coat_w_time_rp'] . "', coat_tv_cable_base = '" . $_POST['coat_tv_cable_base'] . "', coat_tv_adder_back = '" . $_POST['coat_tv_adder_back'] . "', coat_tv_base = '" . $_POST['coat_tv_base'] . "', coat_tv_adder_base_time = '" . $_POST['coat_tv_adder_base_time'] . "', coat_tv_time_rp = '" . $_POST['coat_tv_time_rp'] . "', coat_a_cable_base = '" . $_POST['coat_a_cable_base'] . "', coat_a_adder_back = '" . $_POST['coat_a_adder_back'] . "', coat_a_base = '" . $_POST['coat_a_base'] . "', coat_a_adder_base_time = '" . $_POST['coat_a_adder_base_time'] . "', coat_a_time_rp = '" . $_POST['coat_a_time_rp'] . "', coat_aw_cable_base = '" . $_POST['coat_aw_cable_base'] . "', coat_aw_adder_back = '" . $_POST['coat_aw_adder_back'] . "', coat_aw_base = '" . $_POST['coat_aw_base'] . "', coat_aw_adder_base_time = '" . $_POST['coat_aw_adder_base_time'] . "', coat_aw_time_rp = '" . $_POST['coat_aw_time_rp'] . "', coat_an_cable_base = '" . $_POST['coat_an_cable_base'] . "', coat_an_adder_back = '" . $_POST['coat_an_adder_back'] . "', coat_an_base = '" . $_POST['coat_an_base'] . "', coat_an_adder_base_time = '" . $_POST['coat_an_adder_base_time'] . "', coat_an_time_rp = '" . $_POST['coat_an_time_rp'] . "', coat_ej_cable_base = '" . $_POST['coat_ej_cable_base'] . "', coat_ej_adder_back = '" . $_POST['coat_ej_adder_back'] . "', coat_ej_base = '" . $_POST['coat_ej_base'] . "', coat_ej_adder_base_time = '" . $_POST['coat_ej_adder_base_time'] . "', coat_ej_time_rp = '" . $_POST['coat_ej_time_rp'] . "', coat_ew_cable_base = '" . $_POST['coat_ew_cable_base'] . "', coat_ew_adder_back = '" . $_POST['coat_ew_adder_back'] . "', coat_ew_base = '" . $_POST['coat_ew_base'] . "', coat_ew_adder_base_time = '" . $_POST['coat_ew_adder_base_time'] . "', coat_ew_time_rp = '" . $_POST['coat_ew_time_rp'] . "', coat_mc_cable_base = '" . $_POST['coat_mc_cable_base'] . "', coat_mc_adder_back = '" . $_POST['coat_mc_adder_back'] . "', coat_mc_base = '" . $_POST['coat_mc_base'] . "', coat_mc_adder_base_time = '" . $_POST['coat_mc_adder_base_time'] . "', coat_mc_time_rp = '" . $_POST['coat_mc_time_rp'] . "', date_modified = '" . $current_date . "' WHERE id = '" . $_POST['cable_id'] . "' ";
 		$cable_query = $wpdb->query($cable_sql);
 
 		$delete_query = "DELETE FROM cw_cable_connector_pricing WHERE cable_id = '" . $_POST['cable_id'] . "'";
 	  $delete_query = $wpdb->query($delete_query);
 
-    foreach( $_POST['connector_part'] as $row => $value ) :
-      $connector_sql = "SELECT con_series, con_part_no FROM cw_connector_list WHERE id = '" . $_POST['connector_part'][$row] . "' LIMIT 1";
-      $connector = $wpdb->get_results($connector_sql, 'ARRAY_A');
+    if (!empty($_POST['connector_part']) && array_filter($_POST['connector_part'])) :
+      foreach( $_POST['connector_part'] as $row => $value ) :
+        $connector_sql = "SELECT con_series, con_part_no FROM cw_connector_list WHERE id = '" . $_POST['connector_part'][$row] . "' LIMIT 1";
+        $connector = $wpdb->get_results($connector_sql, 'ARRAY_A');
 
-      if(isset($connector)):
-    		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, price) VALUES ('" . $_POST['cable_id'] . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "')";
-    		$pricing_query = $wpdb->query($pricing_sql);
-      endif;
-  	endforeach;
+        if(isset($connector)):
+      		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, price) VALUES ('" . $_POST['cable_id'] . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "')";
+      		$pricing_query = $wpdb->query($pricing_sql);
+        endif;
+    	endforeach;
+    endif;
 	endif;
 
 	if(isset($cable_query) || isset($pricing_query) || isset($connector_query)) :
@@ -195,6 +213,10 @@ function cw_add_connector() {
 
   $con_img = "";
 
+  $current_date = date("Y-m-d");
+
+  if(isset($_POST['con_status'])){ $con_status = $_POST['con_status']; } else { $con_status = ""; }
+
   if (file_exists($_FILES['con_img']['tmp_name']) || is_uploaded_file($_FILES['con_img']['tmp_name'])) :
     if (isset($_FILES["con_img"]["error"])) :
       if ($_FILES["con_img"]["error"] > 0) :
@@ -228,8 +250,7 @@ function cw_add_connector() {
   endif;
 
 	if (!isset($error)) :
-    //$connector_sql = "INSERT INTO cw_connector_list (`con_series`, `con_part_no`, `con_description`, `con_loss`, `con_mac_code`, `con_max_freq`, `con_img`, `con_status`)  VALUES ('" . $_POST['con_series'] . "', '" . $_POST['con_part_no'] . "', '" . $_POST['con_description'] . "', '" . $_POST['con_loss'] . "', '" . $_POST['con_mac_code'] . "', '" . $_POST['con_max_freq'] . "', '" . $con_img . "', '" . $_POST['con_status'] . "')";
-    $connector_sql = "INSERT INTO cw_connector_list (`con_series`, `con_part_no`, `con_description`, `con_mac_code`, `con_max_freq`, `con_img`, `con_status`)  VALUES ('" . $_POST['con_series'] . "', '" . $_POST['con_part_no'] . "', '" . $_POST['con_description'] . "', '" . $_POST['con_mac_code'] . "', '" . $_POST['con_max_freq'] . "', '" . $con_img . "', '" . $_POST['con_status'] . "')";
+    $connector_sql = "INSERT INTO cw_connector_list (`con_series`, `con_part_no`, `con_description`, `con_mac_code`, `con_max_freq`, `con_img`, `con_status`, `date_created`, `date_modified`)  VALUES ('" . $_POST['con_series'] . "', '" . $_POST['con_part_no'] . "', '" . $_POST['con_description'] . "', '" . $_POST['con_mac_code'] . "', '" . $_POST['con_max_freq'] . "', '" . $con_img . "', '" . $con_status . "', '" . $current_date . "', '" . $current_date . "')";
 		$connector_query = $wpdb->query($connector_sql);
 	endif;
 
@@ -250,6 +271,10 @@ function cw_add_connector() {
 // edit connector data function
 function cw_edit_connector() {
 	global $wpdb;
+
+  $current_date = date("Y-m-d");
+
+  if(isset($_POST['con_status'])){ $con_status = $_POST['con_status']; } else { $con_status = ""; }
 
   if (file_exists($_FILES['con_img']['tmp_name']) || is_uploaded_file($_FILES['con_img']['tmp_name'])) :
     if (isset($_FILES['con_img']['error'])) :
@@ -288,8 +313,7 @@ function cw_edit_connector() {
   endif;
 
 	if(isset($_POST['con_id']) && !isset($error)) :
-		//$connector_sql = "UPDATE cw_connector_list SET con_series = '" . $_POST['con_series'] . "', con_part_no = '" . $_POST['con_part_no'] . "', con_description = '" . $_POST['con_description'] . "', con_loss = '" . $_POST['con_loss'] . "', con_mac_code = '" . $_POST['con_mac_code'] . "', con_max_freq = '" . $_POST['con_max_freq'] . "', con_img = '" . $con_img . "', con_status = '" . $_POST['con_max_freq'] . "' WHERE id = '" . $_POST['con_id'] . "'";
-    $connector_sql = "UPDATE cw_connector_list SET con_series = '" . $_POST['con_series'] . "', con_part_no = '" . $_POST['con_part_no'] . "', con_description = '" . $_POST['con_description'] . "', con_mac_code = '" . $_POST['con_mac_code'] . "', con_max_freq = '" . $_POST['con_max_freq'] . "', con_img = '" . $con_img . "', con_status = '" . $_POST['con_status'] . "' WHERE id = '" . $_POST['con_id'] . "'";
+	  $connector_sql = "UPDATE cw_connector_list SET con_series = '" . $_POST['con_series'] . "', con_part_no = '" . $_POST['con_part_no'] . "', con_description = '" . $_POST['con_description'] . "', con_mac_code = '" . $_POST['con_mac_code'] . "', con_max_freq = '" . $_POST['con_max_freq'] . "', con_img = '" . $con_img . "', con_status = '" . $con_status . "', date_modified = '" . $current_date . "' WHERE id = '" . $_POST['con_id'] . "'";
     $connector_query = $wpdb->query($connector_sql);
 	endif;
 

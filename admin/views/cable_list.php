@@ -100,33 +100,39 @@ $lpm1 = $total_posts - 1;
 	<table class="wp-list-table widefat fixed striped posts">
 		<thead>
 			<tr>
-				<th scope="col" id="name" class="manage-column column-name column-primary <?php if ($_REQUEST['orderby'] == 'name'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=cable-wizard&orderby=name&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+				<th scope="col" id="name" class="manage-column column-name column-primary <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'name'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=cable-wizard&orderby=name&order=<?php if (isset($_REQUEST['orderby']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Cable Name</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="part_no" class="manage-column column-part-no <?php if ($_REQUEST['orderby'] == 'part_no'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=cable-wizard&orderby=part_no&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+				<th scope="col" id="part_no" class="manage-column column-part-no <?php if (isset($_REQUEST['part_no']) && $_REQUEST['orderby'] == 'part_no'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=cable-wizard&orderby=part_no&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Part No</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="max_freq" class="manage-column column-max-freq <?php if ($_REQUEST['orderby'] == 'max_freq'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=cable-wizard&orderby=max_freq&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+				<th scope="col" id="max_freq" class="manage-column column-max-freq <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'max_freq'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=cable-wizard&orderby=max_freq&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Max Frequency (GHz)</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="diameter" class="manage-column column-diameter <?php if ($_REQUEST['orderby'] == 'diameter'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=cable-wizard&orderby=diameter&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Diameter (mm)</span>
+        <th scope="col" id="date_created" class="manage-column column-date-created <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_created'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=cable-wizard&orderby=date_created&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Date Created</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="available" class="manage-column column-available <?php if ($_REQUEST['orderby'] == 'available'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=cable-wizard&orderby=available&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Available (?)</span>
+        <th scope="col" id="date_modified" class="manage-column column-date-modified <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_modified'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=cable-wizard&orderby=date_modified&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Date Modified</span>
+						<span class="sorting-indicator"></span>
+					</a>
+				</th>
+        <th scope="col" id="available" class="manage-column column-available <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'available'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=cable-wizard&orderby=available&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Available</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
@@ -144,17 +150,28 @@ $lpm1 = $total_posts - 1;
 							<td><?php echo stripslashes($cable->name); ?>
 								<div class="row-actions">
 									<span class="edit">
-										<a title="Edit this item" id='edit-cable' href="<?php echo admin_url( 'admin.php?page=add-cable&amp;action=edit&amp;cable_id=' . $cable->id)?>">Edit</a>
+										<a title="Edit this item" href="<?php echo admin_url( 'admin.php?page=add-cable&amp;action=edit&amp;cable_id=' . $cable->id)?>">Edit</a>
 									</span> |
 									<span class="delete">
-										<a title="Delete this item" id='delete-cable' href="<?php echo admin_url( 'admin.php?page=add-cable&amp;action=delete&amp;cable_id=' . $cable->id)?>">Delete</a>
+										<a title="Delete this item" href="<?php echo admin_url( 'admin.php?page=add-cable&amp;action=delete&amp;cable_id=' . $cable->id)?>">Delete</a>
 									</span>
 								</div>
 							</td>
-							<td scope="row"><?php echo stripslashes($cable->part_no); ?></td>
-							<td scope="row"><?php echo stripslashes($cable->max_freq); ?></td>
-							<td scope="row"><?php echo stripslashes($cable->diameter); ?></td>
-							<td scope="row">
+							<td><?php echo stripslashes($cable->part_no); ?></td>
+							<td><?php echo stripslashes($cable->max_freq); ?></td>
+              <td>
+                <?php
+                  $var = stripslashes($cable->date_created);
+                  echo date("m/d/Y", strtotime($var));
+                ?>
+              </td>
+              <td>
+                <?php
+                  $var = stripslashes($cable->date_modified);
+                  echo date("m/d/Y", strtotime($var));
+                ?>
+              </td>
+              <td>
 								<?php
 									// display yes or no depending on availability
 									if ($cable->available === 'on') :

@@ -100,38 +100,38 @@ $lpm1 = $total_posts - 1;
 	<table class="wp-list-table widefat fixed striped posts">
 		<thead>
 			<tr>
-				<th scope="col" id="con_part_no" class="manage-column column-con-part-no column-primary <?php if ($_REQUEST['orderby'] == 'con_part_no'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_part_no&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+				<th id="con_part_no" class="manage-column column-con-part-no column-primary <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'con_part_no'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=con_part_no&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Connector Part No</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="con_series" class="manage-column column-con-series <?php if ($_REQUEST['orderby'] == 'con_series'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_series&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+				<th id="con_series" class="manage-column column-con-series <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'con_series'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=con_series&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Connector Series</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="con_description" class="manage-column column-con-description <?php if ($_REQUEST['orderby'] == 'con_description'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_description&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+				<th id="con_description" class="manage-column column-con-description <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'con_description'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=con_description&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Description</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="con_mac_code" class="manage-column column-con-mac-code <?php if ($_REQUEST['orderby'] == 'con_mac_code'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_mac_code&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Macola Code</span>
+				<th id="date_created" class="manage-column column-date-created <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_created'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=date_created&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Date Created</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="con_max_freq" class="manage-column column-max-freq <?php if ($_REQUEST['orderby'] == 'con_max_freq'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if ($_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_max_freq&order=<?php if ($_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Max Frequency (GHz)</span>
+				<th id="date_modified" class="manage-column column-date-modified <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_modified'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=con_max_freq&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Date Modified</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="con_status" class="manage-column column-con-status <?php if ($_REQUEST['orderby'] == 'con_status'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if ($_REQUEST['order'] == 'asc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_status&order=<?php if ($_REQUEST['order'] == 'asc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+				<th id="con_status" class="manage-column column-con-status <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'con_status'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'asc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=con_status&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'asc'): echo 'desc'; else: echo 'asc'; endif; ?>">
 						<span>Available (?)</span>
 						<span class="sorting-indicator"></span>
 					</a>
@@ -157,11 +157,11 @@ $lpm1 = $total_posts - 1;
 									</span>
 								</div>
 							</td>
-							<td scope="row"><?php echo stripslashes($connector->con_series); ?></td>
-							<td scope="row"><?php echo stripslashes($connector->con_description); ?></td>
-							<td scope="row"><?php echo stripslashes($connector->con_mac_code); ?></td>
-							<td scope="row"><?php echo stripslashes($connector->con_max_freq); ?></td>
-							<td scope="row">
+							<td><?php echo stripslashes($connector->con_series); ?></td>
+							<td><?php echo stripslashes($connector->con_description); ?></td>
+							<td><?php echo stripslashes($connector->date_created); ?></td>
+							<td><?php echo stripslashes($connector->date_modified); ?></td>
+							<td>
 								<?php
 									// display yes or no depending on availability
 									if ($connector->con_status === 'on') :
