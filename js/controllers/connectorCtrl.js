@@ -1,5 +1,9 @@
+/*jslint browser:true*/
+/*global $, jQuery, alert, angular, console, app*/
+
 // connectorCtrl controller
-app.controller('connectorCtrl', function ($scope, $http, $location) {
+
+app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', function ($scope, $http, $location, connectors) {
     "use strict";
 
     var initializing = true,
@@ -15,9 +19,12 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     $scope.conn_1 = '';
     $scope.conn_2 = '';
 
+    connectors.then(function (data) {
+        $scope.connectors = data;
+    });
+
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
     $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/connector-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
 
     $scope.sortType     = 'name';
     $scope.sortReverse  = false;
@@ -284,46 +291,47 @@ app.controller('connectorCtrl', function ($scope, $http, $location) {
     $scope.droppedObjects1 = [];
     $scope.droppedObjects2 = [];
 
-    $scope.onDrop_1 = function (data, evt) {
-        var index = $scope.droppedObjects1.indexOf(data);
+    $scope.onDrop_1 = function (data) {
+        var index = $scope.droppedObjects1.indexOf(data),
+            jsonString;
+
         if (index === -1) {
             $scope.droppedObjects1.push(data);
         }
 
-        var jsonString = JSON.stringify(data);
+        jsonString = JSON.stringify(data);
 
         localStorage.setItem('conn_1', jsonString);
         $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
     };
 
-    $scope.onDrop_2 = function (data, evt) {
-        var index = $scope.droppedObjects2.indexOf(data);
+    $scope.onDrop_2 = function (data) {
+        var index = $scope.droppedObjects2.indexOf(data),
+            jsonString;
+
         if (index === -1) {
             $scope.droppedObjects2.push(data);
         }
 
-        var jsonString = JSON.stringify(data);
+        jsonString = JSON.stringify(data);
 
         localStorage.setItem('conn_2', jsonString);
         $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
     };
 
-    $scope.onDragSuccess1 = function (data, evt) {
-        console.log("133", "$scope", "onDragSuccess1", "", evt);
+    $scope.onDragSuccess1 = function (data) {
         var index = $scope.droppedObjects1.indexOf(data);
+
         if (index > -1) {
             $scope.droppedObjects1.splice(index, 1);
         }
     };
 
-    $scope.onDragSuccess2 = function (data, evt) {
+    $scope.onDragSuccess2 = function (data) {
         var index = $scope.droppedObjects2.indexOf(data);
+
         if (index > -1) {
             $scope.droppedObjects2.splice(index, 1);
         }
     };
-
-    var inArray = function (array, conn) {
-        var index = array.indexOf(conn);
-    };
-});
+}]);

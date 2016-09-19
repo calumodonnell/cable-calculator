@@ -1,3 +1,6 @@
+/*jslint browser:true*/
+/*global $, jQuery, alert, angular, console, app*/
+
 // add additional zero before number, if required
 app.filter('numberFixedLen', function () {
     "use strict";

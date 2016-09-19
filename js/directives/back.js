@@ -1,3 +1,6 @@
+/*jslint browser:true*/
+/*global $, jQuery, alert, angular, console, app*/
+
 // detects previous page for back button to work
 app.directive('back', ['$window', function ($window) {
     "use strict";

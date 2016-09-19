@@ -1,4 +1,8 @@
-app.controller('cartCtrl', function ($scope, $log) {
+/*jslint browser:true*/
+/*global $, jQuery, alert, angular, console, app*/
+
+// cartCtrl controller
+app.controller('cartCtrl', function ($scope) {
     "use strict";
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
@@ -97,7 +101,6 @@ app.controller('cartCtrl', function ($scope, $log) {
     $scope.totalPrice = function () {
         var total = 0,
             i,
-            product,
             cart;
 
         localStorage.cart = localStorage.getItem('cart');
@@ -169,7 +172,7 @@ app.controller('cartCtrl', function ($scope, $log) {
     };
 
 
-    $scope.lengthCheck = function (len, index) {
+    $scope.lengthCheck = function (len) {
         if (len < 15 && $scope.metric === true) {
             $scope.err = true;
             $scope.error_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";

@@ -18,7 +18,7 @@ foreach($connector_list as $connector) :
   $output .= '"con_max_freq" : "' . $connector->con_max_freq . '" } ';
 endforeach;
 
-$output ='{"connectors":[ '.$output.']}';
+$output ='{"series":[ '.$output.']}';
 
 echo($output);
 ?>

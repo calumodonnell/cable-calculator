@@ -1,3 +1,6 @@
+/*jslint browser:true*/
+/*global $, jQuery, alert, angular, console, app*/
+
 // homeCtrl controller
 app.controller('homeCtrl', function () {
     "use strict";

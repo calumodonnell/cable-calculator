@@ -1,12 +1,19 @@
+/*jslint browser:true*/
+/*global $, jQuery, alert, angular, console, app*/
+
 // cableCtrl controller
-app.controller('cableCtrl', function ($scope, $http, $location) {
+app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
     "use strict";
 
     $scope.toggleSort = false;
 
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-list.php").then(function (response) { $scope.cables = response.data.cables; });
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-connectors.php").then(function (response) { $scope.series = response.data.series; });
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/series-list.php").then(function (response) { $scope.connectors = response.data.connectors; });
+    cables.then(function (data) {
+        $scope.cables = data;
+    });
+
+    series.then(function (data) {
+        $scope.series = data;
+    });
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
         $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
@@ -222,4 +229,4 @@ app.controller('cableCtrl', function ($scope, $http, $location) {
 
         return total;
     };
-});
+}]);
