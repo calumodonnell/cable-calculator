@@ -53,7 +53,7 @@
             <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
             <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{conn_2.con_part_no}} - {{ connector.con_description }}</p>
           </div>
-          <div class="widget" ng-show="conn_1 !== undefined && conn_2 !== undefined">
+          <div class="widget" ng-show="conn_1 !== defined && conn_1 !== '' && conn_2 !== defined && conn_2 !== ''">
             <h3>Pricing <span>(By quanity)</span></h3>
             <table id="cable-prices">
               <tbody>

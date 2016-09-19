@@ -175,10 +175,15 @@ function cw_load() {
 	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');
 	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
 	wp_enqueue_script('app', SR_URL .'/js/app.js');
-	wp_enqueue_script('app', SR_URL .'/js/selector.js');
-	wp_enqueue_script('app', SR_URL .'/js/configurator.js');
-	wp_enqueue_script('app', SR_URL .'/js/cart.js');
-	wp_enqueue_script('app', SR_URL .'/js/controller.js');
+	wp_enqueue_script('routeProvider', SR_URL .'/js/config/routeProvider.js');
+	wp_enqueue_script('pageCtrl', SR_URL .'/js/controllers/pageCtrl.js');
+	wp_enqueue_script('homeCtrl', SR_URL .'/js/controllers/homeCtrl.js');
+	wp_enqueue_script('cableCtrl', SR_URL .'/js/controllers/cableCtrl.js');
+	wp_enqueue_script('connectorCtrl', SR_URL .'/js/controllers/connectorCtrl.js');
+	wp_enqueue_script('cartCtrl', SR_URL .'/js/controllers/cartCtrl.js');
+	wp_enqueue_script('app-controller', SR_URL .'/js/controllers/app.js');
+	wp_enqueue_script('back', SR_URL .'/js/directives/back.js');
+	wp_enqueue_script('numberFixedLen', SR_URL .'/js/filters/numberFixedLen.js');
 	wp_enqueue_style('cw-app-style',  SR_URL . '/css/style.css', '');
 }
 add_action('wp_loaded', 'cw_load');
