@@ -180,7 +180,6 @@ function cw_load() {
 	wp_enqueue_script('series', SR_URL .'/js/services/connector-series.js');
 	wp_enqueue_script('connectors', SR_URL .'/js/services/connectors.js');
 	wp_enqueue_script('pageCtrl', SR_URL .'/js/controllers/pageCtrl.js');
-	wp_enqueue_script('homeCtrl', SR_URL .'/js/controllers/homeCtrl.js');
 	wp_enqueue_script('cableCtrl', SR_URL .'/js/controllers/cableCtrl.js');
 	wp_enqueue_script('connectorCtrl', SR_URL .'/js/controllers/connectorCtrl.js');
 	wp_enqueue_script('cartCtrl', SR_URL .'/js/controllers/cartCtrl.js');

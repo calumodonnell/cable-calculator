@@ -1,5 +1,5 @@
 <div ng-controller="cartCtrl">
-  <div class="darkness" ng-show="err"></div>
+  <div class="darkness" ng-show="notification"></div>
   <div class="navbar-header">
     <div class="container">
       <nav class="navbar" id="cart-nav" role="navigation">
@@ -90,11 +90,11 @@
           </div>
         </div>
       </div>
-      <div class="error-notification" ng-show="err">
-        <div class="error-content">
-          <h3 class="error-title">Error</h3>
-          <p>{{ error_message }}</p>
-          <a href="" class="btn btn-primary" ng-click="errorHide()">Close</a>
+      <div class="notification" ng-show="notification">
+        <div class="notification-content">
+          <h3 class="notification-title">{{ notification_title }}</h3>
+          <p>{{ notification_message }}</p>
+          <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
         </div>
       </div>
     </div>

@@ -5,6 +5,22 @@
 app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
     "use strict";
 
+    localStorage.setItem('conn_1', '');
+    localStorage.setItem('conn_2', '');
+    localStorage.setItem('measure', 'false');
+
+    if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
+        $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
+        $scope.clength = parseInt(localStorage.getItem('clength'), 10);
+    } else {
+        localStorage.setItem('clength', '');
+        localStorage.setItem('max_freq', '');
+    }
+
+    if (!localStorage.getItem('cart')) {
+        localStorage.setItem('cart', '[]');
+    }
+
     cables.then(function (data) {
         $scope.cables = data;
     });
@@ -13,10 +29,20 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         $scope.series = data;
     });
 
-    if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
-        $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
-        $scope.clength = parseInt(localStorage.getItem('clength'), 10);
-    }
+
+    $scope.showWelcome = function () {
+        if (localStorage.getItem('cart') === '[]' && (localStorage.getItem('clength') === 'null' || localStorage.getItem('clength') === '') && (localStorage.getItem('max_freq') === 'null' || localStorage.getItem('max_freq') === '')) {
+            $scope.notification = true;
+            $scope.notification_title = "Welcome";
+            $scope.notification_message = "Welcome to the cable calculator, an easy to use interface to select and display pricing for cable assemblies.";
+            $scope.notification_button = "Close"
+        }
+    };
+    $scope.showWelcome();
+
+    $scope.notificationHide = function () {
+        $scope.notification = false;
+    };
 
     // selector-table sort functions
     function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
@@ -109,25 +135,28 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     // direct to config if conditions met
     $scope.toConfig = function (id, conn_1, conn_2) {
         if (!$scope.search_freq || $scope.search_freq === null) {
-            $scope.err = true;
-            $scope.error_message = "You have not specified the maximum frequency.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "You have not specified the maximum frequency.";
+            $scope.notification_button = "Close";
         } else if (!$scope.clength || $scope.clength === null) {
-            $scope.err = true;
-            $scope.error_message = "You have not specified the cable length.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "You have not specified the cable length.";
+            $scope.notification_button = "Close";
         } else if ($scope.clength < 15 && jQuery("#clength").hasClass("metric")) {
-            $scope.err = true;
-            $scope.error_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if ($scope.clength < 6 && jQuery("#clength").hasClass("imperial")) {
-            $scope.err = true;
-            $scope.error_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if (localStorage.getItem("max_freq") && localStorage.getItem("clength")) {
             $location.path("/configurator").search("part_id", id).search("conn_1", conn_1).search("conn_2", conn_2);
         }
-    };
-
-    // hide error message
-    $scope.errorHide = function () {
-        $scope.err = false;
     };
 
     if (localStorage.getItem('measure') === 'true') {
@@ -164,8 +193,12 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     // calcalate db loss
     $scope.calcLoss = function (k1, k2) {
         var loss = 0,
-            freq = localStorage.getItem('max_freq'),
-            len = localStorage.getItem('clength');
+            freq = 0,
+            len = 0;
+
+        if ($scope.clength) { freq = $scope.clength; }
+
+        if ($scope.search_freq) { len = $scope.search_freq; }
 
         if (jQuery("#loss").hasClass("metric")) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
@@ -185,12 +218,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         }
 
         $scope.search_freq = val;
-
-        if (val === null) {
-            localStorage.setItem('max_freq', 1);
-        } else {
-            localStorage.setItem('max_freq', val);
-        }
+        localStorage.setItem('max_freq', val);
     };
 
     // store length to use on config page
@@ -206,12 +234,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         }
 
         $scope.clength = val;
-
-        if (val === null) {
-            localStorage.setItem('clength', 6);
-        } else {
-            localStorage.setItem('clength', val);
-        }
+        localStorage.setItem('clength', val);
     };
 
     // show cart total to user

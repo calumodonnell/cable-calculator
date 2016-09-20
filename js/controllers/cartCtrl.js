@@ -132,7 +132,7 @@ app.controller('cartCtrl', function ($scope) {
 
     $scope.clearCart = function () {
         $scope.cart = "";
-        localStorage.removeItem('cart');
+        localStorage.setItem('cart', '[]');
     };
 
     $scope.errorHide = function () {

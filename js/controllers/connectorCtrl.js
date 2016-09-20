@@ -23,8 +23,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         $scope.connectors = data;
     });
 
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
+    $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
+    $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
 
     $scope.sortType     = 'name';
     $scope.sortReverse  = false;
@@ -110,7 +110,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         $scope.err = false;
     };
 
-    $http.get("./wp-content/plugins/cable-wizard/admin/includes/default.php")
+    $http.get("../wp-content/plugins/cable-wizard/admin/includes/default.php")
         .then(function (response) { $scope.material = response.data.material; });
 
     $scope.cableCost = function (qm) {

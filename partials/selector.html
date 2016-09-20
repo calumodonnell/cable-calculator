@@ -1,5 +1,5 @@
 <div ng-controller="cableCtrl">
-  <div class="darkness" ng-show="err"></div>
+  <div class="darkness" ng-show="notification"></div>
   <div class="navbar-header">
     <div class="container">
       <nav class="navbar" id="selector-nav" role="navigation">
@@ -23,14 +23,14 @@
                 <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" ng-change="storeFreq(search_freq)">
               </div>
               <div class="form-group">
-                <label for="conn_1">Connector 1</label>
+                <label for="conn_1">Connector 1 Series</label>
                 <select class="form-control minimal" id="conn_1" ng-model="conn_1">
                   <option value=""></option>
                   <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="conn_2">Connector 2</label>
+                <label for="conn_2">Connector 2 Series</label>
                 <select class="form-control minimal" id="conn_2" ng-model="conn_2">
                   <option value=""></option>
                   <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
@@ -83,11 +83,11 @@
           <p id="count_cables">{{ totalRows() }} out of {{cables.length}} cables</p>
         </div>
       </div>
-      <div class="error-notification" ng-show="err">
-        <div class="error-content">
-          <h3 class="error-title">Error</h3>
-          <p>{{ error_message }}</p>
-          <a href="" class="btn btn-primary" ng-click="errorHide()">Close</a>
+      <div class="notification" ng-show="notification">
+        <div class="notification-content">
+          <h3 class="notification-title">{{ notification_title }}</h3>
+          <p>{{ notification_message }}</p>
+          <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
         </div>
       </div>
     </div>

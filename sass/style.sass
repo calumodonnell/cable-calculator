@@ -1,10 +1,11 @@
 @import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600'
 @import 'https://fonts.googleapis.com/css?family=Raleway:300'
 
-$lg-device: "screen and (min-width: 74.9em)"
-$md-device: "screen and (max-width: 61.9em)"
-$sm-device: "screen and (max-width: 47.9em)"
-$xs-device: "screen and (max-width: 33.9em)"
+$xl-device: "screen and (min-width: 1200px)"
+$lg-device: "screen and (min-width: 992px) and (max-width: 1199px)"
+$md-device: "screen and (min-width: 768px) and (max-width: 991px)"
+$sm-device: "screen and (min-width: 544px) and (max-width: 767px)"
+$xs-device: "screen and (max-width: 543px)"
 
 //app
 .cable-wizard
@@ -60,7 +61,6 @@ $xs-device: "screen and (max-width: 33.9em)"
 
   .cable-content
     padding: 10px 0
-    min-height: 500px
     display: block
 
   //sidebar
@@ -167,7 +167,6 @@ $xs-device: "screen and (max-width: 33.9em)"
               height: auto
               max-width: 280px
               width: 100%
-              min-width: 200px
           .cable-covering
             position: absolute
             top: 40%
@@ -180,10 +179,16 @@ $xs-device: "screen and (max-width: 33.9em)"
               min-width: 200px
         .bin
           min-height: 150px
-          width: 140px
+          width: 245px
           border: 1px solid #FFFFFF
+          @media #{$lg-device}
+            width: 200px
           @media #{$md-device}
-            width: 120px
+            width: 125px
+          @media #{$sm-device}
+            width: 140px
+          @media #{$xs-device}
+            width: 25%
           .conn-title
             display: none
           .conn-image
@@ -232,6 +237,7 @@ $xs-device: "screen and (max-width: 33.9em)"
         height: 140px
         .item
           background-color: #F2F2F2
+          z-index: 1
           .conn-image
             height: 100px
             display: flex
@@ -352,6 +358,8 @@ $xs-device: "screen and (max-width: 33.9em)"
           &:hover,
           &:focus
             color: #0f558f
+      #no_cables
+        box-shadow: none
 
   //form
   input, select
@@ -428,7 +436,7 @@ $xs-device: "screen and (max-width: 33.9em)"
     p
       margin-bottom: 0
 
-  .error-notification
+  .notification
     z-index: 10
     background-color: #FFFFFF
     box-shadow: 0 1px 7px rgba(0,0,0,0.15)
@@ -442,8 +450,8 @@ $xs-device: "screen and (max-width: 33.9em)"
     right: 0
     top: 140px
     transition: 0.2s ease
-    .error-content
-      .error-title
+    .notification-content
+      .notification-title
         font-size: 16px
         letter-spacing: 1px
         margin-bottom: 10px
