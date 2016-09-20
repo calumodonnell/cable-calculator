@@ -5,8 +5,6 @@
 app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
     "use strict";
 
-    $scope.toggleSort = false;
-
     cables.then(function (data) {
         $scope.cables = data;
     });
@@ -18,14 +16,9 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
         $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
         $scope.clength = parseInt(localStorage.getItem('clength'), 10);
-    } else {
-        $scope.search_freq = parseInt(1, 10);
-        $scope.clength = parseInt(6, 10);
-
-        localStorage.setItem('max_freq', '1');
-        localStorage.setItem('clength', '6');
     }
 
+    // selector-table sort functions
     function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
 
     function comparer(index) {
@@ -45,6 +38,8 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         for (i = 0; i < rows.length; i += 1) { table.append(rows[i]); }
     });
 
+    $scope.toggleSort = false;
+
     $scope.sortData = function (column) {
         $scope.toggleSort = ($scope.sortByColumn === column) ? !$scope.toggleSort : false;
         $scope.sortByColumn = column;
@@ -57,12 +52,22 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         return '';
     };
 
+    // total no of rows shown to user
+    $scope.totalRows = function () {
+        var rowCount = jQuery('#selector-table tbody tr').length,
+            rowHide = jQuery('#selector-table tbody tr.ng-hide').length,
+            rowTotal = rowCount - rowHide;
+
+        return rowTotal;
+    };
+
+    // round number to 2 decimals
     $scope.round = function (num) {
         num = num.toFixed(2);
         return num;
     };
 
-    // selector table filters
+    // filter cables by frequency
     $scope.greaterThan = function (val) {
         return function (item) {
             if (item.max_freq >= val) {
@@ -71,6 +76,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     };
 
+    // filter connectors by frequency
     $scope.greaterThanFreq = function (val) {
         return function (item) {
             if (item.con_max_freq >= val) {
@@ -79,6 +85,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     };
 
+    // filter cables by environment
     $scope.enFilter = function (environment) {
         return function (item) {
             if (environment === 'indoor') {
@@ -97,15 +104,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
                 return true;
             }
         };
-    };
-
-    // total no of rows shown to user
-    $scope.totalRows = function () {
-        var rowCount = jQuery('#selector-table tbody tr').length,
-            rowHide = jQuery('#selector-table tbody tr.ng-hide').length,
-            rowTotal = rowCount - rowHide;
-
-        return rowTotal;
     };
 
     // direct to config if conditions met
@@ -132,13 +130,13 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         $scope.err = false;
     };
 
-    var initializing = true;
-
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;
     } else {
         $scope.metric = false;
     }
+
+    var initializing = true;
 
     // update length depending on measurement type
     $scope.$watch('metric', function () {
@@ -164,8 +162,10 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     });
 
     // calcalate db loss
-    $scope.calcLoss = function (freq, k1, k2, len) {
-        var loss = 0;
+    $scope.calcLoss = function (k1, k2) {
+        var loss = 0,
+            freq = localStorage.getItem('max_freq'),
+            len = localStorage.getItem('clength');
 
         if (jQuery("#loss").hasClass("metric")) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
@@ -189,7 +189,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         if (val === null) {
             localStorage.setItem('max_freq', 1);
         } else {
-            localStorage.setItem('max_freq', $scope.search_freq);
+            localStorage.setItem('max_freq', val);
         }
     };
 

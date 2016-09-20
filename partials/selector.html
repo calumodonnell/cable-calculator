@@ -65,13 +65,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.series | filter:conn_1).length == 0) || ((cable.series | filter:conn_2).length == 0)">
+              <tr ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
                 <td>{{ cable.name }}
                   <span>
-                    <div ng-repeat="connector in filterConnectors = (cable.series | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
+                    <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
                   </span>
                 </td>
-                <td id="loss" ng-model="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength)}} dB</a></td>
+                <td id="loss" ng-model="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2)}} dB</a></td>
                 <td ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? round(cable.diameter * 2.52) : cable.diameter }}</a></td>
                 <td>{{ cable.price }}</a></td>
                 <td>{{ cable.flex }}</a></td>
