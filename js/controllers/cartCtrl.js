@@ -114,8 +114,8 @@ app.controller('cartCtrl', function ($scope) {
     };
 
 
-    $scope.errorHide = function () {
-        $scope.err = false;
+    $scope.notificationHide = function () {
+        $scope.notification = false;
     };
 
     $scope.deleteItem = function (index) {
@@ -133,10 +133,6 @@ app.controller('cartCtrl', function ($scope) {
     $scope.clearCart = function () {
         $scope.cart = "";
         localStorage.setItem('cart', '[]');
-    };
-
-    $scope.errorHide = function () {
-        $scope.err = false;
     };
 
     var initializing = true;
@@ -172,19 +168,27 @@ app.controller('cartCtrl', function ($scope) {
     };
 
 
-    $scope.lengthCheck = function (len) {
+    $scope.lengthCheck = function (len, index) {
         if (len < 15 && $scope.metric === true) {
-            $scope.err = true;
-            $scope.error_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if (len < 6 && $scope.metric === false) {
-            $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a maximum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if (len > 3024 && $scope.metric === true) {
-            $scope.err = true;
-            $scope.error_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if (len > 1200 && $scope.metric === false) {
-            $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a maximum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         }
     };
 
@@ -194,6 +198,8 @@ app.controller('cartCtrl', function ($scope) {
     } else {
         $scope.metric = false;
     }
+
+    initializing = true;
 
     // update length depending on measurement type
     $scope.$watch('metric', function () {
@@ -206,12 +212,12 @@ app.controller('cartCtrl', function ($scope) {
 
             if ($scope.clength) {
                 if ($scope.metric === true) {
-                    $scope.clength = $scope.clength * 2.52;
+                    $scope.ca.length = $scope.ca.clength * 2.52;
                 } else if ($scope.metric === false) {
-                    $scope.clength = $scope.clength / 2.52;
+                    $scope.ca.length = $scope.ca.clength / 2.52;
                 }
-                len = $scope.clength.toFixed(0);
-                $scope.clength = parseInt(len, 10);
+                len = $scope.ca.length.toFixed(0);
+                $scope.ca.length = parseInt(len, 10);
 
                 localStorage.setItem('clength', $scope.clength);
             }

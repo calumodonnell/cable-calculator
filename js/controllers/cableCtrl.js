@@ -7,7 +7,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     localStorage.setItem('conn_1', '');
     localStorage.setItem('conn_2', '');
-    localStorage.setItem('measure', 'false');
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
         $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
@@ -35,7 +34,8 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             $scope.notification = true;
             $scope.notification_title = "Welcome";
             $scope.notification_message = "Welcome to the cable calculator, an easy to use interface to select and display pricing for cable assemblies.";
-            $scope.notification_button = "Close"
+            $scope.notification_button = "Close";
+            localStorage.setItem('measure', 'false');
         }
     };
     $scope.showWelcome();
@@ -201,9 +201,9 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         if ($scope.search_freq) { len = $scope.search_freq; }
 
         if (jQuery("#loss").hasClass("metric")) {
-            loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
-        } else if (jQuery("#loss").hasClass("imperial")) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
+        } else if (jQuery("#loss").hasClass("imperial")) {
+            loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
         }
 
         return loss.toFixed(2);

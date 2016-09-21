@@ -70,8 +70,11 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         var val;
 
         if (val > 65) {
-            $scope.err = true;
-            $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.notification_button = "Close";
+
             val = 65;
             $scope.search_freq = 65;
         }
@@ -88,12 +91,16 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
 
     $scope.storeLength = function (val) {
         if (val > 3024 && $scope.metric === true) {
-            $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The program has a maximum length of 3024 cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
             val = 3024;
         } else if (val > 1200 && $scope.metric === false) {
-            $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 1200 in. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
             val = 1200;
         }
 
@@ -106,8 +113,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         }
     };
 
-    $scope.errorHide = function () {
-        $scope.err = false;
+    $scope.notificationHide = function () {
+        $scope.notification = false;
     };
 
     $http.get("../wp-content/plugins/cable-wizard/admin/includes/default.php")
@@ -188,23 +195,35 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
 
     $scope.addCart = function () {
         if (!$scope.search_freq || $scope.search_freq === null) {
-            $scope.err = true;
-            $scope.error_message = "You have not specified the maximum frequency.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "You have not specificed the maximum frequency.";
+            $scope.notification_button = "Close";
         } else if (!$scope.clength || $scope.clength === null) {
-            $scope.err = true;
-            $scope.error_message = "You have not specified the cable length.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "You have not specified the cable length.";
+            $scope.notification_button = "Close";
         } else if ($scope.clength < 15 && $scope.metric === true) {
-            $scope.err = true;
-            $scope.error_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if ($scope.clength < 6 && $scope.metric === false) {
-            $scope.err = true;
-            $scope.error_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
         } else if (!$scope.conn_1 && !$scope.conn_2) {
-            $scope.err = true;
-            $scope.error_message = "You need to add two connectors to the cable.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "You need to add two connectors to the cable.";
+            $scope.notification_button = "Close";
         } else if (!$scope.conn_1 || !$scope.conn_2) {
-            $scope.err = true;
-            $scope.error_message = "You need to add one more connector to the cable.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "You need to add one more connector to the cable.";
+            $scope.notification_button = "Close";
         } else if ($scope.search_freq && $scope.clength && $scope.conn_1 && $scope.conn_2) {
             if (!$scope.covering) {
                 $scope.covering = "";
@@ -260,10 +279,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         case 'MC':
             return "large_neowea.png";
         }
-    };
-
-    $scope.errorHide = function () {
-        $scope.err = false;
     };
 
     $scope.clearBin_1 = function () {
