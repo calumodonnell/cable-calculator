@@ -196,22 +196,24 @@ $xs-device: "screen and (max-width: 543px)"
             top: 7px
             img
               z-index: 0
+        #conn_1,
+        #conn_2
+          .conn-image
+            img
+              position: relative
+              top: 2px
         #conn_1
           .conn-image
             img
               float: right
-              position: relative
               left: 6px
-              top: 1px
         #conn_2
           .conn-image
             img
               float: left
               transform: scaleX(-1)
               filter: FlipH
-              position: relative
               right: 6px
-              top: 1px
       #cable-spec
         td
           text-align: center

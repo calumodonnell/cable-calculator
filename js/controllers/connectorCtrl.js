@@ -235,15 +235,17 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
                 newCart =
                     {
                         'id': $scope.part_id,
-                        'rf_part': $scope.rf_part,
                         'name': $scope.cable_name,
+                        'part_no': '',
                         'conn_1': $scope.conn_1_overview,
+                        'conn_1_description': '',
+                        'conn_1_macola': '',
                         'conn_2': $scope.conn_2_overview,
-                        'macola': $scope.macola,
+                        'conn_2_description': '',
+                        'conn_2_macola': '',
                         'quantity': 1,
                         'length': $scope.clength,
                         'covering': $scope.covering,
-                        'price': '',
                         'max_freq': $scope.search_freq
                     };
 
@@ -275,7 +277,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         case 'E':
             return "med_boot.png";
         case 'EW':
-            return "med_boot_black.png";
+            return "med_bootblack.png";
         case 'MC':
             return "large_neowea.png";
         }

@@ -94,7 +94,7 @@ app.controller('cartCtrl', function ($scope) {
 
         localStorage.cart = JSON.stringify(cart);
 
-        return total;
+        return total.toFixed(2);
     };
 
 
@@ -168,7 +168,7 @@ app.controller('cartCtrl', function ($scope) {
     };
 
 
-    $scope.lengthCheck = function (len, index) {
+    $scope.lengthCheck = function (len) {
         if (len < 15 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";
