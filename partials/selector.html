@@ -17,6 +17,7 @@
       <div class="row">
         <div class="col-md-3 col-sm-12 sidebar">
           <div class="widget">
+            <h3>Filter</h3>
             <form>
               <div class="form-group">
                 <label for="max_freq">Max. Frequency (GHz)</label>
@@ -52,62 +53,44 @@
             </form>
           </div>
         </div>
-        <div class="table-head">
-          <ul>
-            <li ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></li>
-            <li ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></li>
-            <li ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></li>
-            <li ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></li>
-            <li ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></li>
-            <li>&nbsp;</li>
-          </ul>
-        </div>
-        <div class="col-md-9 col-sm-12 table-content">
-          <div ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
-            <ul>
-              <li>{{ cable.name }}
-                <span>
-                  <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
-                </span>
-              </li>
-              <li id="loss" ng-model="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2)}} dB</a></li>
-              <li ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? round(cable.diameter * 2.52) : cable.diameter }}</a></li>
-              <li>{{ cable.price }}</a></li>
-              <li>{{ cable.flex }}</a></li>
-              <li><span class="next"></span></a></li>
-            </ul>
+        <div class="col-md-9 col-sm-12 content">
+          <div class="content-head">
+            <div class="container">
+              <h3>Select a Cable</h3>
+              <p id="count-cables">{{ totalRows() }} out of {{cables.length}} cables</p>
+            </div>
           </div>
-
-
-
-          <table class="table content" id="selector-table">
-            <thead>
-              <tr>
-                <th ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></th>
-                <th ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></th>
-                <th ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></th>
-                <th ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></th>
-                <th ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
-                <td>{{ cable.name }}
-                  <span>
-                    <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
-                  </span>
-                </td>
-                <td id="loss" ng-model="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2)}} dB</a></td>
-                <td ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? round(cable.diameter * 2.52) : cable.diameter }}</a></td>
-                <td>{{ cable.price }}</a></td>
-                <td>{{ cable.flex }}</a></td>
-                <td><span class="next"></span></a></td>
-              </tr>
-            </tbody>
-          </table>
-          <p ng-hide="totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
-          <p id="count_cables">{{ totalRows() }} out of {{cables.length}} cables</p>
+          <div class="container">
+            <div class="content-wrap">
+              <table class="table" id="selector-table">
+                <thead>
+                  <tr>
+                    <th ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></th>
+                    <th ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></th>
+                    <th ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></th>
+                    <th ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></th>
+                    <th ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
+                    <td>{{ cable.name }}
+                      <span>
+                        <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
+                      </span>
+                    </td>
+                    <td id="loss" ng-model="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2)}} dB</a></td>
+                    <td ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? round(cable.diameter * 2.52) : cable.diameter }}</a></td>
+                    <td>{{ cable.price }}</a></td>
+                    <td>{{ cable.flex }}</a></td>
+                    <td><span class="next"></span></a></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p ng-hide="totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="notification" ng-show="notification">

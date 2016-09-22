@@ -45,7 +45,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
 
     // selector-table sort functions
-    function getCellValue(row, index) { return jQuery(row).children('#selector-table td').eq(index).html(); }
+    function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
 
     function comparer(index) {
         return function (a, b) {
@@ -55,7 +55,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     }
 
     jQuery('th').click(function () {
-        var table = jQuery(this).parents('#selector-table').eq(0),
+        var table = jQuery(this).parents('table').eq(0),
             rows = table.find('tr:gt(0)').toArray().sort(comparer(jQuery(this).index())),
             i;
 
