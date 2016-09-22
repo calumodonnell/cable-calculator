@@ -47,8 +47,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         search_freq = localStorage.getItem('max_freq');
         clength = localStorage.getItem('clength');
 
-        $scope.search_freq = parseInt(search_freq, 10);
-        $scope.clength = parseInt(clength, 10);
+        $scope.search_freq = parseFloat(search_freq, 10);
+        $scope.clength = parseFloat(clength, 10);
     }
 
     $scope.cartLength = function () {
@@ -66,9 +66,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         return total;
     };
 
-    $scope.storeFreq = function () {
-        var val;
-
+    $scope.storeFreq = function (val) {
         if (val > 65) {
             $scope.notification = true;
             $scope.notification_title = "Error";
@@ -80,7 +78,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         }
 
         $scope.search_freq = val;
-
 
         if (val === null) {
             localStorage.setItem('max_freq', 1);
@@ -285,55 +282,57 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
 
     $scope.clearBin_1 = function () {
         //jQuery('.bin#conn_1').html('');
-        //jQuery('#conn_1_overview').html('');
+        jQuery('#conn_1_overview').html('');
         localStorage.setItem('conn_1', '');
     };
 
     $scope.clearBin_2 = function () {
         //jQuery('.bin#conn_2').html('');
-        //jQuery('#conn_2_overview').html('');
+        jQuery('#conn_2_overview').html('');
         localStorage.setItem('conn_2', '');
     };
 
-    /*
-    $scope.handleDrop_2 = function (item, conn) {
-        localStorage.setItem(conn, item);
-        $scope.conn_2 = item;
-    };
-    */
-
-    $scope.centerAnchor = true;
-    $scope.toggleCenterAnchor = function () { $scope.centerAnchor = !$scope.centerAnchor; };
-    $scope.draggableObjects = [{name: 'subject1'}, {name: 'subject2'}, {name: 'subject3'}];
     $scope.droppedObjects1 = [];
     $scope.droppedObjects2 = [];
 
     $scope.onDrop_1 = function (data) {
         var index = $scope.droppedObjects1.indexOf(data),
-            jsonString;
+            jsonString,
+            objects = $scope.droppedObjects1.length;
 
-        if (index === -1) {
+        if (objects > 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "Only one connector allowed.";
+            $scope.notification_button = "Close";
+        } else if (index === -1) {
             $scope.droppedObjects1.push(data);
+
+            jsonString = JSON.stringify(data);
+
+            localStorage.setItem('conn_1', jsonString);
+            $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
         }
-
-        jsonString = JSON.stringify(data);
-
-        localStorage.setItem('conn_1', jsonString);
-        $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
     };
 
     $scope.onDrop_2 = function (data) {
         var index = $scope.droppedObjects2.indexOf(data),
-            jsonString;
+            jsonString,
+            objects = $scope.droppedObjects2.length;
 
-        if (index === -1) {
+        if (objects > 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "Only one connector allowed.";
+            $scope.notification_button = "Close";
+        } else if (index === -1) {
             $scope.droppedObjects2.push(data);
+
+            jsonString = JSON.stringify(data);
+
+            localStorage.setItem('conn_2', jsonString);
+            $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
         }
-
-        jsonString = JSON.stringify(data);
-
-        localStorage.setItem('conn_2', jsonString);
-        $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
     };
 
     $scope.onDragSuccess1 = function (data) {

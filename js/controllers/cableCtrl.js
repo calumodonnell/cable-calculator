@@ -9,8 +9,8 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     localStorage.setItem('conn_2', '');
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
-        $scope.search_freq = parseInt(localStorage.getItem('max_freq'), 10);
-        $scope.clength = parseInt(localStorage.getItem('clength'), 10);
+        $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
+        $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
     } else {
         localStorage.setItem('clength', '');
         localStorage.setItem('max_freq', '');

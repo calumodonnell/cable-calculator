@@ -23,11 +23,11 @@
             <form>
               <div class="form-group">
                 <label for="max_freq">Max. Frequency (GHz)</label>
-                <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" ng-change="storeFreq(search_freq)">
+                <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq)">
               </div>
               <div class="form-group">
                 <label for="assem_length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
-                <input type="number" class="form-control" id="clength" ng-model="clength" min="0" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
+                <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
               </div>
               <div class="form-group">
                 <label for="coating">Covering</label>
@@ -136,8 +136,8 @@
               </tbody>
             </table>
             <div class="cable-info">
-              <p ng-model="macola">Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | numberFixedLen: 5 }}{{ covering }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
-              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ conn_1.con_part_no }}-{{ cable.part_no }}{{ covering }}-{{ clength | number: 1 }}-{{ conn_2.con_part_no }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
+              <p>Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | rfLength }}{{ covering }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
+              <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ conn_1.con_part_no }}-{{ cable.part_no }}{{ covering }}-{{ clength | noComma }}-{{ conn_2.con_part_no }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
             </div>
           </div>
           <div class="connector-selection content">

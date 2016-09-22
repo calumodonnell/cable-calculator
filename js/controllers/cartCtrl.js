@@ -7,7 +7,7 @@ app.controller('cartCtrl', function ($scope) {
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
     $scope.quantity = parseInt(localStorage.getItem('cart', 'quantity'), 10);
-    $scope.clength = parseInt(localStorage.getItem('cart', 'length'), 10);
+    $scope.clength = parseFloat(localStorage.getItem('cart', 'length'), 10);
 
     $scope.cartLength = function () {
         var total,
