@@ -35,6 +35,7 @@ foreach( $cable_list as $key => $cable ) {
     $output .= '"hour_lab_rate" : "' . $cable->hour_lab_rate . '", ';
     $output .= '"overhead_rate" : "' . $cable->overhead_rate . '", ';
     $output .= '"ship_handling" : "' . $cable->ship_handling . '", ';
+    $output .= '"material_yield" : "' . $cable->material_yield . '", ';
     $output .= '"qm1" : "' . $cable->qm1 . '", ';
     $output .= '"qm2" : "' . $cable->qm2 . '", ';
     $output .= '"qm3" : "' . $cable->qm3 . '", ';

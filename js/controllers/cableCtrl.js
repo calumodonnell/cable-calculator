@@ -45,7 +45,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
 
     // selector-table sort functions
-    function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
+    function getCellValue(row, index) { return jQuery(row).children('#selector-table td').eq(index).html(); }
 
     function comparer(index) {
         return function (a, b) {
@@ -55,7 +55,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     }
 
     jQuery('th').click(function () {
-        var table = jQuery(this).parents('table').eq(0),
+        var table = jQuery(this).parents('#selector-table').eq(0),
             rows = table.find('tr:gt(0)').toArray().sort(comparer(jQuery(this).index())),
             i;
 
@@ -212,8 +212,10 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     // store frequency to use on config page
     $scope.storeFreq = function (val) {
         if (val > 65) {
-            $scope.err = true;
-            $scope.error_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.notification_button = "Close";
             val = 65;
         }
 
@@ -224,12 +226,16 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     // store length to use on config page
     $scope.storeLength = function (val) {
         if (val > 3024 && jQuery("#clength").hasClass("metric")) {
-            $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 3024 cm. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a maximum length of 3024cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
             val = 3024;
         } else if (val > 1200 && jQuery("#clength").hasClass("imperial")) {
-            $scope.err = true;
-            $scope.error_message = "This program has a maxiumum length of 1200 in. Please contact the factory for custom lengths.";
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
             val = 1200;
         }
 

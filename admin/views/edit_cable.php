@@ -123,6 +123,10 @@
 				<td><input type="text" class="cw_input" name="ship_handling" id="ship_handling" value="<?php echo stripslashes($cable[0]['ship_handling']);?>" required /></td>
 			</tr>
 			<tr>
+				<td>Material Yield *</td>
+				<td><input type="text" class="cw_input" name="material_yield" id="material_yield" value="<?php echo stripslashes($cable[0]['material_yield']);?>" required /></td>
+			</tr>
+			<tr>
 				<td>QM1 *</td>
 				<td><input type="text" class="cw_input" name="qm1" id="qm1" value="<?php echo stripslashes($cable[0]['qm1']);?>" required /></td>
 			</tr>

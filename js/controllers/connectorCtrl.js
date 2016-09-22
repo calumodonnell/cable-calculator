@@ -19,6 +19,9 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
     $scope.conn_1 = '';
     $scope.conn_2 = '';
 
+    localStorage.setItem('conn_1', '');
+    localStorage.setItem('conn_2', '');
+
     connectors.then(function (data) {
         $scope.connectors = data;
     });
@@ -114,36 +117,109 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         $scope.notification = false;
     };
 
-    $http.get("../wp-content/plugins/cable-wizard/admin/includes/default.php")
-        .then(function (response) { $scope.material = response.data.material; });
-
-    $scope.cableCost = function (qm) {
+    $scope.cableCost = function (qm, marginRate, hourlyRate, overHeadRate, shipHand, matYield, covering) {
         var len = $scope.clength,
-            addHard = 1,
-            laborTime = 1,
-            laborAdd = 1,
-            laborCalc = 1,
-            matYield = 0.95,
-            shipHand = 0.03,
-            hourlyRate = 10.75,
-            overHeadRate = 2.85,
-            marginRate = 0.57,
-            cableCost = '',
-            laborCost = '',
-            totalLoadedMaterial = '',
-            totalLoadedLabor = '',
-            unitPrice = '',
-            coveringPrice = 1,
-            con1Price = '',
-            con2Price = '';
+            cableBase = 4,
+            adderBack = 2,
+            laborTime = 20,
+            laborAdd = 0,
+            laborCalc = 0.05,
+            cableCost = 0,
+            laborCost = 0,
+            totalLoadedMaterial = 0,
+            totalLoadedLabor = 0,
+            unitPrice = 0,
+            conn1Price = 0,
+            conn2Price = 0,
+            conn_1 = 0,
+            conn_2 = 0;
 
-        con1Price = 20;
-        con2Price = 29.5;
+        qm = parseFloat(qm);
+        marginRate = parseFloat(marginRate);
+        hourlyRate = parseFloat(hourlyRate);
+        overHeadRate = parseFloat(overHeadRate);
+        shipHand = parseFloat(shipHand);
+        matYield = parseFloat(matYield);
 
-        cableCost = ((coveringPrice * len / 12)) + addHard;
+        switch (covering) {
+        case 'W':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'TV':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'A':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'AW':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'AN':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'E':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'EW':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        case 'MC':
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        default:
+            cableBase = 4;
+            adderBack = 2;
+            laborTime = 20;
+            laborAdd = 0;
+            break;
+        }
+
+        if (localStorage.getItem('conn_1')) {
+            localStorage.conn_1 = localStorage.getItem('conn_1');
+            conn_1 = JSON.parse(localStorage.conn_1);
+            conn1Price = parseFloat(conn_1.price);
+        }
+
+        if (localStorage.getItem('conn_2')) {
+            localStorage.conn_2 = localStorage.getItem('conn_2');
+            conn_2 = JSON.parse(localStorage.conn_2);
+            conn2Price = parseFloat(conn_2.price);
+        }
+
+        console.log(covering);
+
+        cableCost = (cableBase * len / 12) + adderBack;
+        //console.log(cableCost);
         laborCost = (laborTime + laborAdd) + laborCalc * len;
-        totalLoadedMaterial = (con1Price + con2Price + cableCost) / matYield * (shipHand + 1);
+        //console.log(laborCost);
+        totalLoadedMaterial = (conn1Price + conn2Price + cableCost) / matYield * (1 + shipHand);
+        //console.log(totalLoadedMaterial);
         totalLoadedLabor = (laborCost / 60 * hourlyRate) * overHeadRate;
+        //console.log(totalLoadedLabor);
         unitPrice = (totalLoadedMaterial + (totalLoadedLabor * qm)) / (1 - marginRate);
 
         return unitPrice.toFixed(2);

@@ -25,21 +25,21 @@
               <div class="form-group">
                 <label for="conn_1">Connector 1 Series</label>
                 <select class="form-control minimal" id="conn_1" ng-model="conn_1">
-                  <option value=""></option>
+                  <option value="">No Preference</option>
                   <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="conn_2">Connector 2 Series</label>
                 <select class="form-control minimal" id="conn_2" ng-model="conn_2">
-                  <option value=""></option>
+                  <option value="">No Preference</option>
                   <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
                 </select>
               </div>
               <div class="form-group">
                 <label for="environment">Environment</label>
                 <select class="form-control minimal" id="environment" ng-model="environment">
-                  <option value=""></option>
+                  <option value="">No Preference</option>
                   <option value="indoor">Indoor</option>
                   <option value="outdoor">Outdoor</option>
                   <option value="test">Test</option>
@@ -47,12 +47,39 @@
               </div>
               <div class="form-group">
                 <label for="length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
-                <input type="number" class="form-control" id="clength" ng-model="clength" min="0" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
+                <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
               </div>
             </form>
           </div>
         </div>
+        <div class="table-head">
+          <ul>
+            <li ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></li>
+            <li ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></li>
+            <li ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></li>
+            <li ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></li>
+            <li ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></li>
+            <li>&nbsp;</li>
+          </ul>
+        </div>
         <div class="col-md-9 col-sm-12 table-content">
+          <div ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
+            <ul>
+              <li>{{ cable.name }}
+                <span>
+                  <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
+                </span>
+              </li>
+              <li id="loss" ng-model="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2)}} dB</a></li>
+              <li ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? round(cable.diameter * 2.52) : cable.diameter }}</a></li>
+              <li>{{ cable.price }}</a></li>
+              <li>{{ cable.flex }}</a></li>
+              <li><span class="next"></span></a></li>
+            </ul>
+          </div>
+
+
+
           <table class="table content" id="selector-table">
             <thead>
               <tr>

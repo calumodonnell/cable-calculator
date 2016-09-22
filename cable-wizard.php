@@ -130,14 +130,6 @@ function cw_install() {
 	require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
 	dbDelta( $connector_sql );
 
-	$default_sql = "CREATE TABLE cw_default_settings (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-	  `material_yield` decimal(10,2) NOT NULL,
-		PRIMARY KEY (`id`))";
-
-	require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
-	dbDelta( $default_sql );
-
 	add_option("table_db_version", $cw_db_version);
 }
 register_activation_hook(__FILE__, 'cw_install');
@@ -151,7 +143,6 @@ function cw_admin_menu() {
 	add_submenu_page($parent_slug, 'Connector List', 'Connector List', 'read', 'connector-list', 'cw_connector_list');
 	add_submenu_page($parent_slug, 'Add New Cable', 'Add New Cable', 'read', 'add-cable', 'cw_cable_functions');
 	add_submenu_page($parent_slug, 'Add New Connector', 'Add New Connector', 'read', 'add-connector', 'cw_connector_functions');
-	add_submenu_page($parent_slug, 'Default Settings', 'Default Settings', 'read', 'default-settings', 'cw_default_functions');
 }
 add_action('admin_menu', 'cw_admin_menu');
 
@@ -185,7 +176,6 @@ function cw_load() {
 	wp_enqueue_script('cartCtrl', SR_URL .'/js/controllers/cartCtrl.js');
 	wp_enqueue_script('back', SR_URL .'/js/directives/back.js');
 	wp_enqueue_script('noComma', SR_URL .'/js/filters/noComma.js');
-	wp_enqueue_script('numberFixedLen', SR_URL .'/js/filters/numberFixedLen.js');
 	wp_enqueue_script('rfLength', SR_URL .'/js/filters/rfLength.js');
 	wp_enqueue_style('cw-app-style',  SR_URL . '/css/style.css', '');
 }
@@ -204,15 +194,6 @@ function cw_cable_list(){
 
 function cw_connector_list(){
 	include('admin/views/connector_list.php');
-}
-
-
-function cw_default_functions(){
-	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'add') :
-		cw_default_settings();
-	else :
-		include('admin/views/default_settings.php');
-	endif;
 }
 
 
