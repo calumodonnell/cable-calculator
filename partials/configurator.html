@@ -136,7 +136,7 @@
                 </tr>
                 <tr id="cable-spec">
                   <td id="conn_1_part">{{ conn_1.con_part_no }} <span ng-if="conn_1 !== defined && conn_1 !== ''">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
-                  <td id="cable-length" ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? clength + ' cm' : clength + ' in' }} </td>
+                  <td id="cable-length" ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? ((clength | number: 2) || 0) + ' cm' : ((clength | number: 2) || 0) + ' in' }} </td>
                   <td id="conn_2_part">{{ conn_2.con_part_no }} <span ng-if="conn_2 !== defined && conn_2 !== ''">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
                 </tr>
               </tbody>

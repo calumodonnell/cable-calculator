@@ -37,7 +37,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         if (localStorage.getItem('cart') === '[]' && (localStorage.getItem('clength') === 'null' || localStorage.getItem('clength') === '') && (localStorage.getItem('max_freq') === 'null' || localStorage.getItem('max_freq') === '')) {
             $scope.notification = true;
             $scope.notification_title = "Welcome";
-            $scope.notification_message = "Welcome to the cable calculator, an easy to use interface to select and display pricing for cable assemblies.";
+            $scope.notification_message = "Welcome to the Cable Calculator.";
             $scope.notification_button = "Close";
             localStorage.setItem('measure', 'false');
         }

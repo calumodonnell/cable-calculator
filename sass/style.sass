@@ -56,15 +56,18 @@ $xs-device: "screen and (max-width: 543px)"
     padding-right: 30px
 
   .container-content
+    display: table
     padding: 0
+    width: 100%
 
   .cable-content
-    display: block
     border-bottom: 1px solid #e5e8ea
     border-left: 1px solid #e5e8ea
     border-right: 1px solid #e5e8ea
     height: 100%
-    overflow: hidden
+    position: relative
+    overflow: auto
+    width: 100%
 
   .content-wrap
     margin-bottom: 30px
@@ -73,10 +76,16 @@ $xs-device: "screen and (max-width: 543px)"
   //sidebar
   .sidebar
     background-color: #FFFFFF
+    display: table-cell
     border: 0
     border-right: 1px solid #E5E8EA
+    bottom: 0
+    float: none
     height: 100%
+    left: 0
     padding: 30px
+    top: 0
+    vertical-align: top
     @media #{$sm-device}
       position: relative
       border-bottom: 1px solid #E5E8EA
@@ -149,9 +158,11 @@ $xs-device: "screen and (max-width: 543px)"
 
   //selector
   .content
-    float: right
+    display: table-cell
+    float: none
     padding: 0
     position: relative
+    vertical-align: top
     .content-head
       background-color: #FFFFFF
       border-bottom: 1px solid #E5E8EA
@@ -173,6 +184,12 @@ $xs-device: "screen and (max-width: 543px)"
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15)
       width: 100%
       margin-bottom: 0
+      .td-img
+        text-align: center
+        img.cable-img
+          height: auto
+          width: 60px
+          vertical-align: middle
 
   //cable configurator
   .cable-configurator
@@ -460,6 +477,11 @@ $xs-device: "screen and (max-width: 543px)"
   .delete
     &:after
       content: "\f014"
+      font-family: "FontAwesome"
+
+  .duplicate
+    &:after
+      content: "\f0c5"
       font-family: "FontAwesome"
 
   .caret

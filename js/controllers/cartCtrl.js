@@ -118,6 +118,7 @@ app.controller('cartCtrl', function ($scope) {
         $scope.notification = false;
     };
 
+
     $scope.deleteItem = function (index) {
         $scope.cart.splice(index, 1);
 
@@ -130,10 +131,27 @@ app.controller('cartCtrl', function ($scope) {
         localStorage.cart = JSON.stringify(cart);
     };
 
+
+    $scope.duplicateItem = function (index) {
+        localStorage.cart = localStorage.getItem('cart');
+        var cart = JSON.parse(localStorage.cart);
+
+        console.log(cart);
+
+        //localStorage.cart = localStorage.getItem('cart');
+
+
+        //cart.push(newCart);
+    };
+
+    //[{"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"","price":496,"max_freq":1}, {"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"","price":496,"max_freq":1}]
+
+
     $scope.clearCart = function () {
         $scope.cart = "";
         localStorage.setItem('cart', '[]');
     };
+
 
     var initializing = true;
 

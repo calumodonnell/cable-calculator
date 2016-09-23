@@ -63,6 +63,7 @@
           <table class="table" id="selector-table">
             <thead>
               <tr>
+                <th>&nbsp;</th>
                 <th ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></th>
                 <th ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></th>
                 <th ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></th>
@@ -73,6 +74,9 @@
             </thead>
             <tbody>
               <tr ng-click="toConfig(cable.id, conn_1, conn_2); err = !err" ng-repeat="cable in filterCables = (cables | filter: greaterThan(search_freq) | filter: enFilter(environment) | orderBy: orderByField: sortReverse )" ng-hide="((cable.connectors | filter:conn_1).length == 0) || ((cable.connectors | filter:conn_2).length == 0)">
+                <td class="td-img">
+                  <img class="cable-img" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                </td>
                 <td>{{ cable.name }}
                   <span>
                     <div ng-repeat="connector in filterConnectors = (cable.connectors | filter: { con_series: conn_1 } | filter: { con_series: conn_2 })"></div>
