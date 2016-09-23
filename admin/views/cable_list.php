@@ -185,7 +185,7 @@ $lpm1 = $total_posts - 1;
 						<?php
 					endforeach;
 				else :
-					echo '<tr><td colspan="5" align="center"><strong>' . __('No entries found') . '</strong></td></tr>';
+					echo '<tr><td colspan="6" align="center"><strong>' . __('No entries found') . '</strong></td></tr>';
 				endif;
 			?>
 		</tbody>

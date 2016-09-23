@@ -8,12 +8,16 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     localStorage.setItem('conn_1', '');
     localStorage.setItem('conn_2', '');
 
-    if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
+    if (localStorage.getItem('max_freq')) {
         $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
+    } else {
+        localStorage.setItem('max_freq', '');
+    }
+
+    if (localStorage.getItem('clength')) {
         $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
     } else {
         localStorage.setItem('clength', '');
-        localStorage.setItem('max_freq', '');
     }
 
     if (!localStorage.getItem('cart')) {

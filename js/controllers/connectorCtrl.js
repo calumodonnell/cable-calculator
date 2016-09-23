@@ -210,8 +210,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
             conn2Price = parseFloat(conn_2.price);
         }
 
-        console.log(covering);
-
         cableCost = (cableBase * len / 12) + adderBack;
         //console.log(cableCost);
         laborCost = (laborTime + laborAdd) + laborCalc * len;

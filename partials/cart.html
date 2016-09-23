@@ -16,12 +16,16 @@
     </div>
   </div>
   <div class="cable-content" id="cart">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="order-items content">
-            <p>Thank you for shopping through the Cable Wizard</p>
-            <p>This is your shopping cart. Here you can edit the items, go back to the store, or check out.</p>
+    <div class="container container-content">
+      <div class="col-md-12 content">
+        <div class="content-head">
+          <div class="container">
+            <h3>Cart</h3>
+            <a href="" class="btn btn-primary btn-head" role="button" ng-click="clearCart()" aria-disabled="true">Clear Cart</a>
+          </div>
+        </div>
+        <div class="container content-wrap">
+          <div class="order-items">
             <table class="table cart">
               <thead>
                 <tr>
@@ -84,9 +88,6 @@
                 </tr>
               </tfoot>
             </table>
-            <div class="order-functions">
-              <a href="" class="btn btn-primary" role="button" ng-click="clearCart()" aria-disabled="true">Clear Cart</a>
-            </div>
           </div>
         </div>
       </div>

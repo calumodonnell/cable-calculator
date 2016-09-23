@@ -16,87 +16,92 @@
     </div>
   </div>
   <div class="cable-content" id="configurator" ng-repeat="cable in cables">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3 col-sm-12 sidebar">
-          <div class="widget">
-            <h3>Configurator</h3>
-            <form>
-              <div class="form-group">
-                <label for="max_freq">Max. Frequency (GHz)</label>
-                <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq)">
-              </div>
-              <div class="form-group">
-                <label for="assem_length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
-                <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
-              </div>
-              <div class="form-group">
-                <label for="coating">Covering</label>
-                <select class="form-control minimal" id="covering" ng-model="covering">
-                  <option value="">None</option>
-                  <option value="W" ng-if="cable.coat_w_cable_base !== '0.00'">Weatherized</option>
-                  <option value="TV" ng-if="cable.coat_tv_cable_base !== '0.00'">Thermal Vacuum</option>
-                  <option value="A" ng-if="cable.coat_a_cable_base !== '0.00'">Armor</option>
-                  <option value="AW" ng-if="cable.coat_aw_cable_base !== '0.00'">Armor/Weatherized</option>
-                  <option value="AN" ng-if="cable.coat_an_cable_base !== '0.00'">Armor/Neoprene</option>
-                  <option value="E" ng-if="cable.coat_ej_cable_base !== '0.00'">Extended Boot</option>
-                  <option value="EW" ng-if="cable.coat_ew_cable_base !== '0.00'">Extended Boot/Weatherized</option>
-                  <option value="MC" ng-if="cable.coat_mc_cable_base !== '0.00'">Monocoil</option>
-                </select>
-              </div>
-              <a href="" class="btn btn-primary" role="button" ng-click="addCart()">Add to Cart</a>
-            </form>
-          </div>
-          <div class="widget">
-            <h3>Overview</h3>
-            <p>{{ cable.name }}</p>
-            <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
-            <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
-            <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{conn_2.con_part_no}} - {{ connector.con_description }}</p>
-          </div>
-          <div class="widget" ng-show="conn_1 !== defined && conn_1 !== '' && conn_2 !== defined && conn_2 !== ''">
-            <h3>Pricing <span>(By quantity)</span></h3>
-            <table id="cable-prices">
-              <tbody>
-                <tr>
-                  <td>1 - 3</td>
-                  <td>${{ cableCost(cable.qm1, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>4 - 9</td>
-                  <td>${{ cableCost(cable.qm2, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>10 - 24</td>
-                  <td>${{ cableCost(cable.qm3, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>25 - 49</td>
-                  <td>${{ cableCost(cable.qm4, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>50 - 99</td>
-                  <td>${{ cableCost(cable.qm5, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>100 - 249</td>
-                  <td>${{ cableCost(cable.qm6, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>250 - 499</td>
-                  <td>${{ cableCost(cable.qm7, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-                <tr>
-                  <td>500 - 1000</td>
-                  <td>${{ cableCost(cable.qm8, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
-                </tr>
-              </tbody>
-            </table>
-            <p>($250 per line item min.)</p>
+    <div class="container container-content">
+      <div class="col-md-3 col-sm-12 sidebar">
+        <div class="widget">
+          <h3>Filter</h3>
+          <form>
+            <div class="form-group">
+              <label for="max_freq">Max. Frequency (GHz)</label>
+              <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq)">
+            </div>
+            <div class="form-group">
+              <label for="assem_length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+              <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
+            </div>
+            <div class="form-group">
+              <label for="coating">Covering</label>
+              <select class="form-control minimal" id="covering" ng-model="covering">
+                <option value="">None</option>
+                <option value="W" ng-if="cable.coat_w_cable_base !== '0.00'">Weatherized</option>
+                <option value="TV" ng-if="cable.coat_tv_cable_base !== '0.00'">Thermal Vacuum</option>
+                <option value="A" ng-if="cable.coat_a_cable_base !== '0.00'">Armor</option>
+                <option value="AW" ng-if="cable.coat_aw_cable_base !== '0.00'">Armor/Weatherized</option>
+                <option value="AN" ng-if="cable.coat_an_cable_base !== '0.00'">Armor/Neoprene</option>
+                <option value="E" ng-if="cable.coat_ej_cable_base !== '0.00'">Extended Boot</option>
+                <option value="EW" ng-if="cable.coat_ew_cable_base !== '0.00'">Extended Boot/Weatherized</option>
+                <option value="MC" ng-if="cable.coat_mc_cable_base !== '0.00'">Monocoil</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="widget">
+          <h3>Cable Overview</h3>
+          <p>{{ cable.name }}</p>
+          <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
+          <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
+          <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{conn_2.con_part_no}} - {{ connector.con_description }}</p>
+        </div>
+        <div class="widget" ng-show="conn_1 !== defined && conn_1 !== '' && conn_2 !== defined && conn_2 !== ''">
+          <h3>Pricing <span>(By quantity)</span></h3>
+          <table id="cable-prices">
+            <tbody>
+              <tr>
+                <td>1 - 3</td>
+                <td>${{ cableCost(cable.qm1, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>4 - 9</td>
+                <td>${{ cableCost(cable.qm2, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>10 - 24</td>
+                <td>${{ cableCost(cable.qm3, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>25 - 49</td>
+                <td>${{ cableCost(cable.qm4, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>50 - 99</td>
+                <td>${{ cableCost(cable.qm5, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>100 - 249</td>
+                <td>${{ cableCost(cable.qm6, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>250 - 499</td>
+                <td>${{ cableCost(cable.qm7, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+              <tr>
+                <td>500 - 1000</td>
+                <td>${{ cableCost(cable.qm8, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>($250 per line item min.)</p>
+        </div>
+      </div>
+      <div class="col-md-9 col-sm-12 content">
+        <div class="content-head">
+          <div class="container">
+            <h3>Configure Your Cable</h3>
+            <a href="" class="btn btn-primary btn-head" role="button" ng-click="addCart()">Add to Cart</a>
           </div>
         </div>
-        <div class="col-md-9 col-sm-12">
-          <div class="cable-configurator content">
+        <div class="container content-wrap">
+          <div class="cable-configurator">
             <table class="cable-assembly">
               <tbody>
                 <tr class="cable-holder">
@@ -140,9 +145,7 @@
               <p>Macola Part # - <span id="macola_part" ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ cable.part_no }}<span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span><span id="macola_part" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{ connector.con_mac_code }}</span>#{{ clength | rfLength }}{{ covering }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
               <p>Florida RF Labs Part # - <span ng-if="conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== ''">{{ conn_1.con_part_no }}-{{ cable.part_no }}{{ covering }}-{{ clength | noComma }}-{{ conn_2.con_part_no }}</span><span ng-if="conn_1 === '' && conn_2 === ''">2 Parts Missing</span><span ng-if="conn_1 !== '' && conn_2 === '' || conn_1 === '' && conn_2 !== ''">1 Part Missing</span></p>
             </div>
-          </div>
-          <div class="connector-selection content">
-            <div class="row">
+            <div class="row connector-selection">
               <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in cable.connectors | filter: showConnector" >
                 <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable>
                   <div class="conn-image">
@@ -157,12 +160,12 @@
           </div>
         </div>
       </div>
-      <div class="notification" ng-show="notification">
-        <div class="notification-content">
-          <h3 class="notification-title">{{ notification_title }}</h3>
-          <p>{{ notification_message }}</p>
-          <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
-        </div>
+    </div>
+    <div class="notification" ng-show="notification">
+      <div class="notification-content">
+        <h3 class="notification-title">{{ notification_title }}</h3>
+        <p>{{ notification_message }}</p>
+        <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
       </div>
     </div>
   </div>
