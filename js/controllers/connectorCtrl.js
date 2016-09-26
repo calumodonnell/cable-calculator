@@ -50,7 +50,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         search_freq = localStorage.getItem('max_freq');
         clength = localStorage.getItem('clength');
 
-        //$scope.search_freq = parseFloat(search_freq, 10);
+        $scope.search_freq = parseFloat(search_freq, 10);
         $scope.clength = parseFloat(clength, 10);
     }
 
@@ -223,23 +223,23 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         return unitPrice.toFixed(2);
     };
 
-    $scope.calcLoss = function (freq, k1, k2, len) {
-        var loss = 0;
+    $scope.calcLoss = function (k1, k2) {
+        var loss = 0,
+            freq = 0,
+            len = 0;
+
+        if ($scope.clength) { freq = $scope.clength; }
+
+        if ($scope.search_freq) { len = $scope.search_freq; }
 
         if (jQuery("#loss").hasClass("metric")) {
-            loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
-        } else if (jQuery("#loss").hasClass("imperial")) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
+        } else if (jQuery("#loss").hasClass("imperial")) {
+            loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
         }
 
         return loss.toFixed(2);
     };
-
-    if (localStorage.getItem('measure') === 'true') {
-        $scope.metric = true;
-    } else {
-        $scope.metric = false;
-    }
 
     // update length depending on measurement type
     $scope.$watch('metric', function () {

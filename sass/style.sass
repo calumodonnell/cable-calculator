@@ -2,9 +2,9 @@
 @import 'https://fonts.googleapis.com/css?family=Raleway:300'
 
 $xl-device: "screen and (min-width: 1200px)"
-$lg-device: "screen and (min-width: 992px) and (max-width: 1199px)"
-$md-device: "screen and (min-width: 768px) and (max-width: 991px)"
-$sm-device: "screen and (min-width: 544px) and (max-width: 767px)"
+$lg-device: "screen and (max-width: 1199px)"
+$md-device: "screen and (max-width: 991px)"
+$sm-device: "screen and (max-width: 767px)"
 $xs-device: "screen and (max-width: 543px)"
 
 //app
@@ -65,8 +65,6 @@ $xs-device: "screen and (max-width: 543px)"
     border-left: 1px solid #e5e8ea
     border-right: 1px solid #e5e8ea
     height: 100%
-    position: relative
-    overflow: auto
     width: 100%
 
   .content-wrap
@@ -86,9 +84,9 @@ $xs-device: "screen and (max-width: 543px)"
     padding: 30px
     top: 0
     vertical-align: top
-    @media #{$sm-device}
-      position: relative
+    @media #{$md-device}
       border-bottom: 1px solid #E5E8EA
+      display: block
     h3
       font-size: 18px
       margin-bottom: 10px
@@ -163,6 +161,9 @@ $xs-device: "screen and (max-width: 543px)"
     padding: 0
     position: relative
     vertical-align: top
+    width: 100%
+    @media #{$md-device}
+      display: block
     .content-head
       background-color: #FFFFFF
       border-bottom: 1px solid #E5E8EA
@@ -332,9 +333,10 @@ $xs-device: "screen and (max-width: 543px)"
   //tables
   .table
     font-size: 12px
-    width: auto
     max-width: 100%
     table-layout: auto
+    width: auto
+    word-wrap: break-word
     thead
       th
         background-color: #0f558f
@@ -350,9 +352,6 @@ $xs-device: "screen and (max-width: 543px)"
       tr
         transition: 0.2s ease
         background-color: #FFFFFF
-        &:hover,
-        &:focus
-          background-color: #F9F9F9
     tfoot
       td
         font-weight: 400
@@ -372,6 +371,11 @@ $xs-device: "screen and (max-width: 543px)"
     tbody, thead
       tr
         cursor: pointer
+    tbody
+      tr
+        &:hover,
+        &:focus
+          background-color: #F9F9F9
     tfoot
       tr
         td

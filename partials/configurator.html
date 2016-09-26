@@ -17,7 +17,7 @@
   </div>
   <div class="cable-content" id="configurator" ng-repeat="cable in cables">
     <div class="container container-content">
-      <div class="col-md-3 col-sm-12 sidebar">
+      <div class="col-lg-3 col-md-12 sidebar">
         <div class="widget">
           <h3>Filter</h3>
           <form>
@@ -48,7 +48,7 @@
         <div class="widget">
           <h3>Cable Overview</h3>
           <p>{{ cable.name }}</p>
-          <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(search_freq, cable.typ_atten_k1, cable.typ_atten_k2, clength) }} dB</p>
+          <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2) }} dB</p>
           <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
           <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{conn_2.con_part_no}} - {{ connector.con_description }}</p>
         </div>
@@ -93,7 +93,7 @@
           <p>($250 per line item min.)</p>
         </div>
       </div>
-      <div class="col-md-9 col-sm-12 content">
+      <div class="col-lg-9 col-md-12 content">
         <div class="content-head">
           <div class="container">
             <h3>Configure Your Cable</h3>
@@ -136,7 +136,7 @@
                 </tr>
                 <tr id="cable-spec">
                   <td id="conn_1_part">{{ conn_1.con_part_no }} <span ng-if="conn_1 !== defined && conn_1 !== ''">( <a href="" ng-click="clearBin_1()">Drop</a> ) </span></td>
-                  <td id="cable-length" ng-class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? ((clength | number: 2) || 0) + ' cm' : ((clength | number: 2) || 0) + ' in' }} </td>
+                  <td id="cable-length" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? ((clength | noComma) || 0) + ' cm' : ((clength | noComma) || 0) + ' in' }} </td>
                   <td id="conn_2_part">{{ conn_2.con_part_no }} <span ng-if="conn_2 !== defined && conn_2 !== ''">( <a href="" ng-click="clearBin_2()">Drop</a> ) </span></td>
                 </tr>
               </tbody>
