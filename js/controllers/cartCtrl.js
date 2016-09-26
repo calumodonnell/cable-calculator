@@ -1,13 +1,15 @@
 /*jslint browser:true*/
 /*global $, jQuery, alert, angular, console, app*/
 
+
+//[{"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"","price":496,"max_freq":1}, {"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"","price":496,"max_freq":1}]
+
+
 // cartCtrl controller
 app.controller('cartCtrl', function ($scope) {
     "use strict";
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
-    $scope.quantity = parseInt(localStorage.getItem('cart', 'quantity'), 10);
-    $scope.clength = parseFloat(localStorage.getItem('cart', 'length'), 10);
 
     $scope.cartLength = function () {
         var total,
@@ -27,15 +29,18 @@ app.controller('cartCtrl', function ($scope) {
     $scope.totalQuantity = function () {
         var total = 0,
             i,
-            product;
+            cart;
 
-        for (i = 0; i < $scope.cart.length; i += 1) {
-            product = $scope.cart[i];
-            total = total + product.quantity;
+        localStorage.cart = localStorage.getItem('cart');
+        cart = JSON.parse(localStorage.cart);
+
+        for (i = 0; i < cart.length; i += 1) {
+            total = total + cart[i].quantity;
         }
 
         return total;
     };
+
 
     $scope.cablePrice = function (len, coveringPrice, quantity, index) {
         var addHard = 1,
@@ -134,17 +139,15 @@ app.controller('cartCtrl', function ($scope) {
 
     $scope.duplicateItem = function (index) {
         localStorage.cart = localStorage.getItem('cart');
-        var cart = JSON.parse(localStorage.cart);
+        var cart = JSON.parse(localStorage.cart),
+            assembly = cart[index];
 
-        console.log(cart);
+        cart.push(assembly);
 
-        //localStorage.cart = localStorage.getItem('cart');
+        localStorage.cart = JSON.stringify(cart);
 
-
-        //cart.push(newCart);
+        $scope.cart = JSON.parse(localStorage.getItem('cart'));
     };
-
-    //[{"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"","price":496,"max_freq":1}, {"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"","price":496,"max_freq":1}]
 
 
     $scope.clearCart = function () {
@@ -261,7 +264,8 @@ app.controller('cartCtrl', function ($scope) {
                 'width': margins.width
             },
             function () {
-                pdf.save('cable-wizard-quotation.pdf');
+                //pdf.save('cable-wizard-quotation.pdf');
+                pdf.output('dataurlnewwindow');
             },
             margins
         );

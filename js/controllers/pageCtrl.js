@@ -5,5 +5,5 @@
 app.controller('PageCtrl', function ($scope) {
     "use strict";
 
-    $scope.cart = localStorage.getItem('cart');    
+    $scope.cart = localStorage.getItem('cart');
 });
