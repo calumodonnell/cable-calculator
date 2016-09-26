@@ -70,7 +70,7 @@
                     <p>Macola - {{ ca.macola }}</p>
                   </td>
                   <td><input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
-                  <td><input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(ca.length, $index)" ng-blur="lengthCheck(ca.length)"></td>
+                  <td><input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="lengthCheck(ca.length, $index)"></td>
                   <td>${{ cablePrice(ca.length, ca.covering, ca.quantity, $index) }} USD</td>
                   <td><!--<a href="#/configurator?part_id={{ca.id}}&assembly={{$index}}"><span class="icons edit"></span></a>--><a><span class="icons duplicate" ng-click="duplicateItem($index)"></span></a><a href="" ng-click="printDrawing()"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)"></span></a></td>
                 </tr>

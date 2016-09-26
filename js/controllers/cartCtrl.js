@@ -174,43 +174,47 @@ app.controller('cartCtrl', function ($scope) {
         localStorage.cart = JSON.stringify(cart);
     };
 
-    $scope.storeLength = function (val, index) {
-        localStorage.cart = localStorage.getItem('cart');
-        var cart = JSON.parse(localStorage.cart);
 
-        if (val === null) {
-            val = 6;
-            cart[index].length = val;
-        } else {
-            cart[index].length = val;
-        }
-
-        localStorage.cart = JSON.stringify(cart);
-    };
-
-
-    $scope.lengthCheck = function (len) {
+    $scope.lengthCheck = function (len, index) {
         if (len < 15 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
+            len = 15;
         } else if (len < 6 && $scope.metric === false) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This program has a maximum length of 6 in. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
+            len = 6;
         } else if (len > 3024 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";
-            $scope.notification_message = "This program has a minimum length of 15 cm. Please contact the factory for custom lengths.";
+            $scope.notification_message = "The program has a maximum length of 3024 cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
+            len = 3024;
         } else if (len > 1200 && $scope.metric === false) {
             $scope.notification = true;
             $scope.notification_title = "Error";
-            $scope.notification_message = "This program has a maximum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_message = "The program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
+            len = 1200;
         }
+
+        localStorage.cart = localStorage.getItem('cart');
+        var cart = JSON.parse(localStorage.cart);
+
+        if (len === null) {
+            len = 6;
+            cart[index].length = len;
+        } else {
+            cart[index].length = len;
+        }
+
+        localStorage.cart = JSON.stringify(cart);
+
+        $scope.cart = JSON.parse(localStorage.getItem('cart'));
     };
 
 
@@ -289,7 +293,8 @@ app.controller('cartCtrl', function ($scope) {
                 'width': margins.width
             },
             function () {
-                pdf.save('cable-wizard-drawing.pdf');
+                //pdf.save('cable-wizard-drawing.pdf');
+                pdf.output('dataurlnewwindow');
             },
             margins
         );

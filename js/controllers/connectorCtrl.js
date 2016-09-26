@@ -50,7 +50,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', 'connectors', f
         search_freq = localStorage.getItem('max_freq');
         clength = localStorage.getItem('clength');
 
-        $scope.search_freq = parseFloat(search_freq, 10);
+        //$scope.search_freq = parseFloat(search_freq, 10);
         $scope.clength = parseFloat(clength, 10);
     }
 
