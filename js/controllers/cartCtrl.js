@@ -1,12 +1,10 @@
 /*jslint browser:true*/
 /*global $, jQuery, alert, angular, console, app*/
 
-
-//[{"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"MC","price":496,"max_freq":1}, {"id":"72","rf_part":"BMS-085-12.0-BMR","name":"085 Semi-Rigid","conn_1":"BMS - BNC Male Straight","conn_2":"BMR - BNC Male Right Angle","macola":"085B1B2#00012","quantity":3,"length":6,"covering":"MC","price":496,"max_freq":1}]
-
+// [{"id":"88","name":"Lab-Flex 100","part_no":"100","conn_1_part_no":"KMS","conn_1_mac_code":"K1","conn_1_description":"K1","conn_2_part_no":"MMS","conn_2_mac_code":"M1","conn_2_description":"M1","quantity":1,"length":50,"price":384.84}]
 
 // cartCtrl controller
-app.controller('cartCtrl', function ($scope) {
+app.controller('cartCtrl', function ($scope, $filter) {
     "use strict";
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
@@ -16,6 +14,54 @@ app.controller('cartCtrl', function ($scope) {
     } else {
         $scope.metric = false;
     }
+
+    $scope.macolaPartNo = function (len, index) {
+        var cart,
+            part_no,
+            conn_1_mac_code,
+            conn_2_mac_code,
+            covering,
+            macolaPart;
+
+        localStorage.cart = localStorage.getItem('cart');
+        cart = JSON.parse(localStorage.cart);
+
+        part_no = cart[index].part_no;
+        conn_1_mac_code = cart[index].conn_1_mac_code;
+        conn_2_mac_code = cart[index].conn_2_mac_code;
+        covering = cart[index].covering;
+
+        if (covering === undefined) { covering = ''; }
+
+        len = $filter('rfLength')(len);
+
+        macolaPart = part_no + conn_1_mac_code + conn_2_mac_code + '#' + len + covering;
+        return macolaPart;
+    };
+
+    $scope.rflabsPartNo = function (len, index) {
+        var cart,
+            part_no,
+            conn_1_part_no,
+            conn_2_part_no,
+            covering,
+            rflabsPart;
+
+        localStorage.cart = localStorage.getItem('cart');
+        cart = JSON.parse(localStorage.cart);
+
+        part_no = cart[index].part_no;
+        conn_1_part_no = cart[index].conn_1_part_no;
+        conn_2_part_no = cart[index].conn_2_part_no;
+        covering = cart[index].covering;
+
+        if (covering === undefined) { covering = ''; }
+
+        len = $filter('noComma')(len);
+
+        rflabsPart = conn_1_part_no + '-' + part_no + covering + '-' + len + '-' + conn_2_part_no;
+        return rflabsPart;
+    };
 
     $scope.cartLength = function () {
         var total,

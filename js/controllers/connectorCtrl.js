@@ -338,8 +338,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         } else if ((conn_1 !== '' && conn_2 === '') || (conn_1 === '' && conn_2 !== '')) {
             return '1 Part Missing';
         } else if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
-            len = $filter('rfLength')(len);
-
             for (i = 0; i < $scope.connectors.length; i += 1) {
                 if ($scope.connectors[i].con_part_no === conn_1_part_no) {
                     conn_1_mac_code = $scope.connectors[i].con_mac_code;
@@ -349,6 +347,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     conn_2_mac_code = $scope.connectors[i].con_mac_code;
                 }
             }
+
+            if ($scope.metric === true) {
+                len = len / 2.52;
+            } else if ($scope.metric === false) {
+
+            }
+
+            len = $filter('rfLength')(len);
 
             macolaPart = part_no + conn_1_mac_code + conn_2_mac_code + '#' + len + covering;
             return macolaPart;
@@ -367,6 +373,12 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         } else if ((conn_1 !== '' && conn_2 === '') || (conn_1 === '' && conn_2 !== '')) {
             return '1 Part Missing';
         } else if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
+            if ($scope.metric === true) {
+                len = len / 2.52;
+            } else if ($scope.metric === false) {
+
+            }
+
             len = $filter('noComma')(len);
 
             rflabsPart = conn_1_part_no + '-' + part_no + covering + '-' + len + '-' + conn_2_part_no;
@@ -415,16 +427,52 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             var cart = JSON.parse(localStorage.getItem('cart')) || [],
                 macolaPart = localStorage.getItem('macolaPart'),
                 rflabsPart = localStorage.getItem('rflabsPart'),
-                newCart =
-                    {
-                        'id': $scope.part_id,
-                        'name': name,
-                        'part_no': part_no,
-                        'conn_1': 'SMS - SMA Male Straight',
-                        'conn_2': 'SMS - SMA Male Straight',
-                        'quantity': 1,
-                        'length': $scope.clength
-                    };
+                conn_1,
+                conn_1_part_no,
+                conn_1_mac_code,
+                conn_1_description,
+                conn_2,
+                conn_2_part_no,
+                conn_2_mac_code,
+                conn_2_description,
+                newCart,
+                i;
+
+            localStorage.conn_1 = localStorage.getItem('conn_1');
+            conn_1 = JSON.parse(localStorage.conn_1);
+            conn_1_part_no = conn_1.con_part_no;
+
+            localStorage.conn_2 = localStorage.getItem('conn_2');
+            conn_2 = JSON.parse(localStorage.conn_2);
+            conn_2_part_no = conn_2.con_part_no;
+
+            for (i = 0; i < $scope.connectors.length; i += 1) {
+                if ($scope.connectors[i].con_part_no === conn_1_part_no) {
+                    conn_1_mac_code = $scope.connectors[i].con_mac_code;
+                    conn_1_description = $scope.connectors[i].con_description;
+                }
+
+                if ($scope.connectors[i].con_part_no === conn_2_part_no) {
+                    conn_2_mac_code = $scope.connectors[i].con_mac_code;
+                    conn_2_description = $scope.connectors[i].con_description;
+                }
+            }
+
+            newCart =
+                {
+                    'id': $scope.part_id,
+                    'name': name,
+                    'part_no': part_no,
+                    'conn_1_part_no': conn_1_part_no,
+                    'conn_1_mac_code': conn_1_mac_code,
+                    'conn_1_description': conn_1_description,
+                    'conn_2_part_no': conn_2_part_no,
+                    'conn_2_mac_code': conn_2_mac_code,
+                    'conn_2_description': conn_2_description,
+                    'covering': $scope.covering,
+                    'quantity': 1,
+                    'length': $scope.clength
+                };
 
             cart.push(newCart);
 
