@@ -67,11 +67,11 @@
                     <p>{{ ca.name }}</p>
                     <p>{{ ca.conn_1 }}</p>
                     <p>{{ ca.conn_2 }}</p>
-                    <p>Macola - {{ ca.macola }}</p>
+                    <p>Macola - {{ ca.macola_part }}</p>
                   </td>
                   <td><input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
                   <td><input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="lengthCheck(ca.length, $index)"></td>
-                  <td>${{ cablePrice(ca.length, ca.covering, ca.quantity, $index) }} USD</td>
+                  <td>${{ cablePrice(ca.length, ca.quantity, $index) }} USD</td>
                   <td><!--<a href="#/configurator?part_id={{ca.id}}&assembly={{$index}}"><span class="icons edit"></span></a>--><a><span class="icons duplicate" ng-click="duplicateItem($index)"></span></a><a href="" ng-click="printDrawing()"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)"></span></a></td>
                 </tr>
                 <tr ng-hide="cart.length">
