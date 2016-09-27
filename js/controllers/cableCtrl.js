@@ -38,7 +38,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             $scope.notification = true;
             $scope.notification_title = "Welcome";
             $scope.notification_message = "Welcome to the Cable Calculator.";
-            $scope.notification_button = "Close";
+            $scope.notification_button = "Enter";
             localStorage.setItem('measure', 'false');
         }
     };

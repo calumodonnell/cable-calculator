@@ -350,8 +350,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
             if ($scope.metric === true) {
                 len = len / 2.52;
-            } else if ($scope.metric === false) {
-
             }
 
             len = $filter('rfLength')(len);
@@ -375,8 +373,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         } else if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
             if ($scope.metric === true) {
                 len = len / 2.52;
-            } else if ($scope.metric === false) {
-
             }
 
             len = $filter('noComma')(len);
