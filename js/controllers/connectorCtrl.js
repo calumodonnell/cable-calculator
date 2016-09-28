@@ -467,7 +467,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     'conn_2_description': conn_2_description,
                     'covering': $scope.covering,
                     'quantity': 1,
-                    'length': $scope.clength
+                    'length': $scope.clength,
+                    'price': '',
                 };
 
             cart.push(newCart);

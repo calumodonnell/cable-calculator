@@ -157,7 +157,7 @@ add_action('admin_init', 'cw_admin_load');
 function cw_load() {
 	wp_enqueue_script('jquery', '//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js');
 	wp_enqueue_script('jsPDF', SR_URL . '/libs/jspdf.min.js');
-	wp_enqueue_script('angularjs', '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js');
+	wp_enqueue_script('angularjs', '//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js');
 	wp_enqueue_script('angularjs-route', '//ajax.googleapis.com/ajax/libs/angularjs/1.2.18/angular-route.min.js');
 	wp_enqueue_script('angularjs-storage', '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js');
 	wp_enqueue_script('angularjs-draggable', SR_URL . '/libs/ngDraggable.js');
@@ -165,20 +165,21 @@ function cw_load() {
 	wp_enqueue_script('bootstrap-js', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/js/bootstrap.min.js');
 	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');
 	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
+	wp_enqueue_style('cw-app-style',  SR_URL . '/css/style.css', '');
+
+	// angularJS
 	wp_enqueue_script('app', SR_URL .'/js/app.js');
 	wp_enqueue_script('routeProvider', SR_URL .'/js/config/routeProvider.js');
 	wp_enqueue_script('cables', SR_URL .'/js/services/cables.js');
 	wp_enqueue_script('series', SR_URL .'/js/services/connector-series.js');
 	wp_enqueue_script('connectors', SR_URL .'/js/services/connectors.js');
-	wp_enqueue_script('pageCtrl', SR_URL .'/js/controllers/pageCtrl.js');
-	wp_enqueue_script('cableCtrl', SR_URL .'/js/controllers/cableCtrl.js');
-	wp_enqueue_script('connectorCtrl', SR_URL .'/js/controllers/connectorCtrl.js');
-	wp_enqueue_script('cartCtrl', SR_URL .'/js/controllers/cartCtrl.js');
 	wp_enqueue_script('back', SR_URL .'/js/directives/back.js');
 	wp_enqueue_script('metricWatch.js', SR_URL .'/js/directives/metricWatch.js');
 	wp_enqueue_script('noComma', SR_URL .'/js/filters/noComma.js');
 	wp_enqueue_script('rfLength', SR_URL .'/js/filters/rfLength.js');
-	wp_enqueue_style('cw-app-style',  SR_URL . '/css/style.css', '');
+	wp_enqueue_script('cableCtrl', SR_URL .'/js/controllers/cableCtrl.js');
+	wp_enqueue_script('connectorCtrl', SR_URL .'/js/controllers/connectorCtrl.js');
+	wp_enqueue_script('cartCtrl', SR_URL .'/js/controllers/cartCtrl.js');
 }
 add_action('wp_loaded', 'cw_load');
 

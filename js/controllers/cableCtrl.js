@@ -20,9 +20,9 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         localStorage.setItem('clength', '');
     }
 
-    if (!localStorage.getItem('cart')) {
-        localStorage.setItem('cart', '[]');
-    }
+    if (!localStorage.getItem('cart')) { localStorage.setItem('cart', '[]'); }
+
+    if (!localStorage.getItem('measure')) { localStorage.setItem('measure', 'false'); }
 
     cables.then(function (data) {
         $scope.cables = data;
@@ -31,7 +31,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     series.then(function (data) {
         $scope.series = data;
     });
-
 
     $scope.showWelcome = function () {
         if (localStorage.getItem('cart') === '[]' && (localStorage.getItem('clength') === 'null' || localStorage.getItem('clength') === '') && (localStorage.getItem('max_freq') === 'null' || localStorage.getItem('max_freq') === '')) {

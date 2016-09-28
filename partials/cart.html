@@ -1,101 +1,99 @@
-<div ng-controller="cartCtrl">
-  <div class="darkness" ng-show="notification"></div>
-  <div class="navbar-header">
-    <div class="container">
-      <nav class="navbar" id="cart-nav" role="navigation">
-        <ul class="nav navbar-nav">
-          <li class="nav-item"><a href="#/selector">Add Cable</a></li>
-          <!--<li class="nav-item"><a href="" ng-click='printDiv()'>Print Quotation</a></li>-->
-          <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
-        </ul>
-        <div class="cartbar">
-          <a href="#/cart" class="cart-icon">Cart ({{ cartLength() }})</a>
-        </div>
-      </nav>
-    </div>
+<div class="darkness" ng-show="notification"></div>
+<div class="navbar-header">
+  <div class="container">
+    <nav class="navbar" id="cart-nav" role="navigation">
+      <ul class="nav navbar-nav">
+        <li class="nav-item"><a href="#/selector/">Add Cable</a></li>
+        <li class="nav-item"><a href="" ng-click='printDiv()'>Print Quotation</a></li>
+        <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
+      </ul>
+      <div class="cartbar">
+        <a href="#/cart/" class="cart-icon">Cart ({{ cartLength() }})</a>
+      </div>
+    </nav>
   </div>
-  <div class="cable-content" id="cart">
-    <div class="container container-content">
-      <div class="col-md-12 content">
-        <div class="content-head">
-          <div class="container">
-            <h3>Cart</h3>
-            <a href="" class="btn btn-primary btn-head" role="button" ng-click="clearCart()" aria-disabled="true">Clear Cart</a>
-          </div>
-        </div>
-        <div class="container content-wrap">
-          <div class="order-items">
-            <table class="table cart">
-              <thead>
-                <tr>
-                  <th ng-click="orderByField='rf_part'; sortReverse = !sortReverse">
-                    Cable
-                    <span ng-show="orderByField == 'rf_part'">
-                      <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
-                      <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
-                    </span>
-                  </th>
-                  <th ng-click="orderByField='quantity'; sortReverse = !sortReverse">
-                    Quantity
-                    <span ng-show="orderByField == 'quantity'">
-                      <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
-                      <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
-                    </span>
-                  </th>
-                  <th ng-click="orderByField='length'; sortReverse = !sortReverse">
-                    Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)
-                    <span ng-show="orderByField == 'length'">
-                      <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
-                      <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
-                    </span>
-                  </th>
-                  <th ng-click="orderByField='price'; sortReverse = !sortReverse">
-                    Price ($)
-                    <span ng-show="orderByField == 'price'">
-                      <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
-                      <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
-                    </span>
-                  </th>
-                  <th><a href=""></a></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ng-repeat="ca in cart | orderBy:orderByField:sortReverse">
-                  <td>
-                    <p><b>{{ rflabsPartNo(ca.length, $index) }}</b></p>
-                    <p>{{ ca.name }}</p>
-                    <p>{{ ca.conn_1_part_no }} - {{ ca.conn_1_description }}</p>
-                    <p>{{ ca.conn_2_part_no }} - {{ ca.conn_2_description }}</p>
-                    <p>Macola - {{ macolaPartNo(ca.length, $index) }}</p>
-                  </td>
-                  <td><input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
-                  <td><input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="lengthCheck(ca.length, $index)"></td>
-                  <td>${{ cablePrice(ca.length, ca.quantity, $index) }} USD</td>
-                  <td><!--<a href="#/configurator?part_id={{ca.id}}&assembly={{$index}}" title="Edit Cable Assembly"><span class="icons edit"></span></a>--><a><span class="icons duplicate" ng-click="duplicateItem($index)" title="Duplicate Cable Assembly"></span></a><!--<a href="" ng-click="printDrawing()" title="Print Cable Assembly Drawing"><span class="icons print"></span></a>--><a><span class="icons delete" ng-click="deleteItem($index)" title="Delete Cable Assembly"></span></a></td>
-                </tr>
-                <tr ng-hide="cart.length">
-                  <td id="no_cables" colspan="6">You have no cables in your cart.<br>To add cables to your cart please click 'Add Cable' in the top left of the application.</td>
-                </tr>
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td>Total</td>
-                  <td>{{ totalQuantity() }} cable(s)</td>
-                  <td></td>
-                  <td>{{ totalPrice() | currency }} USD</td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+</div>
+<div class="cable-content" id="cart">
+  <div class="container container-content">
+    <div class="col-md-12 content">
+      <div class="content-head">
+        <div class="container">
+          <h3>Cart</h3>
+          <a href="" class="btn btn-primary btn-head" role="button" ng-click="clearCart()" aria-disabled="true">Clear Cart</a>
         </div>
       </div>
-      <div class="notification" ng-show="notification">
-        <div class="notification-content">
-          <h3 class="notification-title">{{ notification_title }}</h3>
-          <p>{{ notification_message }}</p>
-          <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
+      <div class="container content-wrap">
+        <div class="order-items">
+          <table class="table cart">
+            <thead>
+              <tr>
+                <th ng-click="orderByField='rf_part'; sortReverse = !sortReverse">
+                  Cable
+                  <span ng-show="orderByField == 'rf_part'">
+                    <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
+                    <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
+                  </span>
+                </th>
+                <th ng-click="orderByField='quantity'; sortReverse = !sortReverse">
+                  Quantity
+                  <span ng-show="orderByField == 'quantity'">
+                    <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
+                    <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
+                  </span>
+                </th>
+                <th ng-click="orderByField='length'; sortReverse = !sortReverse">
+                  Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)
+                  <span ng-show="orderByField == 'length'">
+                    <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
+                    <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
+                  </span>
+                </th>
+                <th ng-click="orderByField='price'; sortReverse = !sortReverse">
+                  Price ($)
+                  <span ng-show="orderByField == 'price'">
+                    <span ng-show="sortReverse" class="fa fa-caret-down caret"></span>
+                    <span ng-show="!sortReverse" class="fa fa-caret-up caret"></span>
+                  </span>
+                </th>
+                <th><a href=""></a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="ca in cart | orderBy:orderByField:sortReverse">
+                <td>
+                  <p><b>{{ rflabsPartNo(ca.length, $index) }}</b></p>
+                  <p>{{ ca.name }}</p>
+                  <p>{{ ca.conn_1_part_no }} - {{ ca.conn_1_description }}</p>
+                  <p>{{ ca.conn_2_part_no }} - {{ ca.conn_2_description }}</p>
+                  <p>Macola - {{ macolaPartNo(ca.length, $index) }}</p>
+                </td>
+                <td><input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
+                <td><input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="lengthCheck(ca.length, $index)"></td>
+                <td>{{ cablePrice(ca.length, ca.quantity, $index) | currency: '$' : 2 }} USD</td>
+                <td><a href="#/configurator?part_id={{ca.id}}&assembly={{$index}}" title="Edit Cable Assembly"><span class="icons edit"></span></a><a><span class="icons duplicate" ng-click="duplicateItem($index)" title="Duplicate Cable Assembly"></span></a><a href="" ng-click="printDrawing()" title="Print Cable Assembly Drawing"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)" title="Delete Cable Assembly"></span></a></td>
+              </tr>
+              <tr ng-hide="cart.length">
+                <td id="no_cables" colspan="6">You have no cables in your cart.<br>To add cables to your cart please click 'Add Cable' in the top left of the application.</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total</td>
+                <td>{{ totalQuantity() }} cable(s)</td>
+                <td></td>
+                <td>{{ totalPrice() | currency: '$' : 2 }} USD</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
+      </div>
+    </div>
+    <div class="notification" ng-show="notification">
+      <div class="notification-content">
+        <h3 class="notification-title">{{ notification_title }}</h3>
+        <p>{{ notification_message }}</p>
+        <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
       </div>
     </div>
   </div>

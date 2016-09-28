@@ -7,15 +7,18 @@ $md-device: "screen and (max-width: 991px)"
 $sm-device: "screen and (max-width: 767px)"
 $xs-device: "screen and (max-width: 543px)"
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+  display: none !important
+
 //app
 .cable-wizard
   background-color: #F7F7F7
   color: #58595B
-  font-weight: 300
+  font-family: "Source Sans Pro", sans-serif
   font-size: 14px
+  font-weight: 300
   margin-bottom: 30px
   position: relative
-  font-family: "Source Sans Pro", sans-serif
 
   button, input, select, textarea
     font-family: "Source Sans Pro", sans-serif
@@ -31,16 +34,18 @@ $xs-device: "screen and (max-width: 543px)"
     font-size: 12px
 
   img
+    max-width: none
     user-drag: none
     -webkit-user-drag: none
-    max-width: none
 
   a
-    text-decoration: none
-    color: #0f558f
     box-shadow: none!important
+    color: #0f558f
+    outline: 0
+    text-decoration: none
     &:hover,
     &:focus
+      outline: 0
       text-decoration: none
 
   .row
@@ -48,8 +53,9 @@ $xs-device: "screen and (max-width: 543px)"
     margin-right: -10px
 
   .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9
-    padding-right: 10px
     padding-left: 10px
+    padding-right: 10px
+
 
   .container
     padding-left: 30px
@@ -102,6 +108,8 @@ $xs-device: "screen and (max-width: 543px)"
       position: relative
       @media #{$lg-device}
         padding: 20px
+      @media #{$md-device}
+        padding: 0
       &:last-child
         border-bottom: 0
         margin-bottom: 0
@@ -109,8 +117,8 @@ $xs-device: "screen and (max-width: 543px)"
       table
         tr
           td
-            font-size: 12px
             border-bottom: 1px solid #E5E8EA
+            font-size: 12px
             padding: 14px 0
             &:last-child
               text-align: right
@@ -122,14 +130,14 @@ $xs-device: "screen and (max-width: 543px)"
       border-radius: 0
       padding: 0
       a
+        color: #cbccd1
+        cursor: pointer
+        display: inline-block
         font-weight: 300
         font-size: 13px
-        color: #cbccd1
         padding: 20px 26px
-        display: inline-block
         position: relative
         transition: 0.2s ease
-        cursor: pointer
         &:hover,
         &:focus
           color: #F2F2F2
@@ -142,10 +150,10 @@ $xs-device: "screen and (max-width: 543px)"
 
   //home
   #home
-    display: flex
     align-items: center
-    justify-content: center
+    display: flex
     float: left
+    justify-content: center
     width: 100%
     #welcome-title
       background-color: #FFFFFF
@@ -153,6 +161,35 @@ $xs-device: "screen and (max-width: 543px)"
       padding: 40px
       p
         margin-bottom: 40px
+
+  .content-head
+    background-color: #FFFFFF
+    border-bottom: 1px solid #E5E8EA
+    width: 100%
+    .container
+      @media #{$sm-device}
+        padding: 0 20px
+    h3
+      float: left
+      font-size: 23px
+      margin-bottom: 0
+      padding: 30px 0
+      @media #{$xs-device}
+        display: block
+        float: none
+        padding: 15px 0 10px 0
+    p#count-cables
+      float: right
+      font-size: 12px
+      margin-bottom: 0
+      padding: 33.5px 0
+      @media #{$xs-device}
+        display: block
+        float: none
+        padding: 10px 0 15px 0
+    .btn-head
+      float: right
+      margin: 22px 0
 
   //selector
   .content
@@ -164,33 +201,19 @@ $xs-device: "screen and (max-width: 543px)"
     width: 100%
     @media #{$md-device}
       display: block
-    .content-head
-      background-color: #FFFFFF
-      border-bottom: 1px solid #E5E8EA
-      width: 100%
-      h3
-        float: left
-        font-size: 23px
-        margin-bottom: 0
-        padding: 30px 0
-      p#count-cables
-        float: right
-        font-size: 12px
-        margin-bottom: 0
-        padding: 33.5px 0
-      .btn-head
-        float: right
-        margin: 22px 0
     #selector-table
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15)
-      width: 100%
       margin-bottom: 0
+      width: 100%
       .td-img
         text-align: center
         img.cable-img
           height: auto
           width: 60px
           vertical-align: middle
+          @media #{$sm-device}
+            max-width: 80px
+            width: 100%
 
   //cable configurator
   .cable-configurator
@@ -210,29 +233,29 @@ $xs-device: "screen and (max-width: 543px)"
           text-align: center
           position: relative
           .cable-base
+            background-color: white
             position: absolute
             top: 40%
             z-index: 10
-            background-color: white
             .cable-img
-              text-align: center
               height: auto
               max-width: 280px
+              text-align: center
               width: 100%
           .cable-covering
             position: absolute
             top: 40%
             z-index: 11
             .cover-img
-              text-align: center
               height: auto
               max-width: 280px
-              width: 100%
               min-width: 200px
+              text-align: center
+              width: 100%
         .bin
+          border: 1px solid #FFFFFF
           min-height: 150px
           width: 245px
-          border: 1px solid #FFFFFF
           @media #{$lg-device}
             width: 200px
           @media #{$md-device}
@@ -262,15 +285,15 @@ $xs-device: "screen and (max-width: 543px)"
         #conn_2
           .conn-image
             img
-              float: left
-              transform: scaleX(-1)
               filter: FlipH
+              float: left
               right: 1px
+              transform: scaleX(-1)
       #cable-spec
         td
-          text-align: center
           font-size: 13px
           font-weight: 300
+          text-align: center
     .cable-info
       border-bottom: 1px solid #E5E8EA
       margin-bottom: 30px
@@ -286,26 +309,26 @@ $xs-device: "screen and (max-width: 543px)"
     .conn-box
       display: inline-block
       cursor: move
-      transition: 0.2s ease
-      padding: 5px
       height: 140px
+      padding: 5px
+      transition: 0.2s ease
       z-index: 10
       .item
         background-color: #F2F2F2
         box-shadow: 0 1px 7px rgba(0,0,0,0.15)
         .conn-image
-          height: 100px
-          display: flex
           align-items: center
+          display: flex
+          height: 100px
           justify-content: center
           img
             padding: 10px
             text-align: center
         .conn-title
           background-color: #0f558f
-          text-align: center
           color: #FFFFFF
           padding: 4px 0
+          text-align: center
           p
             margin-bottom: 0
             font-size: 12px
@@ -313,22 +336,23 @@ $xs-device: "screen and (max-width: 543px)"
   //cart
   .order-items
     background-color: #FFFFFF
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15)
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15)
     float: none
 
   //buttons
   .btn-primary
     background-color: #0f558f
     border-color: #0f558f
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15)!important
     color: #FFFFFF
     &:hover,
     &:focus
       opacity: 0.9
   .btn
-    padding: 12px 16px
+    border-radius: 0
     font-size: 12px
     font-weight: 300
-    border-radius: 0
+    padding: 12px 16px
     transition: 0.2s
 
   //tables
@@ -337,13 +361,14 @@ $xs-device: "screen and (max-width: 543px)"
     max-width: 100%
     table-layout: auto
     width: auto
-    word-wrap: break-word
     thead
       th
         background-color: #0f558f
         border-bottom: 0
         border-top: 0
         color: #FFFFFF
+        @media #{$sm-device}
+          display: none
         a
           color: #FFFFFF
           &:hover,
@@ -351,8 +376,17 @@ $xs-device: "screen and (max-width: 543px)"
             color: #FFFFFF
     tbody
       tr
-        transition: 0.2s ease
         background-color: #FFFFFF
+        transition: 0.2s ease
+        .collapse
+          display: table-cell
+          @media #{$sm-device}
+            display: block
+            padding: 6px 14px
+            &:first-child
+              padding-top: 16px
+            &:last-child
+              padding-bottom: 16px
     tfoot
       td
         font-weight: 400
@@ -360,13 +394,13 @@ $xs-device: "screen and (max-width: 543px)"
       padding: 20px 16px
     td
       padding: 16px 14px
+    tr
+      border-top: 1px solid #E5E8EA
     td, th
       border: 0
-      border-top: 1px solid #E5E8EA
       color: #58595B
       font-weight: 300
       vertical-align: middle
-
 
   .table#selector-table
     tbody, thead
@@ -381,6 +415,10 @@ $xs-device: "screen and (max-width: 543px)"
       tr
         td
           font-weight: 300
+    .show-mobile
+      display: none
+      @media #{$sm-device}
+        display: inline-block
 
   .arrow-down,
   .arrow-up
@@ -388,14 +426,13 @@ $xs-device: "screen and (max-width: 543px)"
 
   .arrow-down
     &:after
-      font-family: 'FontAwesome'
       content: '\f0d7'
+      font-family: 'FontAwesome'
 
   .arrow-up
     &:after
-      font-family: 'FontAwesome'
       content: '\f0d8'
-
+      font-family: 'FontAwesome'
 
   #no_cables
     background-color: #FFFFFF
@@ -405,8 +442,8 @@ $xs-device: "screen and (max-width: 543px)"
     text-align: center
 
   table.cart
-    width: 100%
     margin-bottom: 0
+    width: 100%
     tr
       td
         vertical-align: top
@@ -445,20 +482,27 @@ $xs-device: "screen and (max-width: 543px)"
     margin-bottom: 16px
 
   select
+    appearance:none
     height: auto!important
+    -moz-appearance: none
+    -o-appearance: none
     -webkit-appearance: none
 
   select.minimal
     background-image: linear-gradient(45deg, transparent 50%, #C3C5C6 50%), linear-gradient(135deg, #C3C5C6 50%, transparent 50%), linear-gradient(to right, #C3C5C6, #C3C5C6)
     background-position: calc(100% - 15px) calc(1.3em + 2px), calc(100% - 10px) calc(1.3em + 2px), calc(100% - 2.5em) 0.88em
-    background-size: 5px 5px, 5px 5px, 1px 1.5em
     background-repeat: no-repeat
+    background-size: 5px 5px, 5px 5px, 1px 1.5em
+
+  select::-ms-expand
+    display: none
 
   .next
     &:after
       content: "\f054"
       font-family: "FontAwesome"
       font-size: 12px
+
 
   //icons
   .icons
