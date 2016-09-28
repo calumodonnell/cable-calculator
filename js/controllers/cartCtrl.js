@@ -343,9 +343,13 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
     };
 
     $scope.totalPrice = function () {
-        var total = 0;
+        var total = 0,
+            cart;
 
-        angular.forEach($scope.cart, function (value, index) {
+        localStorage.cart = localStorage.getItem('cart');
+        cart = JSON.parse(localStorage.cart);
+
+        angular.forEach(cart, function (value, index) {
             total = total + parseFloat(value.price);
         });
 
