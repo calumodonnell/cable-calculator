@@ -382,7 +382,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         }
     };
 
-    $scope.addCart = function (name, part_no) {
+    $scope.addCart = function (name, part_no, conn_1_price, conn_2_price) {
         if (!$scope.search_freq || $scope.search_freq === null) {
             $scope.notification = true;
             $scope.notification_title = "Error";
@@ -462,9 +462,11 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     'conn_1_part_no': conn_1_part_no,
                     'conn_1_mac_code': conn_1_mac_code,
                     'conn_1_description': conn_1_description,
+                    'conn_1_price': conn_1_price,
                     'conn_2_part_no': conn_2_part_no,
                     'conn_2_mac_code': conn_2_mac_code,
                     'conn_2_description': conn_2_description,
+                    'conn_2_price': conn_2_price,
                     'covering': $scope.covering,
                     'quantity': 1,
                     'length': $scope.clength,

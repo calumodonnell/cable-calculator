@@ -91,7 +91,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
         return total;
     };
 
-    $scope.cablePrice = function (len, quantity, index) {
+    $scope.cablePrice = function (len, quantity, conn1Price, conn2Price, index) {
         var cart,
             i,
             qm,
@@ -100,6 +100,14 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
             overHeadRate = 0,
             shipHand = 0,
             matYield = 0,
+            qm1 = 0,
+            qm2 = 0,
+            qm3 = 0,
+            qm4 = 0,
+            qm5 = 0,
+            qm6 = 0,
+            qm7 = 0,
+            qm8 = 0,
             cableBase = 0,
             adderBack = 0,
             laborTime = 0,
@@ -110,8 +118,6 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
             totalLoadedMaterial = 0,
             totalLoadedLabor = 0,
             unitPrice = 0,
-            conn1Price = 12.5,
-            conn2Price = 12.5,
             coat_n_cable_base = 0,
             coat_n_adder_back = 0,
             coat_n_base = 0,
@@ -167,7 +173,16 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
                 hourlyRate = parseFloat($scope.cables[i].hour_lab_rate);
                 overHeadRate = parseFloat($scope.cables[i].overhead_rate);
                 shipHand = parseFloat($scope.cables[i].ship_handling);
-                matYield = parseFloat($scope.cables[i].margin_rate);
+                matYield = parseFloat($scope.cables[i].material_yield);
+
+                qm1 = parseFloat($scope.cables[i].qm1);
+                qm2 = parseFloat($scope.cables[i].qm2);
+                qm3 = parseFloat($scope.cables[i].qm3);
+                qm4 = parseFloat($scope.cables[i].qm4);
+                qm5 = parseFloat($scope.cables[i].qm5);
+                qm6 = parseFloat($scope.cables[i].qm6);
+                qm7 = parseFloat($scope.cables[i].qm7);
+                qm8 = parseFloat($scope.cables[i].qm8);
 
                 coat_n_cable_base = parseFloat($scope.cables[i].coat_n_cable_base);
                 coat_n_adder_back = parseFloat($scope.cables[i].coat_n_adder_back);
@@ -292,28 +307,30 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
         }
 
         if ((quantity <= 3) && (quantity >= 1)) {
-            qm = 4;
+            qm = qm1;
         } else if ((quantity <= 9) && (quantity >= 4)) {
-            qm = 3;
+            qm = qm2;
         } else if ((quantity <= 24) && (quantity >= 10)) {
-            qm = 2;
+            qm = qm3;
         } else if ((quantity <= 49) && (quantity >= 25)) {
-            qm = 1.66;
+            qm = qm4;
         } else if ((quantity <= 99) && (quantity >= 50)) {
-            qm = 1.33;
+            qm = qm5;
         } else if ((quantity <= 249) && (quantity >= 100)) {
-            qm = 1.00;
+            qm = qm6;
         } else if ((quantity <= 499) && (quantity >= 250)) {
-            qm = 0.95;
+            qm = qm7;
         } else if ((quantity <= 500) && (quantity >= 1000)) {
-            qm = 0.90;
+            qm = qm8;
         }
 
         cableCost = (cableBase * len / 12) + adderBack;
         laborCost = (laborTime + laborAdd) + laborCalc * len;
-        totalLoadedMaterial = (conn1Price + conn2Price + cableCost) / matYield * (1 + shipHand);
+        totalLoadedMaterial = (parseFloat(conn1Price) + parseFloat(conn2Price) + cableCost) / matYield * (1 + shipHand);
         totalLoadedLabor = (laborCost / 60 * hourlyRate) * overHeadRate;
         unitPrice = (totalLoadedMaterial + (totalLoadedLabor * qm)) / (1 - marginRate);
+
+        unitPrice = unitPrice * quantity;
 
         unitPrice = unitPrice.toFixed(2);
 
