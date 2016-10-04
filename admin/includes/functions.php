@@ -384,7 +384,7 @@ function pagination($location, $total_record, $total_posts, $pages, $lpm1, $prev
 function cw_application() {
   ?>
   <div class='cable-wizard' ng-app='cable-wizard'>
-    <div ng-view></div>
+    <div ui-view></div>
     <noscript>
       <div class='no-script'>
         <p>You must have JavaScript enabled to use this app.</p>

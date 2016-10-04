@@ -6,7 +6,7 @@
         <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': !metric }">Select {{ metric ? 'Imperial' : 'Metric' }}</a></li>
       </ul>
       <div class="cartbar">
-        <a href="#/cart/" class="cart-icon">Cart ({{ cartLength() }})</a>
+        <a ui-sref="cart" class="cart-icon">Cart ({{ cartLength() }})</a>
       </div>
     </nav>
   </div>

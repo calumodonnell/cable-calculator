@@ -5,35 +5,34 @@
 app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
     "use strict";
 
+    var initializing = true;
+
+    // create local storage items
+    localStorage.setItem('max_freq', '');
+    localStorage.setItem('clength', '');
     localStorage.setItem('conn_1', '');
     localStorage.setItem('conn_2', '');
 
-    if (localStorage.getItem('max_freq')) {
-        $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
-    } else {
-        localStorage.setItem('max_freq', '');
-    }
+    // if values set for freq and length, set to stored values
+    if (localStorage.getItem('max_freq')) { $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10); }
+    if (localStorage.getItem('clength')) { $scope.clength = parseFloat(localStorage.getItem('clength'), 10); }
 
-    if (localStorage.getItem('clength')) {
-        $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
-    } else {
-        localStorage.setItem('clength', '');
-    }
-
+    // if cart or measure items not created, set new items
     if (!localStorage.getItem('cart')) { localStorage.setItem('cart', '[]'); }
-
     if (!localStorage.getItem('measure')) { localStorage.setItem('measure', 'false'); }
 
-    cables.then(function (data) {
-        $scope.cables = data;
-    });
+    // get cable and series JSON data from server
+    cables.then(function (data) { $scope.cables = data; });
+    series.then(function (data) { $scope.series = data; });
 
-    series.then(function (data) {
-        $scope.series = data;
-    });
+    // hide notification box
+    $scope.notificationHide = function () {
+        $scope.notification = false;
+    };
 
+    // welcome message show if cart empty (assuming if empty, user has not used app)
     $scope.showWelcome = function () {
-        if (localStorage.getItem('cart') === '[]' && (localStorage.getItem('clength') === 'null' || localStorage.getItem('clength') === '') && (localStorage.getItem('max_freq') === 'null' || localStorage.getItem('max_freq') === '')) {
+        if (localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') {
             $scope.notification = true;
             $scope.notification_title = "Welcome";
             $scope.notification_message = "Welcome to the Cable Calculator.";
@@ -43,45 +42,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
     $scope.showWelcome();
 
-    $scope.notificationHide = function () {
-        $scope.notification = false;
-    };
-
-    // selector-table sort functions
-    function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
-
-    function comparer(index) {
-        return function (a, b) {
-            var valA = getCellValue(a, index), valB = getCellValue(b, index);
-            return jQuery.isNumeric(valA) && jQuery.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
-        };
-    }
-
-    jQuery('th').click(function () {
-        var table = jQuery(this).parents('table').eq(0),
-            rows = table.find('tr:gt(0)').toArray().sort(comparer(jQuery(this).index())),
-            i;
-
-        this.asc = !this.asc;
-        if (!this.asc) { rows = rows.reverse(); }
-        for (i = 0; i < rows.length; i += 1) { table.append(rows[i]); }
-    });
-
-    $scope.toggleSort = false;
-
-    $scope.sortData = function (column) {
-        $scope.toggleSort = ($scope.sortByColumn === column) ? !$scope.toggleSort : false;
-        $scope.sortByColumn = column;
-    };
-
-    $scope.getSortItem = function (column) {
-        if ($scope.sortByColumn === column) {
-            return $scope.toggleSort ? 'arrow-down' : 'arrow-up';
-        }
-        return '';
-    };
-
-    // total no of rows shown to user
+    // display total rows
     $scope.totalRows = function () {
         var rowCount = jQuery('#selector-table tbody tr').length,
             rowHide = jQuery('#selector-table tbody tr.ng-hide').length,
@@ -167,8 +128,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     } else {
         $scope.metric = false;
     }
-
-    var initializing = true;
 
     // update length depending on measurement type
     $scope.$watch('metric', function () {
@@ -260,5 +219,39 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         }
 
         return total;
+    };
+
+    // selector-table sort functions
+    function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
+
+    function comparer(index) {
+        return function (a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index);
+            return jQuery.isNumeric(valA) && jQuery.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+        };
+    }
+
+    jQuery('th').click(function () {
+        var table = jQuery(this).parents('table').eq(0),
+            rows = table.find('tr:gt(0)').toArray().sort(comparer(jQuery(this).index())),
+            i;
+
+        this.asc = !this.asc;
+        if (!this.asc) { rows = rows.reverse(); }
+        for (i = 0; i < rows.length; i += 1) { table.append(rows[i]); }
+    });
+
+    $scope.toggleSort = false;
+
+    $scope.sortData = function (column) {
+        $scope.toggleSort = ($scope.sortByColumn === column) ? !$scope.toggleSort : false;
+        $scope.sortByColumn = column;
+    };
+
+    $scope.getSortItem = function (column) {
+        if ($scope.sortByColumn === column) {
+            return $scope.toggleSort ? 'arrow-down' : 'arrow-up';
+        }
+        return '';
     };
 }]);

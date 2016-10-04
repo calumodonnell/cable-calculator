@@ -1,9 +1,9 @@
 /*jslint browser:true*/
 /*global $, jQuery, alert, angular, console, app*/
 
-// connectorCtrl controller
+// editCtrl controller
 
-app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
+app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
     "use strict";
 
     var initializing = true,
@@ -25,6 +25,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
     $location.search();
     $scope.part_id = $location.search().part_id;
+
+    assembly_id = $location.search().assembly_id;
 
     $scope.c_1 = $location.search().conn_1;
     $scope.c_2 = $location.search().conn_2;
@@ -420,13 +422,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         }
     };
 
-    $scope.addCart = function (name, part_no, conn_1_price, conn_2_price, covering) {
-        if (!$scope.search_freq || $scope.search_freq === null) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "You have not specificed the maximum frequency.";
-            $scope.notification_button = "Close";
-        } else if (!$scope.clength || $scope.clength === null) {
+    $scope.editCart = function () {
+        if (!$scope.clength || $scope.clength === null) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specified the cable length.";
@@ -487,6 +484,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     conn_2_description = $scope.connectors[i].con_description;
                 }
             }
+
+
+
+            localStorage.cart = localStorage.getItem('cart');
+
+            cart = JSON.parse(localStorage.cart);
+
+            cart.splice(assembly_id, 1);
 
             newCart =
                 {
@@ -566,10 +571,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         } else if (index === -1) {
             $scope.droppedObjects1.push(data);
 
+            console.log(data);
+
             jsonString = JSON.stringify(data);
 
             localStorage.setItem('conn_1', jsonString);
             $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+
+            console.log($scope.conn_1);
         }
     };
 
@@ -618,4 +627,26 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             //pdf.save("drawing" + new Date() + ".pdf");
         });
     };
+
+    var init = function () {
+        if (assembly_id) {
+            cart = JSON.parse(localStorage.getItem('cart'));
+
+            $scope.search_freq = 1;
+            $scope.clength = cart[assembly_id].length;
+            $scope.covering = cart[assembly_id].covering;
+
+            $scope.droppedObjects1.push({"id": "1", "cable_id": "", "connector_id": "", "con_part_no": cart[assembly_id].conn_1_part_no, "con_series": "BNC", "price": ""});
+            $scope.droppedObjects2.push({"id": "2", "cable_id": "", "connector_id": "", "con_part_no": cart[assembly_id].conn_2_part_no, "con_series": "2.9mm", "price": ""});
+
+            localStorage.setItem('conn_1', '{"id": "", "cable_id": "", "connector_id": "", "con_part_no": "' + cart[assembly_id].conn_1_part_no + '", "con_series": "BNC", "price": ""}');
+            localStorage.setItem('conn_2', '{"id": "", "cable_id": "", "connector_id": "", "con_part_no": "' + cart[assembly_id].conn_2_part_no + '", "con_series": "2.9mm", "price": ""}');
+
+            $scope.conn_1 = localStorage.getItem('conn_1');
+            $scope.conn_2 = localStorage.getItem('conn_2');
+
+            //{"id":"1274","cable_id":"72","connector_id":"62","con_part_no":"BFBS","con_series":"BNC","price":"2.50","$$hashKey":"object:229"}
+        }
+    };
+    init();
 }]);

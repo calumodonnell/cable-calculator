@@ -1,13 +1,28 @@
 // config app pages
-app.config(['$routeProvider', function ($routeProvider) {
+app.config(function ($stateProvider, $urlRouterProvider) {
     "use strict";
 
-    $routeProvider
-        .when("/", {templateUrl: "../wp-content/plugins/cable-wizard/partials/selector.html", controller: "cableCtrl"})
-        .when("/selector/", {templateUrl: "../wp-content/plugins/cable-wizard/partials/selector.html", controller: "cableCtrl"})
-        .when("/configurator/", {templateUrl: "../wp-content/plugins/cable-wizard/partials/configurator.html", controller: "connectorCtrl"})
-        .when("/cart/", {templateUrl: "../wp-content/plugins/cable-wizard/partials/cart.html", controller: "cartCtrl"})
-        .otherwise({
-            redirectTo: "/"
+    $urlRouterProvider.otherwise('/');
+
+    $stateProvider
+        .state('selector', {
+            url: '/',
+            templateUrl: '../wp-content/plugins/cable-wizard/partials/selector.html',
+            controller: 'cableCtrl'
+        })
+        .state('configurator', {
+            url: '/configurator',
+            templateUrl: '../wp-content/plugins/cable-wizard/partials/configurator.html',
+            controller: 'connectorCtrl'
+        })
+        .state('cart', {
+            url: '/cart',
+            templateUrl: "../wp-content/plugins/cable-wizard/partials/cart.html",
+            controller: "cartCtrl"
+        })
+        .state('edit', {
+            url: '/edit',
+            templateUrl: "../wp-content/plugins/cable-wizard/partials/edit.html",
+            controller: "editCtrl"
         });
-}]);
+});
