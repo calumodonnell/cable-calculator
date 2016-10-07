@@ -75,7 +75,7 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
 
         if (localStorage.getItem('cart')) { cart = JSON.parse(localStorage.getItem('cart')); }
 
-        if (cart === '[]' || cart === '' || cart === undefined) {
+        if (cart === '[]' || cart === '' || cart === undefined || cart === null) {
             total = 0;
         } else {
             total = cart.length;

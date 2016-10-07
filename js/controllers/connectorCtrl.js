@@ -52,8 +52,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
     $scope.showConnector = function (conn) {
         if ($scope.c_1 || $scope.c_2) {
-            return conn.con_series === $scope.c_1 ||
-                   conn.con_series === $scope.c_2;
+            return conn.con_series === $scope.c_1 || conn.con_series === $scope.c_2;
         }
 
         return true;
@@ -73,7 +72,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
         if (localStorage.getItem('cart')) { cart = JSON.parse(localStorage.getItem('cart')); }
 
-        if (cart === '[]' || cart === '' || cart === undefined) {
+        if (cart === '[]' || cart === '' || cart === undefined || cart === null) {
             total = 0;
         } else {
             total = cart.length;
@@ -82,23 +81,33 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         return total;
     };
 
-    $scope.storeFreq = function (val) {
-        if (val > 65) {
+    $scope.storeFreq = function (freq, cableFreq) {
+        if (freq > cableFreq) {
             $scope.notification = true;
             $scope.notification_title = "Error";
-            $scope.notification_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.notification_message = "The cable has a max frequency of " + cableFreq + " GHz.";
             $scope.notification_button = "Close";
 
-            val = 65;
+            freq = cableFreq;
+            $scope.search_freq = cableFreq;
+        }
+
+        if (freq > 65) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The application has a max frequency of 65 GHz.";
+            $scope.notification_button = "Close";
+
+            freq = 65;
             $scope.search_freq = 65;
         }
 
-        $scope.search_freq = val;
+        $scope.search_freq = freq;
 
-        if (val === null) {
+        if (freq === null) {
             localStorage.setItem('max_freq', 1);
         } else {
-            localStorage.setItem('max_freq', val);
+            localStorage.setItem('max_freq', freq);
         }
     };
 
@@ -421,7 +430,17 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.addCart = function (name, part_no, conn_1_price, conn_2_price, covering) {
-        if (!$scope.search_freq || $scope.search_freq === null) {
+        var cart,
+            total;
+
+        cart = JSON.parse(localStorage.getItem('cart'));
+        
+        if (cart.length >= 12) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The cart has reached its limit of 12 items. Items must be deleted before anymore can be added.";
+            $scope.notification_button = "Close";
+        } else if (!$scope.search_freq || $scope.search_freq === null) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specificed the maximum frequency.";
@@ -617,5 +636,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             pdf.output('dataurlnewwindow');
             //pdf.save("drawing" + new Date() + ".pdf");
         });
+    };
+
+    // filter connectors by frequency
+    $scope.greaterThanFreq = function (val) {
+        return function (item) {
+            if (item.con_max_freq >= val) {
+                return true;
+            }
+        };
     };
 }]);

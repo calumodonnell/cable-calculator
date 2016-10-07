@@ -1,5 +1,5 @@
 /*jslint browser:true*/
-/*global $, app*/
+/*global $, jQuery, alert, angular, console, app*/
 
 // remove comma from number
 app.filter('noComma', function () {

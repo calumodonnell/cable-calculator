@@ -211,6 +211,8 @@ $xs-device: "screen and (max-width: 543px)"
       width: 100%
       .td-img
         text-align: center
+        @media #{$xs-device}
+          display: none
         img.cable-img
           height: auto
           width: 60px
@@ -239,7 +241,7 @@ $xs-device: "screen and (max-width: 543px)"
           .cable-base
             background-color: white
             position: absolute
-            top: 40%
+            top: 71px
             z-index: 10
             .cable-img
               height: auto
@@ -248,7 +250,7 @@ $xs-device: "screen and (max-width: 543px)"
               width: 100%
           .cable-covering
             position: absolute
-            top: 40%
+            top: 71px
             z-index: 11
             .cover-img
               height: auto
@@ -263,16 +265,15 @@ $xs-device: "screen and (max-width: 543px)"
           @media #{$lg-device}
             width: 200px
           @media #{$md-device}
-            width: 125px
+            width: 145px
           @media #{$sm-device}
-            width: 140px
+            width: 80px
           @media #{$xs-device}
             width: 25%
           .conn-title
             display: none
           .conn-image
             position: relative
-            top: 3px
             img
               z-index: 1
         #conn_1,
@@ -280,7 +281,13 @@ $xs-device: "screen and (max-width: 543px)"
           .conn-image
             img
               position: relative
-              top: 2px
+              top: 4px
+              @media #{$lg-device}
+                top: 0
+              @media #{$md-device}
+                top: 8px
+              @media #{$xs-device}
+                top: 0
         #conn_1
           .conn-image
             img
@@ -389,10 +396,13 @@ $xs-device: "screen and (max-width: 543px)"
           @media #{$sm-device}
             display: block
             padding: 6px 14px
-            &:first-child
-              padding-top: 16px
-            &:last-child
-              padding-bottom: 16px
+        .collapse-top
+          @media #{$sm-device}
+            padding-top: 12px
+        .collapse-bottom
+          @media #{$sm-device}
+            padding-bottom: 12px
+
     tfoot
       td
         font-weight: 400
@@ -421,10 +431,11 @@ $xs-device: "screen and (max-width: 543px)"
       tr
         td
           font-weight: 300
-    .show-mobile
-      display: none
-      @media #{$sm-device}
-        display: inline-block
+
+  .show-mobile
+    display: none
+    @media #{$sm-device}
+      display: inline-block
 
   .arrow-down,
   .arrow-up
@@ -447,12 +458,19 @@ $xs-device: "screen and (max-width: 543px)"
     padding: 16px 14px
     text-align: center
 
+  #no_connectors
+    p
+      margin-bottom: 0
+      text-align: center
+
   table.cart
     margin-bottom: 0
     width: 100%
     tr
       td
         vertical-align: top
+        @media #{$sm-device}
+          vertical-align: middle
         a
           color: #0f558f
           display: inline-block
@@ -514,6 +532,7 @@ $xs-device: "screen and (max-width: 543px)"
   .icons
     font-size: 18px
     padding: 0 6px
+    cursor: pointer
     &:after
       &:hover,
       &:focus
@@ -575,6 +594,18 @@ $xs-device: "screen and (max-width: 543px)"
     width: 100%
     z-index: 100
 
+  #print-quotation
+    width: 800px
+
+  #print-drawing
+    width: 900px
+
+  #print-quotation,
+  #print-drawing
+    margin: 0 auto
+    background-color: #FFFFFF
+    padding: 40px 30px
+
   .print-screen
     background-color: #FFFFFF
     box-shadow: 0 1px 7px rgba(0,0,0,0.15)
@@ -620,32 +651,93 @@ $xs-device: "screen and (max-width: 543px)"
         p
           margin-bottom: 5px
     .drawing-preview
+      table
+        width: 100%
       .rows
         clear: both
         display: block
       .row-1
+        .part-electrical
+          p
+            margin-bottom: 0
         .part-numbers
-          border: 1px solid #000
+          border: 3px solid #000
+          text-align: center
+          h3, p
+            margin-bottom: 0
       .row-2
-      .row-3
-      .row-4
-        .logo-address
+        .cable-marker
           border: 1px solid #000
-          padding: 10px
+      .row-3
+        table
+          margin-bottom: 5px
+          table
+            float: right
+            width: auto
+            th, td
+              border: 1px solid #000
+              padding: 5px 8px
+              text-align: center
+      .row-4
+        .heading
+          font-size: 12px!important
+        .logo-address
           img
             height: auto
-            margin-bottom: 20px
-            width: 80px
+            margin-bottom: 10px
+            width: 60px
+        .cable-tolerance,
+        .cable-covering,
+        .logo-address,
+        .cable-measurement
+          border: 1px solid #000
+          padding: 5px
           p
             font-size: 10px
             margin-bottom: 2px
+        .cable-tolerance
+          vertical-align: top
+          .vertical-line
+            border-left: 1px solid #000
+            height: 140px
+            margin: 10px auto
+            width: 1px
+        .cable-covering
+          padding: 0
+          .marking,
+          .material,
+          .finish
+            border-bottom: 1px solid #000
+        .cable-measurement
+          padding: 0
+          .length-measurement,
+          .scale,
+          .code-id,
+          .size,
+          .pn
+            border-bottom: 1px solid #000
+          .scale,
+          .code-id,
+          .drawn
+            border-right: 1px solid #000
+          .scale,
+          .code-id,
+          .size,
+          .pn,
+          .drawn,
+          .sheet
+            text-align: center
+          .scale
+            hr
+              width: 40px
+              height: 1px
+              background-color: #000
 
     .preview
-      background-color: #FFFFFF
+      background-color: #f9f9f9
       border: 1px solid #E5E8EA
       height: 400px
       overflow: scroll
-      padding: 40px 30px
 
     .print-buttons
       margin-top: 30px
@@ -653,3 +745,55 @@ $xs-device: "screen and (max-width: 543px)"
   #cable-prices
     margin-bottom: 15px
     width: 100%
+
+@media print
+  .site-content,
+  .site-footer
+    display: none
+
+  #print-quotation
+    table
+      width: 100%
+    p
+      font-size: 12px
+    td
+      font-size: 11px
+    .pdf-header
+      margin-bottom: 50px
+      .address-header p
+        margin-bottom: 0
+        b
+          font-weight: bold
+      .logo-header
+        img
+          float: right
+          width: 70px
+          vertical-align: top
+    .pdf-content
+      margin-bottom: 80px
+      .cart-summary
+        margin-bottom: 20px
+        .cart-summary-head
+          td
+            font-weight: bold
+      h1
+        font-size: 24px
+      #total-price
+        text-align: right
+      .price-breaks
+        background-color: #F2F2F2
+        -webkit-print-color-adjust: exact
+    .pdf-footer
+      position: absolute
+      bottom: 0
+      p
+        font-size: 11px
+        margin-bottom: 0
+      .sales-disclaimer
+        padding-right: 30px
+      .printed-date
+        vertical-align: bottom
+
+    #print-drawing
+      table
+        width: 100%

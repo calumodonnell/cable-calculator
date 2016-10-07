@@ -8,14 +8,22 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     var initializing = true;
 
     // create local storage items
-    localStorage.setItem('max_freq', '');
-    localStorage.setItem('clength', '');
     localStorage.setItem('conn_1', '');
     localStorage.setItem('conn_2', '');
 
-    // if values set for freq and length, set to stored values
-    if (localStorage.getItem('max_freq')) { $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10); }
-    if (localStorage.getItem('clength')) { $scope.clength = parseFloat(localStorage.getItem('clength'), 10); }
+    // if values set are for freq, set to stored value
+    if (localStorage.getItem('max_freq')) {
+        $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
+    } else {
+        localStorage.setItem('max_freq', '');
+    }
+
+    // if values set are for length, set to stored value
+    if (localStorage.getItem('clength')) {
+        $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
+    } else {
+        localStorage.setItem('clength', '');
+    }
 
     // if cart or measure items not created, set new items
     if (!localStorage.getItem('cart')) { localStorage.setItem('cart', '[]'); }
@@ -32,7 +40,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // welcome message show if cart empty (assuming if empty, user has not used app)
     $scope.showWelcome = function () {
-        if (localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') {
+        if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
             $scope.notification = true;
             $scope.notification_title = "Welcome";
             $scope.notification_message = "Welcome to the Cable Calculator.";
@@ -44,8 +52,8 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // display total rows
     $scope.totalRows = function () {
-        var rowCount = jQuery('#selector-table tbody tr').length,
-            rowHide = jQuery('#selector-table tbody tr.ng-hide').length,
+        var rowCount = angular.element('#selector-table tbody tr').length,
+            rowHide = angular.element('#selector-table tbody tr.ng-hide').length,
             rowTotal = rowCount - rowHide;
 
         return rowTotal;
@@ -66,7 +74,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     };
 
-    // filter connectors by frequency
     $scope.greaterThanFreq = function (val) {
         return function (item) {
             if (item.con_max_freq >= val) {
@@ -98,7 +105,17 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // direct to config if conditions met
     $scope.toConfig = function (id, conn_1, conn_2) {
-        if (!$scope.search_freq || $scope.search_freq === null) {
+        var cart,
+            total;
+
+        cart = JSON.parse(localStorage.getItem('cart'));
+
+        if (cart.length >= 12) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The cart has reached its limit of 12 items. Items must be deleted before anymore can be added.";
+            $scope.notification_button = "Close";
+        } else if (!$scope.search_freq || $scope.search_freq === null) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specified the maximum frequency.";
@@ -108,12 +125,12 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specified the cable length.";
             $scope.notification_button = "Close";
-        } else if ($scope.clength < 15 && jQuery("#clength").hasClass("metric")) {
+        } else if ($scope.clength < 15 && angular.element('#clength').hasClass("metric")) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
-        } else if ($scope.clength < 6 && jQuery("#clength").hasClass("imperial")) {
+        } else if ($scope.clength < 6 && angular.element('#clength').hasClass("imperial")) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
@@ -162,9 +179,9 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
         if ($scope.search_freq) { len = $scope.search_freq; }
 
-        if (jQuery("#loss").hasClass("metric")) {
+        if (angular.element("#loss").hasClass("metric")) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-        } else if (jQuery("#loss").hasClass("imperial")) {
+        } else if (angular.element("#loss").hasClass("imperial")) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
         }
 
@@ -187,13 +204,13 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // store length to use on config page
     $scope.storeLength = function (val) {
-        if (val > 3024 && jQuery("#clength").hasClass("metric")) {
+        if (val > 3024 && angular.element('#clength').hasClass("metric")) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This program has a maximum length of 3024cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
             val = 3024;
-        } else if (val > 1200 && jQuery("#clength").hasClass("imperial")) {
+        } else if (val > 1200 && angular.element('#clength').hasClass("imperial")) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
@@ -212,7 +229,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
         if (localStorage.getItem('cart')) { cart = JSON.parse(localStorage.getItem('cart')); }
 
-        if (cart === '[]' || cart === '' || cart === undefined) {
+        if (cart === '[]' || cart === '' || cart === undefined || cart === null) {
             total = 0;
         } else {
             total = cart.length;
@@ -222,18 +239,18 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
 
     // selector-table sort functions
-    function getCellValue(row, index) { return jQuery(row).children('td').eq(index).html(); }
+    function getCellValue(row, index) { return angular.element(row).children('td').eq(index).html(); }
 
     function comparer(index) {
         return function (a, b) {
             var valA = getCellValue(a, index), valB = getCellValue(b, index);
-            return jQuery.isNumeric(valA) && jQuery.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+            return angular.isNumber(valA) && angular.isNumber(valB) ? valA - valB : valA.localeCompare(valB);
         };
     }
 
-    jQuery('th').click(function () {
-        var table = jQuery(this).parents('table').eq(0),
-            rows = table.find('tr:gt(0)').toArray().sort(comparer(jQuery(this).index())),
+    angular.element('th').click(function () {
+        var table = angular.element(this).parents('table').eq(0),
+            rows = table.find('tr:gt(0)').toArray().sort(comparer(angular.element(this).index())),
             i;
 
         this.asc = !this.asc;

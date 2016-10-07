@@ -93,8 +93,7 @@ foreach( $cable_list as $key => $cable ) {
 
     $output .= '"connectors" : ' ;
 
-    $price_list = $wpdb->get_results("SELECT * FROM cw_cable_connector_pricing WHERE cable_id = " . $cable_id . " ORDER BY con_part_no ASC");
-
+    $price_list = $wpdb->get_results("SELECT cw_cable_connector_pricing.id, cable_id, connector_id, cw_cable_connector_pricing.con_part_no, cw_cable_connector_pricing.con_series, price, con_max_freq FROM cw_cable_connector_pricing INNER JOIN cw_connector_list ON cw_cable_connector_pricing.connector_id = cw_connector_list.id WHERE cable_id = " . $cable_id);
 
     if ( $i == $len - 1 ) {
         $output .= json_encode($price_list) . '}';

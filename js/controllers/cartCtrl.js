@@ -81,7 +81,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
 
         if (localStorage.getItem('cart')) { cart = JSON.parse(localStorage.getItem('cart')); }
 
-        if (cart === '[]' || cart === '' || cart === undefined) {
+        if (cart === '' || cart === '[]' || cart === undefined || cart === null) {
             total = 0;
         } else {
             total = cart.length;
@@ -98,8 +98,12 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
         localStorage.cart = localStorage.getItem('cart');
         cart = JSON.parse(localStorage.cart);
 
-        for (i = 0; i < cart.length; i += 1) {
-            total = total + cart[i].quantity;
+        if (cart === '[]' || cart === '' || cart === undefined || cart === null) {
+            total = 0;
+        } else {
+            for (i = 0; i < cart.length; i += 1) {
+                total = total + cart[i].quantity;
+            }
         }
 
         return total;
@@ -635,7 +639,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
         localStorage.cart = localStorage.getItem('cart');
         cart = JSON.parse(localStorage.cart);
 
-        angular.forEach(cart, function (value, index) {
+        angular.forEach(cart, function (value) {
             total = total + parseFloat(value.price);
         });
 
@@ -663,11 +667,16 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
         var cart = JSON.parse(localStorage.cart),
             assembly = cart[index];
 
-        cart.push(assembly);
-
-        localStorage.cart = JSON.stringify(cart);
-
-        $scope.cart = JSON.parse(localStorage.getItem('cart'));
+        if (cart.length >= 12) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The cart has reached its limit of 12 items. Items must be deleted before anymore can be added.";
+            $scope.notification_button = "Close";
+        } else {
+            cart.push(assembly);
+            localStorage.cart = JSON.stringify(cart);
+            $scope.cart = JSON.parse(localStorage.getItem('cart'));
+        }
     };
 
     $scope.clearCart = function () {
@@ -728,52 +737,79 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
     };
 
     $scope.showQuotation = function () {
-        $scope.print_quotation = true;
+        var cart = '[]';
+
+        if (localStorage.getItem('cart')) { cart = JSON.parse(localStorage.getItem('cart')); }
+
+        if (cart === '' || cart === '[]' || cart === undefined || cart === null || cart.length === 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "Your cart is empty. Items need to be added to your cart before you can print your quotation.";
+            $scope.notification_button = "Close";
+        } else if (cart) {
+            $scope.print_quotation = true;
+        }
     };
 
     $scope.quotationHide = function () {
         $scope.print_quotation = false;
     };
 
-    $scope.showDrawing = function () {
+    $scope.showDrawing = function (val) {
         $scope.print_drawing = true;
+        $scope.drawing = val;
     };
 
     $scope.drawingHide = function () {
         $scope.print_drawing = false;
     };
 
-    $scope.printQuotation = function () {
-        var newPage = document.getElementById('quotation').innerHTML,
-            oldPage = document.body.innerHTML;
+    function printElement(elem) {
+        var $printSection = document.getElementById("printSection"),
+            domClone;
 
-        document.body.innerHTML = "<html><head><title></title></head><body>" + newPage + "</body></html>";
+        if (!$printSection) {
+            $printSection = document.createElement("div");
+            $printSection.id = "printSection";
+            document.body.appendChild($printSection);
+        }
 
+        domClone = elem.cloneNode(true);
+        $printSection.innerHTML = '';
+        $printSection.appendChild(domClone);
         window.print();
+        $printSection.innerHTML = '';
+    }
 
-        document.body.innerHTML = oldPage;
-    };
-
-    /*
     $scope.printQuotation = function () {
-        var pdf = new jsPDF('p', 'pt', 'a4'),
-            options = {background: '#FFFFFF'};
-
-        pdf.addHTML(jQuery('.quotation-preview'), options, function () {
-            pdf.output('dataurlnewwindow');
-            //pdf.save("quotation_" + new Date() + ".pdf");
-        });
+        printElement(document.getElementById("print-quotation"));
     };
-    */
 
     $scope.printDrawing = function () {
-        var pdf = new jsPDF('l', 'pt', 'a4'),
-            options = {background: '#FFFFFF'};
+        printElement(document.getElementById("print-drawing"));
+    };
 
-        pdf.addHTML(jQuery('.drawing-preview'), options, function () {
-            pdf.output('dataurlnewwindow');
-            //pdf.save("drawing" + new Date() + ".pdf");
-        });
+    $scope.covering = function (cover) {
+        switch (cover) {
+        case 'W':
+            return "Weatherized";
+        case 'TV':
+            return "Thermal Vacuum";
+        case 'A':
+            return "Armor";
+        case 'AW':
+            return "Armor/Weatherized";
+        case 'AN':
+            return "Armor/Neoprene";
+        case 'E':
+            return "Extended Boot";
+        case 'EW':
+            return "Extended Boot/Weatherized";
+        case 'MC':
+            return "Monocoil";
+        default:
+            return "None";
+        }
     };
 
     $scope.$watch('metric', function () {
