@@ -7,7 +7,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     var initializing = true;
 
-    // create connector local storage items
+    // create local storage items
     localStorage.setItem('conn_1', '');
     localStorage.setItem('conn_2', '');
 
@@ -29,7 +29,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     if (!localStorage.getItem('cart')) { localStorage.setItem('cart', '[]'); }
     if (!localStorage.getItem('measure')) { localStorage.setItem('measure', 'false'); }
 
-    // get cable and series data from database
+    // get cable and series JSON data from server
     cables.then(function (data) { $scope.cables = data; });
     series.then(function (data) { $scope.series = data; });
 
@@ -38,7 +38,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         $scope.notification = false;
     };
 
-    // show welcome message if cart is empty (assuming if empty, user has not used app)
+    // welcome message show if cart empty (assuming if empty, user has not used app)
     $scope.showWelcome = function () {
         if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
             $scope.notification = true;
@@ -50,7 +50,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
     $scope.showWelcome();
 
-    // display total rows of cables
+    // display total rows
     $scope.totalRows = function () {
         var rowCount = angular.element('#selector-table tbody tr').length,
             rowHide = angular.element('#selector-table tbody tr.ng-hide').length,
@@ -248,7 +248,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     }
 
-    angular.element('.th-click').click(function () {
+    angular.element('th').click(function () {
         var table = angular.element(this).parents('table').eq(0),
             rows = table.find('tr:gt(0)').toArray().sort(comparer(angular.element(this).index())),
             i;

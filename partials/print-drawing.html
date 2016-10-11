@@ -17,96 +17,57 @@
   <div class='rows row-2'>
     <table>
       <tr>
-        <td class="part_length">
-          <table>
-            <tr class="cable-length">
-              <td><img src="../wp-content/plugins/cable-wizard/img/drawing/length_left.png" class="length"></td>
-              <td>2.0"</td>
-              <td><img src="../wp-content/plugins/cable-wizard/img/drawing/length_right.png" class="length"></td>
-            </tr>
-            <tr class="cable-marker">
-              <td colspan="3">
-                <p>{{ rflabsPartNo(ca.length, $index) }}</p>
-                <p class="heading">FLORIDA RF LABS DCXXXX</p>
-              </td>
-            </tr>
-            <tr class="part_4">
-              <td colspan="3">
-                <img src="../wp-content/plugins/cable-wizard/img/drawing/part_4_2.png">
-              </td>
-            </tr>
-          </table>
+        <td class="cable-marker">
+          <p>2.0"</p>
+          <p>{{ rflabsPartNo(ca.length, $index) }}</p>
+          <p>FLORIDA RF LABS DCXXXX</p>
         </td>
-        <td class="row-gap">
-        </td>
-        <td class="assembly_cable">
-          <table class="assembly_length">
-            <tr>
-              <td><img src="../wp-content/plugins/cable-wizard/img/drawing/arrow_left.png" class="length"></td>
-              <td class="cable-length">{{ ca.length }} inches *</td>
-              <td><img src="../wp-content/plugins/cable-wizard/img/drawing/arrow_right.png" class="length"></td>
-            </tr>
-          </table>
-          <table>
-            <tr class="assembly_image">
-              <td id="conn_1"><img ng-repeat="connector in connectors" ng-if="ca.conn_1_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/></td>
-              <td class="cable" colspan="2">
-                <img ng-repeat="cable in cables" ng-if="ca.part_no === cable.part_no" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
-                <div class="marker">
-                  <p>MARKER</p>
-                </div>
-              </td>
-              <td id="conn_2"><img ng-repeat="connector in connectors" ng-if="ca.conn_2_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/></td>
-            </tr>
-          </table>
-          <table class="assembly_parts">
-            <tr>
-              <td class="part_no" id="part_1"><img src="../wp-content/plugins/cable-wizard/img/drawing/part_1.png" class="length"></td>
-              <td class="part_no" id="part_4"><img src="../wp-content/plugins/cable-wizard/img/drawing/part_4.png" class="length"></td>
-              <td class="part_no" id="part_3"><img src="../wp-content/plugins/cable-wizard/img/drawing/part_3.png" class="length"></td>
-              <td class="part_no" id="part_2"><img src="../wp-content/plugins/cable-wizard/img/drawing/part_2.png" class="length"></td>
-            </tr>
-          </table>
+        <td>
+          <p>6 inches *</p>
         </td>
       </tr>
     </table>
   </div>
   <div class="rows row-3">
-    <table>
-      <tr>
-        <td>
-          <p>* Picture is for reference only.</p>
-        </td>
-        <td>
-          <table class="cable-parts">
-            <tr>
-              <td>3</td>
-              <td>1</td>
-              <td>{{ ca.part_no }}</td>
-              <td>{{ ca.name }}</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>1</td>
-              <td>{{ ca.conn_1_part_no }}</td>
-              <td>{{ ca.conn_1_description }}</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>1</td>
-              <td>{{ ca.conn_2_part_no }}</td>
-              <td>{{ ca.conn_2_description }}</td>
-            </tr>
-            <tr>
-              <td>ITEM</td>
-              <td>QTY</td>
-              <td>PART NO.</td>
-              <td>DESCRIPTION</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+    <div class="">
+    </div>
+    <div class="">
+      <table>
+        <tr>
+          <td>
+            <p>* Picture is for reference only.</p>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td>3</td>
+                <td>1</td>
+                <td>{{ ca.part_no }}</td>
+                <td>{{ ca.name }}</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>1</td>
+                <td>{{ ca.conn_1_part_no }}</td>
+                <td>{{ ca.conn_1_description }}</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>1</td>
+                <td>{{ ca.conn_2_part_no }}</td>
+                <td>{{ ca.conn_2_description }}</td>
+              </tr>
+              <tr>
+                <td>ITEM</td>
+                <td>QTY</td>
+                <td>PART NO.</td>
+                <td>DESCRIPTION</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
   <div class='rows row-4'>
     <table>
@@ -120,7 +81,7 @@
           <p>(800) 544-5594</p>
           <p><a href="http://www.emc-rflabs.com">www.emc-rflabs.com</a></p>
         </td>
-        <td class="row-gap"></td>
+        <td width="100px">&nbsp;</td>
         <td class="cable-tolerance">
           <p>Standard Length and Tolerance (IN)</p>
           <div class="vertical-line"></div>
@@ -184,7 +145,7 @@
             </tr>
             <tr>
               <td class="drawn" colspan="2">
-                <p class="heading">DRAWN: {{ dateNow() }}</p>
+                <p class="heading">DRAWN: 09/26/2016</p>
               </td>
               <td class="sheet" colspan="1">
                 <p class="heading">SHEET 1 OF 1</p>

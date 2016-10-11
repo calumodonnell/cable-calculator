@@ -1,5 +1,5 @@
 /*jslint browser:true*/
-/*global $, angular, app */
+/*global $, angular */
 
 // remove comma from number
 app.filter('rfLength', function () {
@@ -14,13 +14,7 @@ app.filter('rfLength', function () {
             afterDecimal = '',
             first;
 
-
-        if (len === null) {
-            myString = 0;
-        } else {
-            myString = len.toString();
-        }
-
+        myString = len.toString();
         afterDecimal = myString.split(".")[1];
         newString = myString.split(".")[0];
         l = newString.length;

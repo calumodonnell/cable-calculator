@@ -2,7 +2,7 @@
 /*global $, jQuery, alert, angular, console, app*/
 
 // cartCtrl controller
-app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', function ($scope, $filter, cables, connectors) {
+app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $filter, cables) {
     "use strict";
 
     var initializing = false;
@@ -11,10 +11,6 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
 
     cables.then(function (data) {
         $scope.cables = data;
-    });
-
-    connectors.then(function (data) {
-        $scope.connectors = data;
     });
 
     if (localStorage.getItem('measure') === 'true') {
