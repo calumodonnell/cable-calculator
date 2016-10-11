@@ -419,9 +419,8 @@ $xs-device: "screen and (max-width: 543px)"
       vertical-align: middle
 
   .table#selector-table
-    tbody, thead
-      tr
-        cursor: pointer
+    .th-click
+      cursor: pointer
     tbody
       tr
         &:hover,
@@ -656,9 +655,15 @@ $xs-device: "screen and (max-width: 543px)"
       .rows
         clear: both
         display: block
+      .heading
+        font-size: 12px!important
+      .row-gap
+        width: 100px
       .row-1
+        margin-bottom: 40px
         .part-electrical
           p
+            font-size: 11px
             margin-bottom: 0
         .part-numbers
           border: 3px solid #000
@@ -666,37 +671,114 @@ $xs-device: "screen and (max-width: 543px)"
           h3, p
             margin-bottom: 0
       .row-2
-        .cable-marker
-          border: 1px solid #000
-      .row-3
-        table
-          margin-bottom: 5px
-          table
-            float: right
+        margin-bottom: 40px
+        .part_length
+          width: 200px
+          .cable-length
+            text-align: center
+            .length
+              width: 60px
+          .cable-marker
+            border: 1px solid #000
+            font-size: 11px
+            text-align: center
+            p
+              margin-bottom: 0
+          .part_4
+            text-align: right
+            img
+              width: 60px
+        .assembly_cable
+          width: 540px
+          .assembly_length
+            margin: 0 auto
             width: auto
-            th, td
-              border: 1px solid #000
-              padding: 5px 8px
+            .cable-length
+              padding: 0 10px
+            img
+              width: 80px
+          .assembly_image
+            .cable
               text-align: center
+            #conn_1,
+            #conn_2
+              position: relative
+              bottom: 3px
+            #conn_1
+              left: 35px
+              text-align: right
+            #conn_2
+              right: 35px
+              text-align: left
+              img
+                filter: FlipH
+                transform: scaleX(-1)
+            .marker
+              border: 1px solid #000
+              background-color: #A4A4A4
+              margin: 0 auto
+              position: relative
+              text-align: center
+              top: -30px
+              width: 60px
+              z-index: 10
+              p
+                color: white
+                margin-bottom: 0
+          .assembly_parts
+            text-align: center
+            img
+              width: 25px
+            .part_no
+              vertical-align: top
+            #part_1
+              width: 110px
+              text-align: right
+            #part_2
+              text-align: left
+              width: 120px
+            #part_3
+              width: 140px
+            #part_4
+              width: 168px
+              text-align: right
+      .row-3
+        margin-bottom: 5px
+        .cable-parts
+          float: right
+          font-size: 11px
+          width: 400px
+          th, td
+            border: 1px solid #000
+            padding: 5px 8px
+        p
+          font-size: 11px
+          margin-bottom: 0
       .row-4
-        .heading
-          font-size: 12px!important
+        td
+          vertical-align: top
         .logo-address
+          text-align: center
+          width: 140px
           img
             height: auto
             margin-bottom: 10px
             width: 60px
+          p
+            text-align: left
         .cable-tolerance,
         .cable-covering,
         .logo-address,
         .cable-measurement
           border: 1px solid #000
-          padding: 5px
+          height: 200px
+          padding: 10px
           p
-            font-size: 10px
-            margin-bottom: 2px
+            font-size: 11px
+            margin-bottom: 0
         .cable-tolerance
           vertical-align: top
+          width: 170px
           .vertical-line
             border-left: 1px solid #000
             height: 140px
@@ -704,12 +786,30 @@ $xs-device: "screen and (max-width: 543px)"
             width: 1px
         .cable-covering
           padding: 0
+          width: 170px
           .marking,
           .material,
           .finish
             border-bottom: 1px solid #000
+          .marking
+            height: 90px
+          .material,
+          .finish,
+          .coating
+            height: 36px
         .cable-measurement
           padding: 0
+          width: 260px
+          .length-measurement
+            height: 85px
+          .scale,
+          .code-id,
+          .size
+            height: 45px
+          .pn,
+          .drawn,
+          .sheet
+            height: 35px
           .length-measurement,
           .scale,
           .code-id,
@@ -732,6 +832,8 @@ $xs-device: "screen and (max-width: 543px)"
               width: 40px
               height: 1px
               background-color: #000
+              margin-bottom: 10px
+              margin-top: 10px
 
     .preview
       background-color: #f9f9f9
@@ -745,55 +847,3 @@ $xs-device: "screen and (max-width: 543px)"
   #cable-prices
     margin-bottom: 15px
     width: 100%
-
-@media print
-  .site-content,
-  .site-footer
-    display: none
-
-  #print-quotation
-    table
-      width: 100%
-    p
-      font-size: 12px
-    td
-      font-size: 11px
-    .pdf-header
-      margin-bottom: 50px
-      .address-header p
-        margin-bottom: 0
-        b
-          font-weight: bold
-      .logo-header
-        img
-          float: right
-          width: 70px
-          vertical-align: top
-    .pdf-content
-      margin-bottom: 80px
-      .cart-summary
-        margin-bottom: 20px
-        .cart-summary-head
-          td
-            font-weight: bold
-      h1
-        font-size: 24px
-      #total-price
-        text-align: right
-      .price-breaks
-        background-color: #F2F2F2
-        -webkit-print-color-adjust: exact
-    .pdf-footer
-      position: absolute
-      bottom: 0
-      p
-        font-size: 11px
-        margin-bottom: 0
-      .sales-disclaimer
-        padding-right: 30px
-      .printed-date
-        vertical-align: bottom
-
-    #print-drawing
-      table
-        width: 100%

@@ -53,6 +53,8 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'css/style.css': 'sass/style.sass',
+                    'css/drawing.css': 'sass/drawing.sass',
+                    'css/quotation.css': 'sass/quotation.sass',
                     'admin/css/style.css': 'admin/sass/style.sass'
                 }
             }
@@ -61,6 +63,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'css/style.css': 'css/style.css',
+                    'css/drawing.css': 'css/drawing.css',
+                    'css/quotation.css': 'css/quotation.css',
                     'admin/css/style.css': 'admin/css/style.css'
                 }
             }
