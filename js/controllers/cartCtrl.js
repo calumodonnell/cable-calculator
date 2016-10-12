@@ -37,7 +37,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
 
         if (covering === undefined) { covering = ''; }
 
-        if ($scope.metric === true) {
+        if (localStorage.getItem('metric') === true) {
             len = len / 2.52;
         }
 
@@ -65,7 +65,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
 
         if (covering === undefined) { covering = ''; }
 
-        if ($scope.metric === true) {
+        if (localStorage.getItem('metric') === true) {
             len = len / 2.52;
         }
 
@@ -820,17 +820,15 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
 
             var len;
 
-            if ($scope.clength) {
-                if ($scope.metric === true) {
-                    $scope.clength = $scope.clength * 2.52;
-                } else if ($scope.metric === false) {
-                    $scope.clength = $scope.clength / 2.52;
-                }
-                len = $scope.clength.toFixed(0);
-                $scope.clength = parseInt(len, 10);
-
-                localStorage.setItem('clength', $scope.clength);
+            if ($scope.metric === true) {
+                $scope.clength = $scope.clength * 2.52;
+            } else if ($scope.metric === false) {
+                $scope.clength = $scope.clength / 2.52;
             }
+            len = $scope.clength.toFixed(0);
+            $scope.clength = parseInt(len, 10);
+
+            localStorage.setItem('clength', $scope.clength);
         }
     });
 }]);

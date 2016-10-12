@@ -382,28 +382,45 @@
 			<tr>
 				<td colspan="2">
 					<table class="input_fields_wrap">
-						<tr>
-							<td class="td-width">Connectors</td>
-							<td>Part No</td>
-							<td>Price</td>
-							<td></td>
-						</tr>
 						<tr class='connector_field'>
-							<td></td>
-							<td>
-								<select class = "cw_input" name ="connector_part[]" id="connector">
-									<option value="">&nbsp;</option>
-									<?php
-										if($connector_list) {
-											foreach($connector_list as $connector) {
-												echo "<option value='" . stripslashes($connector->id) . "'>" . stripslashes($connector->con_part_no) . "</option>";
-											}
-										}
-									?>
-								</select>
+							<td class='td-width'>
+								<table>
+									<tr><td>Part No</td></tr>
+									<tr><td>Price</td></tr>
+									<tr><td>Max. Frequency</td></tr>
+								</table>
 							</td>
-							<td>$ <input type="text" class="cw_input" name="connector_price[]" id="connector_price" value=""/></td>
-							<td><a href="" class="add_field button button-secondary button-large">+</a></td>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<select class='cw_input' name='connector_part[]' id='connector'>
+												<option value=''>&nbsp;</option>
+												<?php
+													if($connector_list) {
+														foreach($connector_list as $connector) {
+															echo "<option value='" . stripslashes($connector->id) . "'>" . stripslashes($connector->con_part_no) . "</option>";
+														}
+													}
+												?>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type='text' class='cw_input' name='connector_price[]' id='connector_price' value=''/>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type='text' class='cw_input' name='connector_freq[]' id='connector_freq' value=''/>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<a href='' class='add_field button button-secondary button-large'>+</a>
+							</td>
 						</tr>
 					</table>
 				</td>
@@ -421,7 +438,7 @@
 
 		jQuery(document).on('click', ".add_field", function (e) {
 				e.preventDefault();
-				jQuery(".input_fields_wrap").append("<tr class='connector_field'><td></td><td><select class='cw_input' name='connector_part[]' id='connector'><option value=''></option><?php if($connector_list){foreach($connector_list as $connector){echo "<option value='" . stripslashes($connector->id) . "'>" . stripslashes($connector->con_part_no) . "</option>";}}?></select></td><td>$ <input type='text' class='cw_input' name='connector_price[]' id='connector_price'/></td><td><a href='' class='remove_field button button-secondary button-large'>x</a></td></tr>");
+				jQuery(".input_fields_wrap").append("<tr class='connector_field additional_connector_field'><td class='td-width'><table><tr><td>Part No</td></tr><tr><td>Price</td></tr><tr><td>Max. Frequency</td></tr></table></td><td><table><tr><td><select class='cw_input' name='connector_part[]' id='connector'><option value=''>&nbsp;</option><?php if($connector_list) { foreach($connector_list as $connector) { echo "<option value='" . stripslashes($connector->id) . "'>" . stripslashes($connector->con_part_no) . "</option>";}}?></select></td></tr><tr><td><input type='text' class='cw_input' name='connector_price[]' id='connector_price' value=''/></td></tr><tr><td><input type='text' class='cw_input' name='connector_freq[]' id='connector_freq' value=''/></td></tr></table></td><td><a href='' class='add_field button button-secondary button-large'>+</a></td></tr>");
 				return false;
 		});
 

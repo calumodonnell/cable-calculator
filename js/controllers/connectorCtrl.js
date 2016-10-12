@@ -59,11 +59,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
-        search_freq = localStorage.getItem('max_freq');
-        clength = localStorage.getItem('clength');
-
-        $scope.search_freq = parseFloat(search_freq, 10);
-        $scope.clength = parseFloat(clength, 10);
+        $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
+        $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
     }
 
     $scope.cartLength = function () {
@@ -87,9 +84,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             $scope.notification_title = "Error";
             $scope.notification_message = "The cable has a max frequency of " + cableFreq + " GHz.";
             $scope.notification_button = "Close";
-
             freq = cableFreq;
-            $scope.search_freq = cableFreq;
         }
 
         if (freq > 65) {
@@ -97,9 +92,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             $scope.notification_title = "Error";
             $scope.notification_message = "The application has a max frequency of 65 GHz.";
             $scope.notification_button = "Close";
-
             freq = 65;
-            $scope.search_freq = 65;
         }
 
         $scope.search_freq = freq;
@@ -434,7 +427,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             total;
 
         cart = JSON.parse(localStorage.getItem('cart'));
-        
+
         if (cart.length >= 12) {
             $scope.notification = true;
             $scope.notification_title = "Error";

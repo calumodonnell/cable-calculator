@@ -84,7 +84,7 @@ function cw_add_cable(){
           $connector = $wpdb->get_results($connector_sql, 'ARRAY_A');
 
           if (isset($connector)) :
-        		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, price) VALUES ('" . $cable_id . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "')";
+        		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, con_max_freq, price) VALUES ('" . $cable_id . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "', '" . $_POST['connector_freq'][$row] . "')";
         		$pricing_query = $wpdb->query($pricing_sql);
           endif;
       	endforeach;
@@ -165,7 +165,7 @@ function cw_edit_cable(){
         $connector = $wpdb->get_results($connector_sql, 'ARRAY_A');
 
         if(isset($connector)):
-      		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, price) VALUES ('" . $_POST['cable_id'] . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "')";
+      		$pricing_sql = "INSERT INTO cw_cable_connector_pricing (cable_id, connector_id, con_part_no, con_series, con_max_freq, price) VALUES ('" . $_POST['cable_id'] . "', '" . $_POST['connector_part'][$row] . "', '" . $connector[0]['con_part_no'] . "', '" . $connector[0]['con_series'] . "', '" . $_POST['connector_price'][$row] . "', '" . $_POST['connector_freq'][$row] . "')";
       		$pricing_query = $wpdb->query($pricing_sql);
         endif;
     	endforeach;

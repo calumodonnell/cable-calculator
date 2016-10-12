@@ -142,6 +142,12 @@ $xs-device: "screen and (max-width: 543px)"
         padding: 20px 26px
         position: relative
         transition: 0.2s ease
+        -webkit-touch-callout: none
+        -webkit-user-select: none
+        -khtml-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
         &:hover,
         &:focus
           color: #F2F2F2
@@ -460,6 +466,7 @@ $xs-device: "screen and (max-width: 543px)"
 
   #no_connectors
     p
+      font-size: 13px
       margin-bottom: 0
       text-align: center
 
