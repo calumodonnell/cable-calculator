@@ -33,7 +33,7 @@
           <td>{{ rflabsPartNo(ca.length, $index) }}</td>
           <td>{{ macolaPartNo(ca.length, $index) }}</td>
           <td>{{ ca.quantity }}</td>
-          <td>{{ unitPrice(ca.length, 1, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }}</td>
+          <td>{{ unitPrice(ca.length, ca.quantity, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }}</td>
           <td>{{ cablePrice(ca.length, ca.quantity, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }}</td>
         </tr>
         <tr class="price-breaks">

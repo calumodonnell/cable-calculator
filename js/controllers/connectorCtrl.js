@@ -363,6 +363,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         }
     });
 
+    /*
     $scope.macolaPartNo = function (part_no, conn_1_part_no, conn_2_part_no, len, covering) {
         var conn_1 = localStorage.getItem('conn_1'),
             conn_2 = localStorage.getItem('conn_2'),
@@ -398,6 +399,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             return macolaPart;
         }
     };
+    */
 
     $scope.rflabsPartNo = function (conn_1_part_no, part_no, covering, len, conn_2_part_no) {
         var conn_1 = localStorage.getItem('conn_1'),
