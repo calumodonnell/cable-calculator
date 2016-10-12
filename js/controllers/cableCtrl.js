@@ -248,7 +248,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     }
 
-    angular.element('th').click(function () {
+    angular.element('.th-click').click(function () {
         var table = angular.element(this).parents('table').eq(0),
             rows = table.find('tr:gt(0)').toArray().sort(comparer(angular.element(this).index())),
             i;

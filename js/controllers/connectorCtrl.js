@@ -363,44 +363,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         }
     });
 
-    /*
-    $scope.macolaPartNo = function (part_no, conn_1_part_no, conn_2_part_no, len, covering) {
-        var conn_1 = localStorage.getItem('conn_1'),
-            conn_2 = localStorage.getItem('conn_2'),
-            macolaPart,
-            conn_1_mac_code,
-            conn_2_mac_code,
-            i;
-
-        if (covering === undefined) { covering = ''; }
-
-        if (conn_1 === '' && conn_2 === '') {
-            return '2 Parts Missing';
-        } else if ((conn_1 !== '' && conn_2 === '') || (conn_1 === '' && conn_2 !== '')) {
-            return '1 Part Missing';
-        } else if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
-            for (i = 0; i < $scope.connectors.length; i += 1) {
-                if ($scope.connectors[i].con_part_no === conn_1_part_no) {
-                    conn_1_mac_code = $scope.connectors[i].con_mac_code;
-                }
-
-                if ($scope.connectors[i].con_part_no === conn_2_part_no) {
-                    conn_2_mac_code = $scope.connectors[i].con_mac_code;
-                }
-            }
-
-            if ($scope.metric === true) {
-                len = len / 2.52;
-            }
-
-            len = $filter('rfLength')(len);
-
-            macolaPart = part_no + conn_1_mac_code + conn_2_mac_code + '#' + len + covering;
-            return macolaPart;
-        }
-    };
-    */
-
     $scope.rflabsPartNo = function (conn_1_part_no, part_no, covering, len, conn_2_part_no) {
         var conn_1 = localStorage.getItem('conn_1'),
             conn_2 = localStorage.getItem('conn_2'),
@@ -469,15 +431,12 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             $scope.rf_part = $scope.conn_1 + '-' + $scope.part_no + $scope.covering + '-' + $scope.clength + '-' + $scope.conn_2;
 
             var cart = JSON.parse(localStorage.getItem('cart')) || [],
-                macolaPart = localStorage.getItem('macolaPart'),
                 rflabsPart = localStorage.getItem('rflabsPart'),
                 conn_1,
                 conn_1_part_no,
-                conn_1_mac_code,
                 conn_1_description,
                 conn_2,
                 conn_2_part_no,
-                conn_2_mac_code,
                 conn_2_description,
                 newCart,
                 i;
@@ -492,12 +451,10 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
             for (i = 0; i < $scope.connectors.length; i += 1) {
                 if ($scope.connectors[i].con_part_no === conn_1_part_no) {
-                    conn_1_mac_code = $scope.connectors[i].con_mac_code;
                     conn_1_description = $scope.connectors[i].con_description;
                 }
 
                 if ($scope.connectors[i].con_part_no === conn_2_part_no) {
-                    conn_2_mac_code = $scope.connectors[i].con_mac_code;
                     conn_2_description = $scope.connectors[i].con_description;
                 }
             }
@@ -508,11 +465,9 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     'name': name,
                     'part_no': part_no,
                     'conn_1_part_no': conn_1_part_no,
-                    'conn_1_mac_code': conn_1_mac_code,
                     'conn_1_description': conn_1_description,
                     'conn_1_price': conn_1_price,
                     'conn_2_part_no': conn_2_part_no,
-                    'conn_2_mac_code': conn_2_mac_code,
                     'conn_2_description': conn_2_description,
                     'conn_2_price': conn_2_price,
                     'covering': covering,
@@ -567,6 +522,35 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         $scope.droppedObjects2 = [];
     };
 
+    $scope.onClick = function (data) {
+        var index_1 = $scope.droppedObjects1.indexOf(data),
+            index_2 = $scope.droppedObjects2.indexOf(data),
+            jsonString,
+            objects_1 = $scope.droppedObjects1.length,
+            objects_2 = $scope.droppedObjects2.length;
+
+        if (objects_1 > 0 && objects_2 > 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "Only one connector allowed.";
+            $scope.notification_button = "Close";
+        } else if (index_1 === -1) {
+            $scope.droppedObjects1.push(data);
+
+            jsonString = JSON.stringify(data);
+
+            localStorage.setItem('conn_1', jsonString);
+            $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+        } else if (index_2 === -1) {
+            $scope.droppedObjects2.push(data);
+
+            jsonString = JSON.stringify(data);
+
+            localStorage.setItem('conn_2', jsonString);
+            $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
+        }
+    };
+
     $scope.onDrop_1 = function (data) {
         var index = $scope.droppedObjects1.indexOf(data),
             jsonString,
@@ -608,6 +592,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.onDragSuccess1 = function (data) {
+        event.preventDefault();
+
         var index = $scope.droppedObjects1.indexOf(data);
 
         if (index > -1) {
@@ -616,6 +602,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.onDragSuccess2 = function (data) {
+        event.preventDefault();
+
         var index = $scope.droppedObjects2.indexOf(data);
 
         if (index > -1) {

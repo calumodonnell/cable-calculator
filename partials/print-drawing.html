@@ -9,7 +9,6 @@
         </td>
         <td class="part-numbers">
           <h3>{{ rflabsPartNo(ca.length, $index) }}</h3>
-          <p>{{ macolaPartNo(ca.length, $index) }}</p>
         </td>
       </tr>
     </table>
@@ -123,16 +122,57 @@
         <td class="row-gap"></td>
         <td class="cable-tolerance">
           <p>Standard Length and Tolerance (IN)</p>
-          <div class="vertical-line"></div>
+          <table>
+            <thead>
+              <tr>
+                <td>Cable Finished Length (Inches)</td>
+                <td>Tolerance (Inches)</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>6.0-11.9</td>
+                <td>+0.3/-0.0</td>
+              </tr>
+              <tr>
+                <td>12.0-23.9</td>
+                <td>+0.5/-0.0</td>
+              </tr>
+              <tr>
+                <td>24.0-119.9</td>
+                <td>+1.5/-0.0</td>
+              </tr>
+              <tr>
+                <td>120.0-167.9</td>
+                <td>+2.0/-0.0</td>
+              </tr>
+              <tr>
+                <td>168.0-215.9</td>
+                <td>+2.5/-0.0</td>
+              </tr>
+              <tr>
+                <td>216.0-299.9</td>
+                <td>+3.0/-0.0</td>
+              </tr>
+              <tr>
+                <td>300.0-599.9</td>
+                <td>+6.0/-0.0</td>
+              </tr>
+              <tr>
+                <td>600+</td>
+                <td>+10.0/-0.0</td>
+              </tr>
+            </tbody>
+          </table>
         </td>
         <td class="cable-covering">
           <table>
             <tr>
               <td class="marking">
                 <p class="heading">OPTIONAL CABLE MARKING</p>
-                <p>Line 1</p>
-                <p>Line 2</p>
-                <p>Line 3</p>
+                <p>Line 1 - (Florida RF Part Number) Connector 1 - Cable Name - Length(inches) - Connector 2</p>
+                <p>Line 2 - (Cage Code/Date Code) MFR 2Y194 WWYY</p>
+                <p>Line 3 - (Serial Number) (If required on purchase order) SNXXXXX-XXX</p>
               </td>
             </tr>
             <tr>

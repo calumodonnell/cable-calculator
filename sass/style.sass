@@ -142,6 +142,12 @@ $xs-device: "screen and (max-width: 543px)"
         padding: 20px 26px
         position: relative
         transition: 0.2s ease
+        -webkit-touch-callout: none
+        -webkit-user-select: none
+        -khtml-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
         &:hover,
         &:focus
           color: #F2F2F2
@@ -276,6 +282,13 @@ $xs-device: "screen and (max-width: 543px)"
             position: relative
             img
               z-index: 1
+          .drop-here
+            display: none
+        .drag-enter
+          border: 1px solid #F2F2F2
+          transition: 0.2s ease
+          .drop-here
+            display: block
         #conn_1,
         #conn_2
           .conn-image
@@ -419,9 +432,8 @@ $xs-device: "screen and (max-width: 543px)"
       vertical-align: middle
 
   .table#selector-table
-    tbody, thead
-      tr
-        cursor: pointer
+    .th-click
+      cursor: pointer
     tbody
       tr
         &:hover,
@@ -658,8 +670,6 @@ $xs-device: "screen and (max-width: 543px)"
         display: block
       .heading
         font-size: 12px!important
-      .row-gap
-        width: 100px
       .row-1
         margin-bottom: 40px
         .part-electrical
@@ -673,6 +683,8 @@ $xs-device: "screen and (max-width: 543px)"
             margin-bottom: 0
       .row-2
         margin-bottom: 40px
+        .row-gap
+          width: 100px
         .part_length
           width: 200px
           .cable-length
@@ -756,11 +768,13 @@ $xs-device: "screen and (max-width: 543px)"
           font-size: 11px
           margin-bottom: 0
       .row-4
+        .row-gap
+          width: 20px
         td
           vertical-align: top
         .logo-address
           text-align: center
-          width: 140px
+          width: 120px
           img
             height: auto
             margin-bottom: 10px
@@ -778,16 +792,21 @@ $xs-device: "screen and (max-width: 543px)"
             font-size: 11px
             margin-bottom: 0
         .cable-tolerance
+          text-align: center
           vertical-align: top
-          width: 170px
-          .vertical-line
-            border-left: 1px solid #000
-            height: 140px
-            margin: 10px auto
-            width: 1px
+          width: 120px
+          table
+            font-size: 10px
+            thead
+              border-bottom: 1px solid #000
+              td
+                vertical-align: bottom
+            tr
+              td:first-child
+                border-right: 1px solid #000
         .cable-covering
           padding: 0
-          width: 170px
+          width: 25fr0px
           .marking,
           .material,
           .finish

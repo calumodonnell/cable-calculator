@@ -363,42 +363,6 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
         }
     });
 
-    $scope.macolaPartNo = function (part_no, conn_1_part_no, conn_2_part_no, len, covering) {
-        var conn_1 = localStorage.getItem('conn_1'),
-            conn_2 = localStorage.getItem('conn_2'),
-            macolaPart,
-            conn_1_mac_code,
-            conn_2_mac_code,
-            i;
-
-        if (covering === undefined) { covering = ''; }
-
-        if (conn_1 === '' && conn_2 === '') {
-            return '2 Parts Missing';
-        } else if ((conn_1 !== '' && conn_2 === '') || (conn_1 === '' && conn_2 !== '')) {
-            return '1 Part Missing';
-        } else if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
-            for (i = 0; i < $scope.connectors.length; i += 1) {
-                if ($scope.connectors[i].con_part_no === conn_1_part_no) {
-                    conn_1_mac_code = $scope.connectors[i].con_mac_code;
-                }
-
-                if ($scope.connectors[i].con_part_no === conn_2_part_no) {
-                    conn_2_mac_code = $scope.connectors[i].con_mac_code;
-                }
-            }
-
-            if ($scope.metric === true) {
-                len = len / 2.52;
-            }
-
-            len = $filter('rfLength')(len);
-
-            macolaPart = part_no + conn_1_mac_code + conn_2_mac_code + '#' + len + covering;
-            return macolaPart;
-        }
-    };
-
     $scope.rflabsPartNo = function (conn_1_part_no, part_no, covering, len, conn_2_part_no) {
         var conn_1 = localStorage.getItem('conn_1'),
             conn_2 = localStorage.getItem('conn_2'),
@@ -452,15 +416,12 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
             $scope.rf_part = $scope.conn_1 + '-' + $scope.part_no + $scope.covering + '-' + $scope.clength + '-' + $scope.conn_2;
 
             var cart = JSON.parse(localStorage.getItem('cart')) || [],
-                macolaPart = localStorage.getItem('macolaPart'),
                 rflabsPart = localStorage.getItem('rflabsPart'),
                 conn_1,
                 conn_1_part_no,
-                conn_1_mac_code,
                 conn_1_description,
                 conn_2,
                 conn_2_part_no,
-                conn_2_mac_code,
                 conn_2_description,
                 newCart,
                 i;
@@ -475,12 +436,10 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
 
             for (i = 0; i < $scope.connectors.length; i += 1) {
                 if ($scope.connectors[i].con_part_no === conn_1_part_no) {
-                    conn_1_mac_code = $scope.connectors[i].con_mac_code;
                     conn_1_description = $scope.connectors[i].con_description;
                 }
 
                 if ($scope.connectors[i].con_part_no === conn_2_part_no) {
-                    conn_2_mac_code = $scope.connectors[i].con_mac_code;
                     conn_2_description = $scope.connectors[i].con_description;
                 }
             }
@@ -499,11 +458,9 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
                     'name': name,
                     'part_no': part_no,
                     'conn_1_part_no': conn_1_part_no,
-                    'conn_1_mac_code': conn_1_mac_code,
                     'conn_1_description': conn_1_description,
                     'conn_1_price': conn_1_price,
                     'conn_2_part_no': conn_2_part_no,
-                    'conn_2_mac_code': conn_2_mac_code,
                     'conn_2_description': conn_2_description,
                     'conn_2_price': conn_2_price,
                     'covering': covering,

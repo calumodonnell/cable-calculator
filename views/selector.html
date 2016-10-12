@@ -63,11 +63,11 @@
           <thead>
             <tr>
               <th>&nbsp;</th>
-              <th ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></th>
-              <th ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></th>
-              <th ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></th>
-              <th ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></th>
-              <th ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></th>
+              <th class="th-click" ng-click="sortData('name')">Cable <span ng-class="getSortItem('name')"></span></th>
+              <th class="th-click" ng-click="sortData('db loss')">dB Loss (<span ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('db loss')"></span></th>
+              <th class="th-click" ng-click="sortData('diameter')">Diameter (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) <span ng-class="getSortItem('diameter')"></span></th>
+              <th class="th-click" ng-click="sortData('cost')">Cost <span ng-class="getSortItem('cost')"></span></th>
+              <th class="th-click" ng-click="sortData('flex')">Flexibility <span ng-class="getSortItem('flex')"></span></th>
               <th>&nbsp;</th>
             </tr>
           </thead>

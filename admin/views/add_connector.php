@@ -24,10 +24,6 @@
 				<td><input type="text" class="cw_input" name="con_description" id="con_description" /></td>
 			</tr>
 			<tr>
-				<td>Macola Code</td>
-				<td><input type="text" class="cw_input" name="con_mac_code" id="con_mac_code" /></td>
-			</tr>
-			<tr>
 				<td>Max. Frequency</td>
 				<td><input type="number" class="cw_input" name="con_max_freq" id="con_max_freq" /></td>
 			</tr>

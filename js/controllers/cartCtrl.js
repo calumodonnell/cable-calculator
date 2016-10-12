@@ -2,7 +2,7 @@
 /*global $, jQuery, alert, angular, console, app*/
 
 // cartCtrl controller
-app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $filter, cables) {
+app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', function ($scope, $filter, cables, connectors) {
     "use strict";
 
     var initializing = false;
@@ -13,39 +13,15 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', function ($scope, $fi
         $scope.cables = data;
     });
 
+    connectors.then(function (data) {
+        $scope.connectors = data;
+    });
+
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;
     } else {
         $scope.metric = false;
     }
-
-    $scope.macolaPartNo = function (len, index) {
-        var cart,
-            part_no,
-            conn_1_mac_code,
-            conn_2_mac_code,
-            covering,
-            macolaPart;
-
-        localStorage.cart = localStorage.getItem('cart');
-        cart = JSON.parse(localStorage.cart);
-
-        part_no = cart[index].part_no;
-        conn_1_mac_code = cart[index].conn_1_mac_code;
-        conn_2_mac_code = cart[index].conn_2_mac_code;
-        covering = cart[index].covering;
-
-        if (covering === undefined) { covering = ''; }
-
-        if (localStorage.getItem('metric') === true) {
-            len = len / 2.52;
-        }
-
-        len = $filter('rfLength')(len);
-
-        macolaPart = part_no + conn_1_mac_code + conn_2_mac_code + '#' + len + covering;
-        return macolaPart;
-    };
 
     $scope.rflabsPartNo = function (len, index) {
         var cart,

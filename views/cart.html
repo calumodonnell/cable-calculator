@@ -41,7 +41,6 @@
                   <p>{{ ca.name }}</p>
                   <p>{{ ca.conn_1_part_no }} - {{ ca.conn_1_description }}</p>
                   <p>{{ ca.conn_2_part_no }} - {{ ca.conn_2_description }}</p>
-                  <p>Macola - {{ macolaPartNo(ca.length, $index) }}</p>
                 </td>
                 <td class="collapse"><span class="show-mobile">Quantity </span> <input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
                 <td class="collapse"><span class="show-mobile">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) -</span> <input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="lengthCheck(ca.length, $index)"></td>

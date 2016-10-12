@@ -22,7 +22,6 @@
       <tbody>
         <tr class="cart-summary-head">
           <td><b>Order Number<b></td>
-          <td><b>Part Number<b></td>
           <td><b>Quantity<b></td>
           <td><b>Unit Price<b></td>
           <td><b>Ext. Amount<b></td>
@@ -31,14 +30,13 @@
       <tbody ng-repeat='ca in cart'>
         <tr>
           <td>{{ rflabsPartNo(ca.length, $index) }}</td>
-          <td>{{ macolaPartNo(ca.length, $index) }}</td>
           <td>{{ ca.quantity }}</td>
           <td>{{ unitPrice(ca.length, ca.quantity, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }}</td>
           <td>{{ cablePrice(ca.length, ca.quantity, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }}</td>
         </tr>
         <tr class="price-breaks">
           <td>Price Breaks</td>
-          <td colspan='4'>
+          <td colspan='3'>
             <table>
               <tr>
                 <td>1 - 3 <br>{{ unitPrice(ca.length, 1, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }}</td>

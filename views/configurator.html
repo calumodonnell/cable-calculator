@@ -140,12 +140,11 @@
             </tbody>
           </table>
           <div class="cable-info">
-            <!--<p>Macola Part # - {{ macolaPartNo(cable.part_no, conn_1.con_part_no, conn_2.con_part_no, clength, covering) }}</p>-->
             <p>Florida RF Labs Part # - {{ rflabsPartNo(conn_1.con_part_no, cable.part_no, covering, clength, conn_2.con_part_no) }}</p>
           </div>
           <div class="row connector-selection">
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in filerConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq))">
-              <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable>
+              <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable ng-click="onClick(conn, $event)">
                 <div class="conn-image">
                   <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
                 </div>
