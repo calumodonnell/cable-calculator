@@ -105,8 +105,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // direct to config if conditions met
     $scope.toConfig = function (id, conn_1, conn_2) {
-        var cart,
-            total;
+        var cart;
 
         cart = JSON.parse(localStorage.getItem('cart'));
 
@@ -171,17 +170,14 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // calcalate db loss
     $scope.calcLoss = function (k1, k2) {
-        var loss = 0,
-            freq = 0,
-            len = 0;
+        var loss,
+            freq = $scope.search_freq,
+            len = $scope.clength;
 
-        if ($scope.clength) { freq = $scope.clength; }
-
-        if ($scope.search_freq) { len = $scope.search_freq; }
-
-        if (angular.element("#loss").hasClass("metric")) {
+        if ($scope.metric === false) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-        } else if (angular.element("#loss").hasClass("imperial")) {
+        } else if ($scope.metric === true) {
+            len = len / 2.52;
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
         }
 
@@ -193,7 +189,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         if (val > 65) {
             $scope.notification = true;
             $scope.notification_title = "Error";
-            $scope.notification_message = "The application has a minimum max frequency of 65 GHz.";
+            $scope.notification_message = "The application has a maximum frequency of 65 GHz.";
             $scope.notification_button = "Close";
             val = 65;
         }

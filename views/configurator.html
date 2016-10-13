@@ -95,16 +95,19 @@
       <div class="content-head">
         <div class="container">
           <h3>Configure Your Cable</h3>
-          <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, conn_1.price, conn_2.price, covering)'>Add to Cart</a>
+          <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, cable.typ_atten_k1, cable.typ_atten_k2, conn_1.price, conn_2.price, covering)'>Add to Cart</a>
         </div>
       </div>
       <div class="container content-wrap">
         <div class="cable-configurator">
+          <div class="cable-info">
+            <p>{{ rflabsPartNo(conn_1.con_part_no, cable.part_no, covering, clength, conn_2.con_part_no) }}</p>
+          </div>
           <table class="cable-assembly">
             <tbody>
               <tr class="cable-holder">
                 <td class="bin" id="conn_1" ng-drop-success="onDrop_1($data, $event)" ng-drop="true">
-                  <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
+                  <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data, $event)" ng-center-anchor="{{centerAnchor}}">
                       <div class="conn-image">
                         <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
                       </div>
@@ -122,7 +125,7 @@
                   </div>
                 </td>
                 <td class="bin" id="conn_2" ng-drop-success="onDrop_2($data, $event)" ng-drop="true">
-                  <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
+                  <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data, $event)" ng-center-anchor="{{centerAnchor}}">
                       <div class="conn-image">
                         <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
                       </div>
@@ -139,9 +142,6 @@
               </tr>
             </tbody>
           </table>
-          <div class="cable-info">
-            <p>Florida RF Labs Part # - {{ rflabsPartNo(conn_1.con_part_no, cable.part_no, covering, clength, conn_2.con_part_no) }}</p>
-          </div>
           <div class="row connector-selection">
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in filerConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq))">
               <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable ng-click="onClick(conn, $event)">

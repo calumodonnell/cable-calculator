@@ -570,4 +570,12 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
             localStorage.setItem('clength', $scope.clength);
         }
     });
+
+    $scope.calcLoss = function (k1, k2, len, freq) {
+        var loss = 0;
+
+        loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
+
+        return loss.toFixed(2);
+    };
 }]);

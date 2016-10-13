@@ -4,8 +4,8 @@
       <tr>
         <td class="part-electrical">
           <p><b>ELECTRICAL:</b></p>
-          <p>FREQUENCY: DC-40GHz</p>
-          <p>CABLE INSERTION LOSS @ 1GHz: 0.21 dB/ft</p>
+          <p>FREQUENCY: DC-{{ca.freq}}GHz</p>
+          <p>CABLE INSERTION LOSS @ {{ca.freq}}GHz: {{ calcLoss (ca.k1, ca.k2, ca.length, ca.freq) }} dB/ft</p>
         </td>
         <td class="part-numbers">
           <h3>{{ rflabsPartNo(ca.length, $index) }}</h3>

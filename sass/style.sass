@@ -233,7 +233,8 @@ $xs-device: "screen and (max-width: 543px)"
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15)
     padding: 30px
     .cable-assembly
-      margin-bottom: 20px
+      border-bottom: 1px solid #E5E8EA
+      margin-bottom: 30px
       table-layout: auto
       width: 100%
       td
@@ -317,14 +318,13 @@ $xs-device: "screen and (max-width: 543px)"
         td
           font-size: 13px
           font-weight: 300
+          padding-bottom: 30px
           text-align: center
     .cable-info
-      border-bottom: 1px solid #E5E8EA
-      margin-bottom: 30px
-      padding-bottom: 20px
+      text-align: center
       p
-        font-size: 13px
-        margin-bottom: 10px
+        font-size: 15px
+        margin-bottom: 0
 
   //connector selection
   .connector-selection
@@ -436,6 +436,7 @@ $xs-device: "screen and (max-width: 543px)"
       cursor: pointer
     tbody
       tr
+        cursor: pointer
         &:hover,
         &:focus
           background-color: #F9F9F9
@@ -794,7 +795,9 @@ $xs-device: "screen and (max-width: 543px)"
         .cable-tolerance
           text-align: center
           vertical-align: top
-          width: 120px
+          width: 200px
+          p
+            margin-bottom: 10px
           table
             font-size: 10px
             thead
@@ -806,7 +809,6 @@ $xs-device: "screen and (max-width: 543px)"
                 border-right: 1px solid #000
         .cable-covering
           padding: 0
-          width: 25fr0px
           .marking,
           .material,
           .finish
@@ -819,17 +821,16 @@ $xs-device: "screen and (max-width: 543px)"
             height: 36px
         .cable-measurement
           padding: 0
-          width: 260px
+          width: 240px
           .length-measurement
-            height: 85px
+            height: 80px
           .scale,
           .code-id,
-          .size
-            height: 45px
+          .size,
           .pn,
           .drawn,
           .sheet
-            height: 35px
+            height: 45px
           .length-measurement,
           .scale,
           .code-id,

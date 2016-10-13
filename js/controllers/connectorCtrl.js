@@ -6,13 +6,7 @@
 app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
     "use strict";
 
-    var initializing = true,
-        search_freq = "",
-        clength = "",
-        cart,
-        connector_1,
-        connector_2,
-        assembly_id;
+    var initializing = true;
 
     $scope.droppedObjects1 = [];
     $scope.droppedObjects2 = [];
@@ -79,10 +73,39 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.storeFreq = function (freq, cableFreq) {
+        var conn_1,
+            conn_2;
+
+        if (localStorage.getItem('conn_1')) {
+            localStorage.conn_1 = localStorage.getItem('conn_1');
+            conn_1 = JSON.parse(localStorage.conn_1);
+
+            if (freq > conn_1.con_max_freq) {
+                $scope.notification = true;
+                $scope.notification_title = "Error";
+                $scope.notification_message = "The " + conn_1.con_part_no + " connector has a maximum frequency of " + conn_1.con_max_freq + " GHz.";
+                $scope.notification_button = "Close";
+                freq = conn_1.con_max_freq;
+            }
+        }
+
+        if (localStorage.getItem('conn_2')) {
+            localStorage.conn_2 = localStorage.getItem('conn_2');
+            conn_2 = JSON.parse(localStorage.conn_2);
+
+            if ((freq > conn_2.con_max_freq) && conn_1) {
+                $scope.notification = true;
+                $scope.notification_title = "Error";
+                $scope.notification_message = "The " + conn_2.con_part_no + " connector has a maximum frequency of " + conn_2.con_max_freq + " GHz.";
+                $scope.notification_button = "Close";
+                freq = conn_2.con_max_freq;
+            }
+        }
+
         if (freq > cableFreq) {
             $scope.notification = true;
             $scope.notification_title = "Error";
-            $scope.notification_message = "The cable has a max frequency of " + cableFreq + " GHz.";
+            $scope.notification_message = "The cable has a maximum frequency of " + cableFreq + " GHz.";
             $scope.notification_button = "Close";
             freq = cableFreq;
         }
@@ -323,17 +346,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.calcLoss = function (k1, k2) {
-        var loss = 0,
-            freq = 0,
-            len = 0;
+        var loss,
+            freq = $scope.search_freq,
+            len = $scope.clength;
 
-        if ($scope.clength) { freq = $scope.clength; }
-
-        if ($scope.search_freq) { len = $scope.search_freq; }
-
-        if (jQuery("#loss").hasClass("metric")) {
+        if ($scope.metric === false) {
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-        } else if (jQuery("#loss").hasClass("imperial")) {
+        } else if ($scope.metric === true) {
+            len = len / 2.52;
             loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
         }
 
@@ -371,10 +391,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         if (covering === undefined) { covering = ''; }
 
         if (conn_1 === '' && conn_2 === '') {
-            return '2 Parts Missing';
-        } else if ((conn_1 !== '' && conn_2 === '') || (conn_1 === '' && conn_2 !== '')) {
-            return '1 Part Missing';
-        } else if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
+            return '2 Connector(s) Missing';
+        }
+
+        if ((conn_1 !== '' && conn_2 === '') || (conn_1 === '' && conn_2 !== '')) {
+            return '1 Connector(s) Missing';
+        }
+
+        if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
             if ($scope.metric === true) {
                 len = len / 2.52;
             }
@@ -386,11 +410,16 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         }
     };
 
-    $scope.addCart = function (name, part_no, conn_1_price, conn_2_price, covering) {
-        var cart,
-            total;
-
-        cart = JSON.parse(localStorage.getItem('cart'));
+    $scope.addCart = function (name, part_no, k1, k2, conn_1_price, conn_2_price, covering) {
+        var cart = JSON.parse(localStorage.getItem('cart')) || [],
+            conn_1,
+            conn_1_part_no,
+            conn_1_description,
+            conn_2,
+            conn_2_part_no,
+            conn_2_description,
+            newCart,
+            i;
 
         if (cart.length >= 12) {
             $scope.notification = true;
@@ -430,17 +459,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         } else if ($scope.search_freq && $scope.clength && $scope.conn_1 && $scope.conn_2) {
             $scope.rf_part = $scope.conn_1 + '-' + $scope.part_no + $scope.covering + '-' + $scope.clength + '-' + $scope.conn_2;
 
-            var cart = JSON.parse(localStorage.getItem('cart')) || [],
-                rflabsPart = localStorage.getItem('rflabsPart'),
-                conn_1,
-                conn_1_part_no,
-                conn_1_description,
-                conn_2,
-                conn_2_part_no,
-                conn_2_description,
-                newCart,
-                i;
-
             localStorage.conn_1 = localStorage.getItem('conn_1');
             conn_1 = JSON.parse(localStorage.conn_1);
             conn_1_part_no = conn_1.con_part_no;
@@ -464,6 +482,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     'id': $scope.part_id,
                     'name': name,
                     'part_no': part_no,
+                    'k1': k1,
+                    'k2': k2,
                     'conn_1_part_no': conn_1_part_no,
                     'conn_1_description': conn_1_description,
                     'conn_1_price': conn_1_price,
@@ -474,6 +494,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                     'quantity': 1,
                     'length': $scope.clength,
                     'price': '',
+                    'freq': $scope.search_freq
                 };
 
             cart.push(newCart);
@@ -512,8 +533,9 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
     $scope.clearBin_1 = function () {
         localStorage.setItem('conn_1', '');
-        $scope.conn_1 = localStorage.getItem('conn_1');
+        $scope.conn_1 = '';
         $scope.droppedObjects1 = [];
+        console.log($scope.droppedObjects1);
     };
 
     $scope.clearBin_2 = function () {
@@ -523,45 +545,41 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.onClick = function (data) {
-        var index_1 = $scope.droppedObjects1.indexOf(data),
-            index_2 = $scope.droppedObjects2.indexOf(data),
-            jsonString,
-            objects_1 = $scope.droppedObjects1.length,
-            objects_2 = $scope.droppedObjects2.length;
+        var index_1, index_2, objects_1, objects_2, jsonString;
 
-        if (objects_1 > 0 && objects_2 > 0) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "Only one connector allowed.";
-            $scope.notification_button = "Close";
-        } else if (index_1 === -1) {
+        index_1 = $scope.droppedObjects1.indexOf(data);
+        index_2 = $scope.droppedObjects2.indexOf(data);
+        objects_1 = $scope.droppedObjects1.length;
+        objects_2 = $scope.droppedObjects2.length;
+
+        if (index_1 === -1 && objects_1 === 0) {
             $scope.droppedObjects1.push(data);
 
             jsonString = JSON.stringify(data);
 
             localStorage.setItem('conn_1', jsonString);
             $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
-        } else if (index_2 === -1) {
+        } else if (index_2 === -1 && objects_2 === 0) {
             $scope.droppedObjects2.push(data);
 
             jsonString = JSON.stringify(data);
 
             localStorage.setItem('conn_2', jsonString);
             $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
+        } else if (objects_1 > 0 && objects_2 > 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "Only one connector allowed.";
+            $scope.notification_button = "Close";
         }
     };
 
     $scope.onDrop_1 = function (data) {
         var index = $scope.droppedObjects1.indexOf(data),
-            jsonString,
-            objects = $scope.droppedObjects1.length;
+            objects = $scope.droppedObjects1.length,
+            jsonString;
 
-        if (objects > 0) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "Only one connector allowed.";
-            $scope.notification_button = "Close";
-        } else if (index === -1) {
+        if (index === -1 && objects === 0) {
             $scope.droppedObjects1.push(data);
 
             jsonString = JSON.stringify(data);
@@ -573,15 +591,10 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
     $scope.onDrop_2 = function (data) {
         var index = $scope.droppedObjects2.indexOf(data),
-            jsonString,
-            objects = $scope.droppedObjects2.length;
+            objects = $scope.droppedObjects2.length,
+            jsonString;
 
-        if (objects > 0) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "Only one connector allowed.";
-            $scope.notification_button = "Close";
-        } else if (index === -1) {
+        if (index === -1 && objects === 0) {
             $scope.droppedObjects2.push(data);
 
             jsonString = JSON.stringify(data);
@@ -592,8 +605,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.onDragSuccess1 = function (data) {
-        event.preventDefault();
-
         var index = $scope.droppedObjects1.indexOf(data);
 
         if (index > -1) {
@@ -602,23 +613,11 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.onDragSuccess2 = function (data) {
-        event.preventDefault();
-
         var index = $scope.droppedObjects2.indexOf(data);
 
         if (index > -1) {
             $scope.droppedObjects2.splice(index, 1);
         }
-    };
-
-    $scope.printDrawing = function () {
-        var pdf = new jsPDF('l', 'pt', 'a4'),
-            options = {background: '#FFFFFF'};
-
-        pdf.addHTML(jQuery('.drawing-preview'), options, function () {
-            pdf.output('dataurlnewwindow');
-            //pdf.save("drawing" + new Date() + ".pdf");
-        });
     };
 
     // filter connectors by frequency
