@@ -535,7 +535,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         localStorage.setItem('conn_1', '');
         $scope.conn_1 = '';
         $scope.droppedObjects1 = [];
-        console.log($scope.droppedObjects1);
     };
 
     $scope.clearBin_2 = function () {
@@ -545,7 +544,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     };
 
     $scope.onClick = function (data) {
-        var index_1, index_2, objects_1, objects_2, jsonString;
+        var index_1, index_2, objects_1, objects_2, jsonString, conn_1, conn_2, con_rank_1, con_rank_2;
 
         index_1 = $scope.droppedObjects1.indexOf(data);
         index_2 = $scope.droppedObjects2.indexOf(data);
@@ -559,6 +558,36 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
             localStorage.setItem('conn_1', jsonString);
             $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+
+            conn_1 = JSON.parse(localStorage.conn_1);
+            conn_2 = JSON.parse(localStorage.conn_2);
+
+            con_rank_1 = conn_1.con_rank;
+            con_rank_2 = conn_2.con_rank;
+
+            if (con_rank_1 > con_rank_2) {
+                $scope.notification = true;
+                $scope.notification_title = "Error";
+                $scope.notification_message = "Connector weighting protocol has switched connector placement to conform with standard naming protocol.";
+                $scope.notification_button = "Close";
+
+                localStorage.setItem('conn_1', '');
+                $scope.conn_1 = '';
+                $scope.droppedObjects1 = [];
+
+                localStorage.setItem('conn_2', '');
+                $scope.conn_2 = '';
+                $scope.droppedObjects2 = [];
+
+                $scope.conn_1 = conn_2;
+                $scope.conn_2 = conn_1;
+
+                $scope.droppedObjects1.push(conn_2);
+                $scope.droppedObjects2.push(conn_1);
+
+                localStorage.setItem('conn_1', JSON.stringify(conn_1));
+                localStorage.setItem('conn_2', JSON.stringify(conn_2));
+            }
         } else if (index_2 === -1 && objects_2 === 0) {
             $scope.droppedObjects2.push(data);
 
@@ -566,6 +595,36 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
             localStorage.setItem('conn_2', jsonString);
             $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
+
+            conn_1 = JSON.parse(localStorage.conn_1);
+            conn_2 = JSON.parse(localStorage.conn_2);
+
+            con_rank_1 = conn_1.con_rank;
+            con_rank_2 = conn_2.con_rank;
+
+            if (con_rank_1 > con_rank_2) {
+                $scope.notification = true;
+                $scope.notification_title = "Error";
+                $scope.notification_message = "Connector weighting protocol has switched connector placement to conform with standard naming protocol.";
+                $scope.notification_button = "Close";
+
+                localStorage.setItem('conn_1', '');
+                $scope.conn_1 = '';
+                $scope.droppedObjects1 = [];
+
+                localStorage.setItem('conn_2', '');
+                $scope.conn_2 = '';
+                $scope.droppedObjects2 = [];
+
+                $scope.conn_1 = conn_2;
+                $scope.conn_2 = conn_1;
+
+                $scope.droppedObjects1.push(conn_2);
+                $scope.droppedObjects2.push(conn_1);
+
+                localStorage.setItem('conn_1', JSON.stringify(conn_1));
+                localStorage.setItem('conn_2', JSON.stringify(conn_2));
+            }
         } else if (objects_1 > 0 && objects_2 > 0) {
             $scope.notification = true;
             $scope.notification_title = "Error";

@@ -44,6 +44,10 @@
 				</td>
 			</tr>
 			<tr>
+				<td>Rank *</td>
+				<td><input type="number" class="cw_input" name="con_rank" id="con_rank"  value="<?php echo stripslashes($connector[0]['con_rank']);?>" /></td>
+			</tr>
+			<tr>
 				<td>Available</td>
 				<td><input type="checkbox" class="cw_input" name="con_status" id="con_status" <?php if($connector[0]['con_status'] == 'on'){echo "checked";}?> /></td>
 			</tr>

@@ -29,7 +29,7 @@ elseif (isset($_REQUEST['s'])) :
 	$search = $_REQUEST['s'];
 	$sql = "SELECT * FROM cw_connector_list WHERE con_part_no LIKE '%$search%' OR con_series LIKE '%$search%' OR con_description LIKE '%$search%' OR con_mac_code LIKE '%$search%' OR con_max_freq LIKE '%$search%' OR con_status LIKE '%$search%'";
 else :
-	$sql = "SELECT * FROM cw_connector_list ORDER BY con_part_no ASC";
+	$sql = "SELECT * FROM cw_connector_list ORDER BY con_rank, con_part_no ASC";
 endif;
 
 // query sql statement to get results
@@ -100,6 +100,12 @@ $lpm1 = $total_posts - 1;
 	<table class="wp-list-table widefat fixed striped posts">
 		<thead>
 			<tr>
+        <th id="con_rank" class="manage-column column-con-rank column-primary <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'con_rank'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=con_rank&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Rank No</span>
+						<span class="sorting-indicator"></span>
+					</a>
+				</th>
 				<th id="con_part_no" class="manage-column column-con-part-no column-primary <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'con_part_no'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
 					<a href="./admin.php?page=connector-list&orderby=con_part_no&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Connector Part No</span>
@@ -118,15 +124,9 @@ $lpm1 = $total_posts - 1;
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th id="date_created" class="manage-column column-date-created <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_created'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=date_created&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Date Created</span>
-						<span class="sorting-indicator"></span>
-					</a>
-				</th>
 				<th id="date_modified" class="manage-column column-date-modified <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_modified'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=con_max_freq&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Date Modified</span>
+					<a href="./admin.php?page=connector-list&orderby=date&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+						<span>Date</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
@@ -147,8 +147,8 @@ $lpm1 = $total_posts - 1;
 						// start row with connector data
 						?>
 						<tr id="connector-<?php echo $connector->id; ?>" class="iedit author-self level-0 post-<?php echo $cable->id; ?> type-post status-publish format-standard hentry category-uncategorised">
-							<td><?php echo stripslashes($connector->con_part_no); ?>
-								<div class="row-actions">
+              <td><?php echo stripslashes($connector->con_rank); ?>
+                <div class="row-actions">
 									<span class="edit">
 										<a title="Edit this item" id="edit-cable" href="<?php echo admin_url( 'admin.php?page=add-connector&amp;action=edit&amp;connectorid=' . $connector->id )?>">Edit</a>
 									</span> |
@@ -156,10 +156,10 @@ $lpm1 = $total_posts - 1;
 										<a title="Delete this item" id="delete-connector" href="<?php echo admin_url( 'admin.php?page=add-connector&amp;action=delete&amp;connectorid=' . $connector->id )?>">Delete</a>
 									</span>
 								</div>
-							</td>
+              </td>
+              <td><?php echo stripslashes($connector->con_part_no); ?></td>
 							<td><?php echo stripslashes($connector->con_series); ?></td>
 							<td><?php echo stripslashes($connector->con_description); ?></td>
-							<td><?php echo stripslashes($connector->date_created); ?></td>
 							<td><?php echo stripslashes($connector->date_modified); ?></td>
 							<td>
 								<?php

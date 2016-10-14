@@ -6,7 +6,7 @@ require_once( $parse_uri[0] . 'wp-load.php' );
 
 global $wpdb;
 
-$sql = "SELECT * FROM cw_connector_list ORDER BY con_series ASC";
+$sql = "SELECT * FROM cw_connector_list ORDER BY con_rank, con_part_no ASC";
 
 $connector_list = $wpdb->get_results($sql);
 

@@ -250,7 +250,7 @@ function cw_add_connector() {
   endif;
 
 	if (!isset($error)) :
-    $connector_sql = "INSERT INTO cw_connector_list (`con_series`, `con_part_no`, `con_description`, `con_max_freq`, `con_img`, `con_status`, `date_created`, `date_modified`)  VALUES ('" . $_POST['con_series'] . "', '" . $_POST['con_part_no'] . "', '" . $_POST['con_description'] . "', '" . $_POST['con_max_freq'] . "', '" . $con_img . "', '" . $con_status . "', '" . $current_date . "', '" . $current_date . "')";
+    $connector_sql = "INSERT INTO cw_connector_list (`con_series`, `con_part_no`, `con_description`, `con_max_freq`, `con_img`, `con_rank`, `con_status`, `date_created`, `date_modified`)  VALUES ('" . $_POST['con_series'] . "', '" . $_POST['con_part_no'] . "', '" . $_POST['con_description'] . "', '" . $_POST['con_max_freq'] . "', '" . $con_img . "', '" . $_POST['con_rank'] . "', '" . $con_status . "', '" . $current_date . "', '" . $current_date . "')";
 		$connector_query = $wpdb->query($connector_sql);
 	endif;
 
@@ -313,7 +313,7 @@ function cw_edit_connector() {
   endif;
 
 	if(isset($_POST['con_id']) && !isset($error)) :
-	  $connector_sql = "UPDATE cw_connector_list SET con_series = '" . $_POST['con_series'] . "', con_part_no = '" . $_POST['con_part_no'] . "', con_description = '" . $_POST['con_description'] . "', con_max_freq = '" . $_POST['con_max_freq'] . "', con_img = '" . $con_img . "', con_status = '" . $con_status . "', date_modified = '" . $current_date . "' WHERE id = '" . $_POST['con_id'] . "'";
+	  $connector_sql = "UPDATE cw_connector_list SET con_series = '" . $_POST['con_series'] . "', con_part_no = '" . $_POST['con_part_no'] . "', con_description = '" . $_POST['con_description'] . "', con_max_freq = '" . $_POST['con_max_freq'] . "', con_img = '" . $con_img . "', con_rank = '" . $_POST['con_rank'] . "', con_status = '" . $con_status . "', date_modified = '" . $current_date . "' WHERE id = '" . $_POST['con_id'] . "'";
     $connector_query = $wpdb->query($connector_sql);
 	endif;
 

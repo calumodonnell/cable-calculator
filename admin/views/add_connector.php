@@ -32,6 +32,10 @@
 				<td><input type="file" class="cw_input" name="con_img" id="con_img" accept="image/*" /></td>
 			</tr>
 			<tr>
+				<td>Rank *</td>
+				<td><input type="number" class="cw_input" name="con_rank" id="con_rank" required/></td>
+			</tr>
+			<tr>
 				<td>Available</td>
 				<td><input type="checkbox" class="cw_input" name="con_status" id="con_status" /></td>
 			</tr>

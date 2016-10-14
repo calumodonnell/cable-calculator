@@ -18,25 +18,25 @@
         <h3>Filter</h3>
         <form>
           <div class="form-group">
-            <label for="max_freq">Max. Frequency (GHz)</label>
+            <label>Max. Frequency (GHz)</label>
             <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" ng-change="storeFreq(search_freq)">
           </div>
           <div class="form-group">
-            <label for="conn_1">Connector 1 Series</label>
+            <label>Connector 1 Series</label>
             <select class="form-control minimal" id="conn_1" ng-model="conn_1">
               <option value="">No Preference</option>
               <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="conn_2">Connector 2 Series</label>
+            <label>Connector 2 Series</label>
             <select class="form-control minimal" id="conn_2" ng-model="conn_2">
               <option value="">No Preference</option>
               <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="environment">Environment</label>
+            <label>Environment</label>
             <select class="form-control minimal" id="environment" ng-model="environment">
               <option value="">No Preference</option>
               <option value="indoor">Indoor</option>
@@ -45,7 +45,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+            <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
             <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
           </div>
         </form>
