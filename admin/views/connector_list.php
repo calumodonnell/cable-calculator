@@ -160,7 +160,12 @@ $lpm1 = $total_posts - 1;
               <td><?php echo stripslashes($connector->con_part_no); ?></td>
 							<td><?php echo stripslashes($connector->con_series); ?></td>
 							<td><?php echo stripslashes($connector->con_description); ?></td>
-							<td><?php echo stripslashes($connector->date_modified); ?></td>
+              <td>Modified<br>
+                <?php
+                  $var = stripslashes($connector->date_modified);
+                  echo date("m/d/Y", strtotime($var));
+                ?>
+              </td>
 							<td>
 								<?php
 									// display yes or no depending on availability

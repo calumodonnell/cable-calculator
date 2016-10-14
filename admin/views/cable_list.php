@@ -118,15 +118,9 @@ $lpm1 = $total_posts - 1;
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-        <th scope="col" id="date_created" class="manage-column column-date-created <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_created'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=cable-wizard&orderby=date_created&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Date Created</span>
-						<span class="sorting-indicator"></span>
-					</a>
-				</th>
         <th scope="col" id="date_modified" class="manage-column column-date-modified <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_modified'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
 					<a href="./admin.php?page=cable-wizard&orderby=date_modified&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Date Modified</span>
+						<span>Date</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
@@ -159,13 +153,7 @@ $lpm1 = $total_posts - 1;
 							</td>
 							<td><?php echo stripslashes($cable->part_no); ?></td>
 							<td><?php echo stripslashes($cable->max_freq); ?></td>
-              <td>
-                <?php
-                  $var = stripslashes($cable->date_created);
-                  echo date("m/d/Y", strtotime($var));
-                ?>
-              </td>
-              <td>
+              <td>Modified<br>
                 <?php
                   $var = stripslashes($cable->date_modified);
                   echo date("m/d/Y", strtotime($var));
