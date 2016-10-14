@@ -89,10 +89,10 @@
             </tr>
           </tbody>
         </table>
-        <p ng-hide="totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
+        <p ng-if="!totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
       </div>
     </div>
-    <div class="notification" ng-show="notification">
+    <div class="notification" ng-show="notification" esc-key="resetFilter()" ng-keydown="keyPress($event)">
       <div class="notification-content">
         <h3 class="notification-title">{{ notification_title }}</h3>
         <p>{{ notification_message }}</p>
