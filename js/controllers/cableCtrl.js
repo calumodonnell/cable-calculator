@@ -158,9 +158,9 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
             if ($scope.clength) {
                 if ($scope.metric === true) {
-                    $scope.clength = $scope.clength * 2.52;
+                    $scope.clength = $scope.clength * 2.54;
                 } else if ($scope.metric === false) {
-                    $scope.clength = $scope.clength / 2.52;
+                    $scope.clength = $scope.clength / 2.54;
                 }
                 len = $scope.clength.toFixed(0);
                 $scope.clength = parseInt(len, 10);
@@ -176,11 +176,15 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             freq = $scope.search_freq,
             len = $scope.clength;
 
-        if ($scope.metric === false) {
-            loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-        } else if ($scope.metric === true) {
-            len = len / 2.52;
-            loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
+        if (freq && len) {
+            if ($scope.metric === false) {
+                loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
+            } else if ($scope.metric === true) {
+                len = len / 2.54;
+                loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
+            }
+        } else {
+            loss = 0;
         }
 
         return loss.toFixed(2);

@@ -5,7 +5,7 @@
       <ul class="nav navbar-nav">
         <li class="nav-item"><a ui-sref="selector">Add Cable</a></li>
         <li class="nav-item"><a href="" ng-click="showQuotation()">Print Quotation</a></li>
-        <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
+        <!--<li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>-->
       </ul>
       <div class="cartbar">
         <a ui-sref="cart" class="cart-icon">Cart ({{ cartLength() }})</a>
@@ -42,7 +42,7 @@
                   <p>{{ ca.conn_1_part_no }} - {{ ca.conn_1_description }}</p>
                   <p>{{ ca.conn_2_part_no }} - {{ ca.conn_2_description }}</p>
                 </td>
-                <td class="collapse"><span class="show-mobile">Quantity </span> <input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)"></td>
+                <td class="collapse"><span class="show-mobile">Quantity </span> <input class="form-control" id="quantity" ng-model="ca.quantity" type="number" min="1" ng-change="storeQuantity(ca.quantity, $index)" ng-blur="quantityCheck(ca.quantity, $index)"></td>
                 <td class="collapse"><span class="show-mobile">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) -</span> <input class="form-control" id="length" ng-model="ca.length" type="number" min="1" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="lengthCheck(ca.length, $index)"></td>
                 <td class="collapse"><span class="show-mobile">Price ($) -</span> {{ cablePrice(ca.length, ca.quantity, ca.conn_1_price, ca.conn_2_price, $index) | currency: '$' : 2 }} USD</td>
                 <td><!--<a href="#/edit?part_id={{ca.id}}&assembly_id={{$index}}" title="Edit Cable Assembly"><span class="icons edit"></span></a>--><a><span class="icons duplicate" ng-click="duplicateItem($index)" title="Duplicate Cable Assembly"></span></a><a ng-click="showDrawing($index)" title="Print Cable Assembly Drawing"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)" title="Delete Cable Assembly"></span></a></td>

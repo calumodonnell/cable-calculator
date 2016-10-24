@@ -5,7 +5,7 @@
 app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', function ($scope, $filter, cables, connectors) {
     "use strict";
 
-    var initializing = false;
+    //var initializing = true;
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
 
@@ -53,7 +53,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
         if (covering === undefined) { covering = ''; }
 
         if (localStorage.getItem('metric') === true) {
-            len = len / 2.52;
+            len = len / 2.54;
         }
 
         len = $filter('noComma')(len);
@@ -189,8 +189,6 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
 
         localStorage.cart = localStorage.getItem('cart');
         cart = JSON.parse(localStorage.cart);
-
-        //console.log($scope.cables.length);
 
         if ($scope.cables.length) {
             for (i = 0; i < $scope.cables.length; i += 1) {
@@ -444,6 +442,30 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
         localStorage.cart = JSON.stringify(cart);
     };
 
+    $scope.quantityCheck = function (quantity, index) {
+        if (quantity > 249 && $scope.metric === true) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "Please contact a sales representative for additional pricing information on orders exceeding 249 units. Quantity will now be set to 249.";
+            $scope.notification_button = "Close";
+            quantity = 249;
+        }
+
+        localStorage.cart = localStorage.getItem('cart');
+        var cart = JSON.parse(localStorage.cart);
+
+        if (quantity === null) {
+            quantity = 1;
+            cart[index].quantity = quantity;
+        } else {
+            cart[index].quantity = quantity;
+        }
+
+        localStorage.cart = JSON.stringify(cart);
+
+        $scope.cart = JSON.parse(localStorage.getItem('cart'));
+    };
+
     $scope.lengthCheck = function (len, index) {
         if (len < 15 && $scope.metric === true) {
             $scope.notification = true;
@@ -562,25 +584,37 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
         }
     };
 
+    /*
     $scope.$watch('metric', function () {
         if (initializing) {
             initializing = false;
         } else {
             localStorage.setItem('measure', $scope.metric);
 
-            var len;
+            var i,
+                len,
+                cart = JSON.parse(localStorage.getItem('cart'));
 
             if ($scope.metric === true) {
-                $scope.clength = $scope.clength * 2.52;
-            } else if ($scope.metric === false) {
-                $scope.clength = $scope.clength / 2.52;
-            }
-            len = $scope.clength.toFixed(0);
-            $scope.clength = parseInt(len, 10);
+                for (i = 0; i < cart.length; i += 1) {
+                    len = cart[i].length * 2.54;
 
-            localStorage.setItem('clength', $scope.clength);
+                    cart[i].length = len;
+                }
+            } else if ($scope.metric === false) {
+                for (i = 0; i < cart.length; i += 1) {
+                    len = cart[i].length / 2.54;
+
+                    cart[i].length = len;
+                }
+            }
+
+            localStorage.cart = JSON.stringify(cart);
+
+            $scope.cart = JSON.parse(localStorage.getItem('cart'));
         }
     });
+    */
 
     $scope.calcLoss = function (k1, k2, len, freq) {
         var loss = 0;

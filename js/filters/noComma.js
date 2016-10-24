@@ -7,7 +7,12 @@ app.filter('noComma', function () {
     return function (value) {
         var val;
 
-        val = parseFloat(value, 10);
+        if (value) {
+            val = parseFloat(value, 10);
+        } else {
+            val = 0;
+        }
+
         val = val.toFixed(1);
 
         return val;

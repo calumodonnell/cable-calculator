@@ -176,7 +176,6 @@ function cw_load() {
 	wp_enqueue_script('connectors', SR_URL .'/js/services/connectors.js');
 	wp_enqueue_script('back', SR_URL .'/js/directives/back.js');
 	wp_enqueue_script('metricWatch', SR_URL .'/js/directives/metricWatch.js');
-	wp_enqueue_script('print', SR_URL . '/js/directives/print.js');
 	wp_enqueue_script('noComma', SR_URL .'/js/filters/noComma.js');
 	wp_enqueue_script('rfLength', SR_URL .'/js/filters/rfLength.js');
 	wp_enqueue_script('cableCtrl', SR_URL .'/js/controllers/cableCtrl.js');
