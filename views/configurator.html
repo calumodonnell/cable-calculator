@@ -107,7 +107,7 @@
             <tbody>
               <tr class="cable-holder">
                 <td class="bin" id="conn_1" ng-drop-success="onDrop_1($data, $event)" ng-drop="true">
-                  <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data, $event)" ng-center-anchor="{{centerAnchor}}">
+                  <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-center-anchor="{{centerAnchor}}">
                       <div class="conn-image">
                         <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
                       </div>
@@ -125,7 +125,7 @@
                   </div>
                 </td>
                 <td class="bin" id="conn_2" ng-drop-success="onDrop_2($data, $event)" ng-drop="true">
-                  <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data, $event)" ng-center-anchor="{{centerAnchor}}">
+                  <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-center-anchor="{{centerAnchor}}">
                       <div class="conn-image">
                         <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
                       </div>

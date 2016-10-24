@@ -667,22 +667,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         }
     };
 
-    $scope.onDragSuccess1 = function (data) {
-        var index = $scope.droppedObjects1.indexOf(data);
-
-        if (index > -1) {
-            $scope.droppedObjects1.splice(index, 1);
-        }
-    };
-
-    $scope.onDragSuccess2 = function (data) {
-        var index = $scope.droppedObjects2.indexOf(data);
-
-        if (index > -1) {
-            $scope.droppedObjects2.splice(index, 1);
-        }
-    };
-
     // filter connectors by frequency
     $scope.greaterThanFreq = function (val) {
         return function (item) {
