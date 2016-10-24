@@ -106,7 +106,7 @@ $lpm1 = $total_posts - 1;
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>
-				<th scope="col" id="part_no" class="manage-column column-part-no <?php if (isset($_REQUEST['part_no']) && $_REQUEST['orderby'] == 'part_no'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
+				<th scope="col" id="part_no" class="manage-column column-part-no <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'part_no'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
 					<a href="./admin.php?page=cable-wizard&orderby=part_no&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Part No</span>
 						<span class="sorting-indicator"></span>
@@ -126,7 +126,7 @@ $lpm1 = $total_posts - 1;
 				</th>
         <th scope="col" id="available" class="manage-column column-available <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'available'): echo "sorted"; else : echo 'sortable'; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
 					<a href="./admin.php?page=cable-wizard&orderby=available&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
-						<span>Available</span>
+						<span>Available (?)</span>
 						<span class="sorting-indicator"></span>
 					</a>
 				</th>

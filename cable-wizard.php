@@ -161,6 +161,7 @@ function cw_load() {
 	wp_enqueue_script('angularjs-ui-route', '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js');
 	wp_enqueue_script('angularjs-storage', '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js');
 	wp_enqueue_script('angularjs-draggable', SR_URL . '/libs/ngDraggable.js');
+	wp_enqueue_script('hotkeys', SR_URL . '/libs/hotkeys.min.js');
 	wp_enqueue_script('angularjs-sanitize', '//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js');
 	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');
 	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
@@ -174,7 +175,6 @@ function cw_load() {
 	wp_enqueue_script('series', SR_URL .'/js/services/connector-series.js');
 	wp_enqueue_script('connectors', SR_URL .'/js/services/connectors.js');
 	wp_enqueue_script('back', SR_URL .'/js/directives/back.js');
-	wp_enqueue_script('escKey', SR_URL . '/js/directives/escKey.js');
 	wp_enqueue_script('metricWatch', SR_URL .'/js/directives/metricWatch.js');
 	wp_enqueue_script('print', SR_URL . '/js/directives/print.js');
 	wp_enqueue_script('noComma', SR_URL .'/js/filters/noComma.js');

@@ -23,6 +23,17 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
         $scope.metric = false;
     }
 
+    $scope.showWelcome = function () {
+        if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null' || localStorage.getItem('clength') === 'NaN') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
+            $scope.notification = true;
+            $scope.notification_title = "Welcome";
+            $scope.notification_message = "Welcome to the Cable Calculator.";
+            $scope.notification_button = "Enter";
+            localStorage.setItem('measure', 'false');
+        }
+    };
+    $scope.showWelcome();
+
     $scope.rflabsPartNo = function (len, index) {
         var cart,
             part_no,

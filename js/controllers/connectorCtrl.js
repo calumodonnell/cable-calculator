@@ -3,7 +3,7 @@
 
 // connectorCtrl controller
 
-app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
+app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$window', 'connectors', function ($scope, $http, $location, $filter, $window, connectors) {
     "use strict";
 
     var initializing = true;
@@ -26,6 +26,10 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     connectors.then(function (data) {
         $scope.connectors = data;
     });
+
+    if (!$scope.part_id) {
+        $window.location.href = './#/';
+    }
 
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;

@@ -1,7 +1,7 @@
 /*jslint browser:true*/
 /*global $, jQuery, alert, angular, console, app*/
 
-var app = angular.module('cable-wizard', ['ui.router', 'ngDraggable', 'ngSanitize']);
+var app = angular.module('cable-wizard', ['ui.router', 'ngDraggable', 'ngSanitize', 'cfp.hotkeys']);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
     "use strict";

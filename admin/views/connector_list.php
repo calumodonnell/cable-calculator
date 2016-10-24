@@ -125,7 +125,7 @@ $lpm1 = $total_posts - 1;
 					</a>
 				</th>
 				<th id="date_modified" class="manage-column column-date-modified <?php if (isset($_REQUEST['orderby']) && $_REQUEST['orderby'] == 'date_modified'): echo "sorted"; else : echo "sortable"; endif; ?> <?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'desc'; else: echo 'asc'; endif; ?>">
-					<a href="./admin.php?page=connector-list&orderby=date&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
+					<a href="./admin.php?page=connector-list&orderby=date_modified&order=<?php if (isset($_REQUEST['order']) && $_REQUEST['order'] == 'desc'): echo 'asc'; else: echo 'desc'; endif; ?>">
 						<span>Date</span>
 						<span class="sorting-indicator"></span>
 					</a>

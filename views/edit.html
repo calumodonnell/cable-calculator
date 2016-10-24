@@ -158,14 +158,14 @@
         </div>
       </div>
     </div>
-    <div class="notification" ng-show="notification">
+    <div class="notification" ng-show="notification" hotkey="{esc: notificationHide}">
       <div class="notification-content">
         <h3 class="notification-title">{{ notification_title }}</h3>
         <p>{{ notification_message }}</p>
         <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
       </div>
     </div>
-    <div class="print-screen" ng-show="print_drawing">
+    <div class="print-screen" ng-show="print_drawing" hotkey="{esc: drawingHide}">
       <div class="preview drawing-preview" ng-include="'../wp-content/plugins/cable-wizard/partials/print-drawing.html'"></div>
       <div class="print-buttons">
         <a href="" class="btn btn-primary" ng-click="printDrawing()">Print</a>

@@ -40,7 +40,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // welcome message show if cart empty (assuming if empty, user has not used app)
     $scope.showWelcome = function () {
-        if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
+        if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null'  || localStorage.getItem('clength') === 'NaN') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
             $scope.notification = true;
             $scope.notification_title = "Welcome";
             $scope.notification_message = "Welcome to the Cable Calculator.";
@@ -49,6 +49,8 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         }
     };
     $scope.showWelcome();
+
+
 
     // display total rows
     $scope.totalRows = function () {
