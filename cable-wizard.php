@@ -158,8 +158,8 @@ function cw_load() {
 	wp_enqueue_script('angularjs', '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js');
 	wp_enqueue_script('angularjs-ui-route', '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js');
 	wp_enqueue_script('angularjs-storage', '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js');
-	wp_enqueue_script('angularjs-draggable', SR_URL . '/libs/ngDraggable.js');
-	wp_enqueue_script('hotkeys', SR_URL . '/libs/hotkeys.min.js');
+	wp_enqueue_script('angularjs-draggable', SR_URL . '/app/assets/libs/ngDraggable.js');
+	wp_enqueue_script('hotkeys', SR_URL . '/app/assets/libs/hotkeys.min.js');
 	wp_enqueue_script('angularjs-sanitize', '//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js');
 	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');
 	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
@@ -168,18 +168,18 @@ function cw_load() {
 	wp_enqueue_style('cw-app-drawing',  SR_URL . '/assets/css/drawing.css', array(), 1.0, 'print');
 	wp_enqueue_style('cw-app-quotation',  SR_URL . '/assets/css/quotation.css', array(), 1.0, 'print');
 
-	wp_enqueue_script('app', SR_URL .'/js/app.js');
-	wp_enqueue_script('cables', SR_URL .'/js/services/cables.js');
-	wp_enqueue_script('series', SR_URL .'/js/services/connector-series.js');
-	wp_enqueue_script('connectors', SR_URL .'/js/services/connectors.js');
-	wp_enqueue_script('back', SR_URL .'/js/directives/back.js');
-	wp_enqueue_script('metricWatch', SR_URL .'/js/directives/metricWatch.js');
-	wp_enqueue_script('noComma', SR_URL .'/js/filters/noComma.js');
-	wp_enqueue_script('rfLength', SR_URL .'/js/filters/rfLength.js');
-	wp_enqueue_script('cableCtrl', SR_URL .'/js/controllers/cableCtrl.js');
-	wp_enqueue_script('connectorCtrl', SR_URL .'/js/controllers/connectorCtrl.js');
-	wp_enqueue_script('cartCtrl', SR_URL .'/js/controllers/cartCtrl.js');
-	wp_enqueue_script('editCtrl', SR_URL .'/js/controllers/editCtrl.js');
+	wp_enqueue_script('app', SR_URL .'/app/app.js');
+	wp_enqueue_script('cables', SR_URL .'/app/services/cables.js');
+	wp_enqueue_script('series', SR_URL .'/app/services/connector-series.js');
+	wp_enqueue_script('connectors', SR_URL .'/app/services/connectors.js');
+	wp_enqueue_script('back', SR_URL .'/app/directives/back.js');
+	wp_enqueue_script('metricWatch', SR_URL .'/app/directives/metricWatch.js');
+	wp_enqueue_script('noComma', SR_URL .'/app/filters/noComma.js');
+	wp_enqueue_script('rfLength', SR_URL .'/app/filters/rfLength.js');
+	wp_enqueue_script('cableCtrl', SR_URL .'/app/controllers/cableCtrl.js');
+	wp_enqueue_script('connectorCtrl', SR_URL .'/app/controllers/connectorCtrl.js');
+	wp_enqueue_script('cartCtrl', SR_URL .'/app/controllers/cartCtrl.js');
+	wp_enqueue_script('editCtrl', SR_URL .'/app/controllers/editCtrl.js');
 }
 add_action('wp_loaded', 'cw_load');
 

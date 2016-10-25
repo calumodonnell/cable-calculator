@@ -5,7 +5,8 @@
 app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$window', 'connectors', function ($scope, $http, $location, $filter, $window, connectors) {
     "use strict";
 
-    var initializing = true;
+    var initializing = true,
+        clength;
 
     $scope.droppedObjects1 = [];
     $scope.droppedObjects2 = [];
@@ -36,9 +37,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         $scope.metric = false;
     }
 
-    $http.defaults.headers.common.Authorization = 'login YmVlcDpi';
-    $http.defaults.headers.common['Auth-Token'] = 'login YmVlcDpi';
-
     $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
     $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
 
@@ -58,12 +56,17 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         return true;
     };
 
-    /*
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
         $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
-        $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
+
+        if ($scope.metric === false) {
+            $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
+        } else if ($scope.metric === true) {
+            clength = localStorage.getItem('clength') / 2.54;
+            clength = clength.toFixed(0);
+            $scope.clength = parseFloat(clength, 10);
+        }
     }
-    */
 
     $scope.cartLength = function () {
         var total,
@@ -186,7 +189,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
     };
 
     $scope.cableCost = function (qm, marginRate, hourlyRate, overHeadRate, shipHand, matYield, covering, coat_n_cable_base, coat_n_adder_back, coat_n_base, coat_n_adder_base_time, coat_n_time_rp, coat_w_cable_base, coat_w_adder_back, coat_w_base, coat_w_adder_base_time, coat_w_time_rp, coat_tv_cable_base, coat_tv_adder_back, coat_tv_base, coat_tv_adder_base_time, coat_tv_time_rp, coat_a_cable_base, coat_a_adder_back, coat_a_base, coat_a_adder_base_time, coat_a_time_rp, coat_aw_cable_base, coat_aw_adder_back, coat_aw_base, coat_aw_adder_base_time, coat_aw_time_rp, coat_an_cable_base, coat_an_adder_back, coat_an_base, coat_an_adder_base_time, coat_an_time_rp, coat_ej_cable_base, coat_ej_adder_back, coat_ej_base, coat_ej_adder_base_time, coat_ej_time_rp, coat_ew_cable_base, coat_ew_adder_back, coat_ew_base, coat_ew_adder_base_time, coat_ew_time_rp, coat_mc_cable_base, coat_mc_adder_back, coat_mc_base, coat_mc_adder_base_time, coat_mc_time_rp) {
-        var len = $scope.clength,
+        var len = localStorage.getItem('clength'),
             cableBase = 0,
             adderBack = 0,
             laborTime = 0,
@@ -341,8 +344,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
             conn2Price = parseFloat(conn_2.price);
         }
 
-        if ($scope.metric === true) { len = len / 2.54; }
-
         cableCost = (cableBase * len / 12) + adderBack;
         laborCost = (laborTime + laborAdd) + laborCalc * len;
         totalLoadedMaterial = (conn1Price + conn2Price + cableCost) / matYield * (1 + shipHand);
@@ -388,8 +389,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
                 }
                 len = $scope.clength.toFixed(0);
                 $scope.clength = parseInt(len, 10);
-
-                localStorage.setItem('clength', $scope.clength);
             }
         }
     });
@@ -410,9 +409,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         }
 
         if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
-            if ($scope.metric === true) {
-                len = len / 2.54;
-            }
+            if ($scope.metric === true) { len = len / 2.54; }
 
             len = $filter('noComma')(len);
 
@@ -457,6 +454,16 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
+        } else if ($scope.clength > 3024 && $scope.metric === true) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This application has a maximum length of 3024 cm. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
+        } else if ($scope.clength > 1200 && $scope.metric === false) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This application has a maximum length of 1200 in. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
         } else if (!$scope.conn_1 && !$scope.conn_2) {
             $scope.notification = true;

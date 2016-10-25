@@ -40,9 +40,9 @@ module.exports = function (grunt) {
             dynamic: {
                 files: [{
                     expand: true,
-                    cwd: 'img/',
+                    cwd: 'app/assets/img/',
                     src: ['**/*.{png,jpg,gif}'],
-                    dest: 'img/'
+                    dest: 'app/assets/img/'
                 }]
             }
         },
@@ -52,9 +52,9 @@ module.exports = function (grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'assets/css/style.css': 'assets/sass/style.sass',
-                    'assets/css/drawing.css': 'assets/sass/drawing.sass',
-                    'assets/css/quotation.css': 'assets/sass/quotation.sass',
+                    'app/assets/css/style.css': 'app/assets/sass/style.sass',
+                    'app/assets/css/drawing.css': 'app/assets/sass/drawing.sass',
+                    'app/assets/css/quotation.css': 'app/assets/sass/quotation.sass',
                     'admin/css/style.css': 'admin/sass/style.sass'
                 }
             }
@@ -62,9 +62,9 @@ module.exports = function (grunt) {
         autoprefixer: {
             dist: {
                 files: {
-                    'assets/css/style.css': 'assets/css/style.css',
-                    'assets/css/drawing.css': 'assets/css/drawing.css',
-                    'assets/css/quotation.css': 'assets/css/quotation.css',
+                    'app/assets/css/style.css': 'app/assets/css/style.css',
+                    'app/assets/css/drawing.css': 'app/assets/css/drawing.css',
+                    'app/assets/css/quotation.css': 'app/assets/css/quotation.css',
                     'admin/css/style.css': 'admin/css/style.css'
                 }
             }
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
                 }
             },
             sass: {
-                files: ['admin/sass/**/*.sass', 'assets/sass/**/*.sass'],
+                files: ['admin/sass/**/*.sass', 'app/assets/sass/**/*.sass'],
                 tasks: ['sass', 'autoprefixer']
             }
         }

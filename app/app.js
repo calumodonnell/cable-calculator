@@ -11,22 +11,22 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('selector', {
             url: '/',
-            templateUrl: '../wp-content/plugins/cable-wizard/views/selector.html',
+            templateUrl: '../wp-content/plugins/cable-wizard/app/views/selector.html',
             controller: 'cableCtrl'
         })
         .state('configurator', {
             url: '/configurator',
-            templateUrl: '../wp-content/plugins/cable-wizard/views/configurator.html',
+            templateUrl: '../wp-content/plugins/cable-wizard/app/views/configurator.html',
             controller: 'connectorCtrl'
         })
         .state('cart', {
             url: '/cart',
-            templateUrl: "../wp-content/plugins/cable-wizard/views/cart.html",
+            templateUrl: "../wp-content/plugins/cable-wizard/app/views/cart.html",
             controller: "cartCtrl"
         })
         .state('edit', {
             url: '/edit',
-            templateUrl: "../wp-content/plugins/cable-wizard/views/edit.html",
+            templateUrl: "../wp-content/plugins/cable-wizard/app/views/edit.html",
             controller: "editCtrl"
         });
 });

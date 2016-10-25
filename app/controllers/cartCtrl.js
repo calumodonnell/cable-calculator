@@ -5,7 +5,7 @@
 app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', function ($scope, $filter, cables, connectors) {
     "use strict";
 
-    //var initializing = true;
+    var initializing = true;
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
 
@@ -51,10 +51,6 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
         covering = cart[index].covering;
 
         if (covering === undefined) { covering = ''; }
-
-        if (localStorage.getItem('metric') === true) {
-            len = len / 2.54;
-        }
 
         len = $filter('noComma')(len);
 
@@ -333,7 +329,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
 
         quantity = parseFloat(quantity);
 
-        if ((quantity <= 3) && (quantity >= 1)) {
+        if ((quantity <= 3) && (quantity >= 0)) {
             qm = qm1;
         } else if ((quantity <= 9) && (quantity >= 4)) {
             qm = qm2;
@@ -365,6 +361,8 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
     $scope.cablePrice = function (len, quantity, conn1Price, conn2Price, index) {
         var cart,
             unitPrice;
+
+        if (quantity === null) { quantity = 0; }
 
         unitPrice = $scope.unitPrice(len, quantity, conn1Price, conn2Price, index);
 
@@ -437,36 +435,24 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
 
         var cart = JSON.parse(localStorage.cart);
 
-        cart[index].quantity = quantity;
-
-        localStorage.cart = JSON.stringify(cart);
-    };
-
-    $scope.quantityCheck = function (quantity, index) {
         if (quantity > 249 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "Please contact a sales representative for additional pricing information on orders exceeding 249 units. Quantity will now be set to 249.";
             $scope.notification_button = "Close";
             quantity = 249;
+        } else if (quantity === null) {
+            quantity = 0;
         }
 
-        localStorage.cart = localStorage.getItem('cart');
-        var cart = JSON.parse(localStorage.cart);
-
-        if (quantity === null) {
-            quantity = 1;
-            cart[index].quantity = quantity;
-        } else {
-            cart[index].quantity = quantity;
-        }
+        cart[index].quantity = quantity;
 
         localStorage.cart = JSON.stringify(cart);
-
         $scope.cart = JSON.parse(localStorage.getItem('cart'));
     };
 
     $scope.lengthCheck = function (len, index) {
+        /*
         if (len < 15 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";
@@ -485,6 +471,21 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
             $scope.notification_message = "The program has a maximum length of 3024 cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
             len = 3024;
+        } else if (len > 1200 && $scope.metric === false) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "The program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
+            len = 1200;
+        }
+        */
+
+        if (len < 6 && $scope.metric === false) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "This program has a maximum length of 6 in. Please contact the factory for custom lengths.";
+            $scope.notification_button = "Close";
+            len = 6;
         } else if (len > 1200 && $scope.metric === false) {
             $scope.notification = true;
             $scope.notification_title = "Error";
@@ -584,37 +585,25 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
         }
     };
 
-    /*
     $scope.$watch('metric', function () {
         if (initializing) {
             initializing = false;
         } else {
             localStorage.setItem('measure', $scope.metric);
 
-            var i,
-                len,
-                cart = JSON.parse(localStorage.getItem('cart'));
+            var len;
 
-            if ($scope.metric === true) {
-                for (i = 0; i < cart.length; i += 1) {
-                    len = cart[i].length * 2.54;
-
-                    cart[i].length = len;
+            if ($scope.clength) {
+                if ($scope.metric === true) {
+                    $scope.clength = $scope.clength * 2.54;
+                } else if ($scope.metric === false) {
+                    $scope.clength = $scope.clength / 2.54;
                 }
-            } else if ($scope.metric === false) {
-                for (i = 0; i < cart.length; i += 1) {
-                    len = cart[i].length / 2.54;
-
-                    cart[i].length = len;
-                }
+                len = $scope.clength.toFixed(0);
+                $scope.clength = parseInt(len, 10);
             }
-
-            localStorage.cart = JSON.stringify(cart);
-
-            $scope.cart = JSON.parse(localStorage.getItem('cart'));
         }
     });
-    */
 
     $scope.calcLoss = function (k1, k2, len, freq) {
         var loss = 0;
