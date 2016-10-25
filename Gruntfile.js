@@ -52,9 +52,9 @@ module.exports = function (grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'css/style.css': 'sass/style.sass',
-                    'css/drawing.css': 'sass/drawing.sass',
-                    'css/quotation.css': 'sass/quotation.sass',
+                    'assets/css/style.css': 'assets/sass/style.sass',
+                    'assets/css/drawing.css': 'assets/sass/drawing.sass',
+                    'assets/css/quotation.css': 'assets/sass/quotation.sass',
                     'admin/css/style.css': 'admin/sass/style.sass'
                 }
             }
@@ -62,9 +62,9 @@ module.exports = function (grunt) {
         autoprefixer: {
             dist: {
                 files: {
-                    'css/style.css': 'css/style.css',
-                    'css/drawing.css': 'css/drawing.css',
-                    'css/quotation.css': 'css/quotation.css',
+                    'assets/css/style.css': 'assets/css/style.css',
+                    'assets/css/drawing.css': 'assets/css/drawing.css',
+                    'assets/css/quotation.css': 'assets/css/quotation.css',
                     'admin/css/style.css': 'admin/css/style.css'
                 }
             }
@@ -78,7 +78,7 @@ module.exports = function (grunt) {
                 }
             },
             sass: {
-                files: ['admin/sass/**/*.sass', 'sass/**/*.sass'],
+                files: ['admin/sass/**/*.sass', 'assets/sass/**/*.sass'],
                 tasks: ['sass', 'autoprefixer']
             }
         }

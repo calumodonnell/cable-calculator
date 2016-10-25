@@ -25,7 +25,7 @@ foreach($cable_conn_list as $conn) :
   $output .= '"con_img" : "' . $conn->con_img . '" } ';
 endforeach;
 
-$output ='{"cable_conn":[ '.$output.']}';
+$output = '{"cable_conn":[ '.$output.']}';
 
 echo($output);
 ?>

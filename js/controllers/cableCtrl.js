@@ -1,11 +1,13 @@
 /*jslint browser:true*/
-/*global $, jQuery, alert, angular, console, app*/
+/*jslint plusplus: true */
+/*global $, alert, angular, console, app, element*/
 
 // cableCtrl controller
 app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
     "use strict";
 
-    var initializing = true;
+    var initializing = true,
+        clength = document.getElementById('clength');
 
     // create local storage items
     localStorage.setItem('conn_1', '');
@@ -50,12 +52,10 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
     $scope.showWelcome();
 
-
-
     // display total rows
     $scope.totalRows = function () {
-        var rowCount = angular.element('#selector-table tbody tr').length,
-            rowHide = angular.element('#selector-table tbody tr.ng-hide').length,
+        var rowCount = document.getElementsByClassName('selector').length,
+            rowHide = document.getElementsByClassName('selector.ng-hide').length,
             rowTotal = rowCount - rowHide;
 
         return rowTotal;
@@ -105,6 +105,10 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     };
 
+    function hasClass(element, className) {
+        return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);
+    }
+
     // direct to config if conditions met
     $scope.toConfig = function (id, conn_1, conn_2) {
         var cart;
@@ -126,12 +130,12 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specified the cable length.";
             $scope.notification_button = "Close";
-        } else if ($scope.clength < 15 && angular.element('#clength').hasClass("metric")) {
+        } else if ($scope.clength < 15 && hasClass(clength, 'metric')) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
-        } else if ($scope.clength < 6 && angular.element('#clength').hasClass("imperial")) {
+        } else if ($scope.clength < 6 && hasClass(clength, 'imperial')) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
@@ -241,24 +245,44 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
 
     // selector-table sort functions
-    function getCellValue(row, index) { return angular.element(row).children('td').eq(index).html(); }
-
-    function comparer(index) {
-        return function (a, b) {
-            var valA = getCellValue(a, index), valB = getCellValue(b, index);
-            return angular.isNumber(valA) && angular.isNumber(valB) ? valA - valB : valA.localeCompare(valB);
-        };
+    function sortTable(table, col, reverse) {
+        var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+            tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+            i;
+        reverse = -((+reverse) || -1);
+        tr = tr.sort(function (a, b) { // sort rows
+            return reverse // `-1 *` if want opposite order
+                * (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+                    .localeCompare(b.cells[col].textContent.trim())
+                   );
+        });
+        for (i = 0; i < tr.length; i += 1) { tb.appendChild(tr[i]); } // append each row in order
     }
 
-    angular.element('.th-click').click(function () {
-        var table = angular.element(this).parents('table').eq(0),
-            rows = table.find('tr:gt(0)').toArray().sort(comparer(angular.element(this).index())),
-            i;
+    function makeSortable(table) {
+        var th = table.tHead, i;
 
-        this.asc = !this.asc;
-        if (!this.asc) { rows = rows.reverse(); }
-        for (i = 0; i < rows.length; i += 1) { table.append(rows[i]); }
-    });
+        if (th) { th = th.rows[0]; th = th.cells; }
+        if (th) { i = th.length; } else { return; } // if no `<thead>` then do nothing
+
+        function listen(i) {
+            var dir = 1;
+            th[i].addEventListener('click', function () {
+                dir = 1 - dir;
+                sortTable(table, i, dir);
+            });
+        }
+
+        while (--i >= 0) { listen(i); }
+    }
+
+    function makeAllSortable(parent) {
+        parent = parent || document.body;
+        var t = parent.getElementsByTagName('table'), i = t.length;
+        while (--i >= 0) { makeSortable(t[i]); }
+    }
+
+    makeAllSortable();
 
     $scope.toggleSort = false;
 

@@ -1,5 +1,5 @@
 /*jslint browser:true*/
-/*global $, jQuery, alert, angular, console, app*/
+/*global $, jfalert, angular, console, app*/
 
 // cartCtrl controller
 app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', function ($scope, $filter, cables, connectors) {

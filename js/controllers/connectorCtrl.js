@@ -1,8 +1,7 @@
 /*jslint browser:true*/
-/*global $, jQuery, alert, angular, console, app*/
+/*global $, alert, angular, console, app*/
 
 // connectorCtrl controller
-
 app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$window', 'connectors', function ($scope, $http, $location, $filter, $window, connectors) {
     "use strict";
 
@@ -37,6 +36,9 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         $scope.metric = false;
     }
 
+    $http.defaults.headers.common.Authorization = 'login YmVlcDpi';
+    $http.defaults.headers.common['Auth-Token'] = 'login YmVlcDpi';
+
     $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-info.php?cable_id=" + $scope.part_id).then(function (response) { $scope.cables = response.data.cables; });
     $http.get("../wp-content/plugins/cable-wizard/admin/includes/cable-conn.php?part_id=" + $scope.part_id).then(function (response) { $scope.cable_conn = response.data.cable_conn; });
 
@@ -56,10 +58,12 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         return true;
     };
 
+    /*
     if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
         $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
         $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
     }
+    */
 
     $scope.cartLength = function () {
         var total,
@@ -147,20 +151,16 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         }
 
         $scope.clength = val;
-
-        if (val === null) {
-            localStorage.setItem('clength', 6);
-        } else {
-            localStorage.setItem('clength', val);
-        }
+        localStorage.setItem('clength', val);
     };
 
     $scope.notificationHide = function () {
         $scope.notification = false;
     };
 
+    /*
     $scope.showDrawing = function () {
-        if (!$scope.clength || $scope.clength === null) {
+        if (!$scope.clength || !$scope.clength === null) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specified the cable length.";
@@ -179,6 +179,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
             $scope.print_drawing = true;
         }
     };
+    */
 
     $scope.drawingHide = function () {
         $scope.print_drawing = false;
@@ -488,27 +489,29 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
                 }
             }
 
-            if ($scope.metric === true) { len = $scope.clength / 2.54; }
+            if ($scope.metric === true) { len = $scope.clength / 2.54; } else { len = $scope.clength; }
 
-            newCart =
-                {
-                    'id': $scope.part_id,
-                    'name': name,
-                    'part_no': part_no,
-                    'k1': k1,
-                    'k2': k2,
-                    'conn_1_part_no': conn_1_part_no,
-                    'conn_1_description': conn_1_description,
-                    'conn_1_price': conn_1_price,
-                    'conn_2_part_no': conn_2_part_no,
-                    'conn_2_description': conn_2_description,
-                    'conn_2_price': conn_2_price,
-                    'covering': covering,
-                    'quantity': 1,
-                    'length': len,
-                    'price': '',
-                    'freq': $scope.search_freq
-                };
+            len = len.toFixed(1);
+            len = parseFloat(len);
+
+            newCart = {
+                'id': $scope.part_id,
+                'name': name,
+                'part_no': part_no,
+                'k1': k1,
+                'k2': k2,
+                'conn_1_part_no': conn_1_part_no,
+                'conn_1_description': conn_1_description,
+                'conn_1_price': conn_1_price,
+                'conn_2_part_no': conn_2_part_no,
+                'conn_2_description': conn_2_description,
+                'conn_2_price': conn_2_price,
+                'covering': covering,
+                'quantity': 1,
+                'length': len,
+                'price': '',
+                'freq': $scope.search_freq
+            };
 
             cart.push(newCart);
 
@@ -569,37 +572,42 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
 
             jsonString = JSON.stringify(data);
 
-            localStorage.setItem('conn_1', jsonString);
-            $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+            if (!objects_1 && !objects_2) {
+                localStorage.setItem('conn_1', jsonString);
+                $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+            } else {
+                localStorage.setItem('conn_1', jsonString);
+                $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
 
-            conn_1 = JSON.parse(localStorage.conn_1);
-            conn_2 = JSON.parse(localStorage.conn_2);
+                conn_1 = JSON.parse(localStorage.conn_1);
+                conn_2 = JSON.parse(localStorage.conn_2);
 
-            con_rank_1 = conn_1.con_rank;
-            con_rank_2 = conn_2.con_rank;
+                con_rank_1 = conn_1.con_rank;
+                con_rank_2 = conn_2.con_rank;
 
-            if (con_rank_1 > con_rank_2) {
-                $scope.notification = true;
-                $scope.notification_title = "Error";
-                $scope.notification_message = "Connector weighting protocol has switched connector placement to conform with standard naming protocol.";
-                $scope.notification_button = "Close";
+                if (con_rank_1 > con_rank_2) {
+                    $scope.notification = true;
+                    $scope.notification_title = "Error";
+                    $scope.notification_message = "Connector weighting protocol has switched connector placement to conform with standard naming protocol.";
+                    $scope.notification_button = "Close";
 
-                localStorage.setItem('conn_1', '');
-                $scope.conn_1 = '';
-                $scope.droppedObjects1 = [];
+                    localStorage.setItem('conn_1', '');
+                    $scope.conn_1 = '';
+                    $scope.droppedObjects1 = [];
 
-                localStorage.setItem('conn_2', '');
-                $scope.conn_2 = '';
-                $scope.droppedObjects2 = [];
+                    localStorage.setItem('conn_2', '');
+                    $scope.conn_2 = '';
+                    $scope.droppedObjects2 = [];
 
-                $scope.conn_1 = conn_2;
-                $scope.conn_2 = conn_1;
+                    $scope.conn_1 = conn_2;
+                    $scope.conn_2 = conn_1;
 
-                $scope.droppedObjects1.push(conn_2);
-                $scope.droppedObjects2.push(conn_1);
+                    $scope.droppedObjects1.push(conn_2);
+                    $scope.droppedObjects2.push(conn_1);
 
-                localStorage.setItem('conn_1', JSON.stringify(conn_1));
-                localStorage.setItem('conn_2', JSON.stringify(conn_2));
+                    localStorage.setItem('conn_1', JSON.stringify(conn_1));
+                    localStorage.setItem('conn_2', JSON.stringify(conn_2));
+                }
             }
         } else if (index_2 === -1 && objects_2 === 0) {
             $scope.droppedObjects2.push(data);
