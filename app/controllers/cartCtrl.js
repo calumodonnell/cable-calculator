@@ -2,10 +2,14 @@
 /*global $, jfalert, angular, console, app*/
 
 // cartCtrl controller
-app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', function ($scope, $filter, cables, connectors) {
+app.controller('cartCtrl', ['$scope', '$filter', '$window', 'cables', 'connectors', function ($scope, $filter, $window, cables, connectors) {
     "use strict";
 
     var initializing = true;
+
+    if (!localStorage.getItem('cart', '')) {
+        $window.location.href = './#/';
+    }
 
     $scope.cart = JSON.parse(localStorage.getItem('cart'));
 
@@ -22,17 +26,6 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
     } else {
         $scope.metric = false;
     }
-
-    $scope.showWelcome = function () {
-        if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null' || localStorage.getItem('clength') === 'NaN') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
-            $scope.notification = true;
-            $scope.notification_title = "Welcome";
-            $scope.notification_message = "Welcome to the Cable Calculator.";
-            $scope.notification_button = "Enter";
-            localStorage.setItem('measure', 'false');
-        }
-    };
-    $scope.showWelcome();
 
     $scope.rflabsPartNo = function (len, index) {
         var cart,
@@ -435,7 +428,7 @@ app.controller('cartCtrl', ['$scope', '$filter', 'cables', 'connectors', functio
 
         var cart = JSON.parse(localStorage.cart);
 
-        if (quantity > 249 && $scope.metric === true) {
+        if (quantity > 249) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "Please contact a sales representative for additional pricing information on orders exceeding 249 units. Quantity will now be set to 249.";

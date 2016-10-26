@@ -8,7 +8,7 @@
         <li class="nav-item"><a ui-sref="cart">Cancel</a></li>
       </ul>
       <div class="cartbar">
-        <a ui-sref="cart" class="cart-icon">Cart ({{ cartLength() }})</a>
+        <a ng-click="toCart()" class="cart-icon">Cart ({{ cartLength() }})</a>
       </div>
     </nav>
   </div>
@@ -21,11 +21,11 @@
         <form>
           <div class="form-group">
             <label>Max. Frequency (GHz)</label>
-            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq, cable.max_freq)">
+            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-blur="storeFreq(search_freq, cable.max_freq)">
           </div>
           <div class="form-group">
             <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
-            <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
+            <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-blur="storeLength(clength)">
           </div>
           <div class="form-group">
             <label>Covering</label>

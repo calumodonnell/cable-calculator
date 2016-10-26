@@ -31,6 +31,10 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         $window.location.href = './#/';
     }
 
+    if (!localStorage.getItem('cart', '')) {
+        $window.location.href = './#/';
+    }
+
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;
     } else {
@@ -56,9 +60,15 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         return true;
     };
 
-    if (localStorage.getItem('max_freq') && localStorage.getItem('clength')) {
+    // if values set are for freq, set to stored value
+    if (localStorage.getItem('max_freq')) {
         $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10);
+    } else {
+        localStorage.setItem('max_freq', '');
+    }
 
+    // if values set are for length, set to stored value
+    if (localStorage.getItem('clength')) {
         if ($scope.metric === false) {
             $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
         } else if ($scope.metric === true) {
@@ -66,7 +76,22 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
             clength = clength.toFixed(0);
             $scope.clength = parseFloat(clength, 10);
         }
+    } else {
+        localStorage.setItem('clength', '');
     }
+
+    $scope.toCart = function () {
+        var cart = JSON.parse(localStorage.getItem('cart'));
+
+        if (cart.length <= 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "There are currently no cables in your cart.";
+            $scope.notification_button = "Close";
+        } else {
+            $location.path("/cart");
+        }
+    };
 
     $scope.cartLength = function () {
         var total,
@@ -589,8 +614,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
                 conn_1 = JSON.parse(localStorage.conn_1);
                 conn_2 = JSON.parse(localStorage.conn_2);
 
-                con_rank_1 = conn_1.con_rank;
-                con_rank_2 = conn_2.con_rank;
+                con_rank_1 = conn_1.$$hashKey;
+                con_rank_2 = conn_2.$$hashKey;
 
                 if (con_rank_1 > con_rank_2) {
                     $scope.notification = true;
@@ -599,21 +624,19 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
                     $scope.notification_button = "Close";
 
                     localStorage.setItem('conn_1', '');
-                    $scope.conn_1 = '';
-                    $scope.droppedObjects1 = [];
-
+                    localStorage.setItem('conn_1', JSON.stringify(conn_2));
                     localStorage.setItem('conn_2', '');
-                    $scope.conn_2 = '';
-                    $scope.droppedObjects2 = [];
+                    localStorage.setItem('conn_2', JSON.stringify(conn_1));
 
+                    $scope.conn_1 = '';
                     $scope.conn_1 = conn_2;
+                    $scope.conn_2 = '';
                     $scope.conn_2 = conn_1;
 
+                    $scope.droppedObjects1 = [];
                     $scope.droppedObjects1.push(conn_2);
+                    $scope.droppedObjects2 = [];
                     $scope.droppedObjects2.push(conn_1);
-
-                    localStorage.setItem('conn_1', JSON.stringify(conn_1));
-                    localStorage.setItem('conn_2', JSON.stringify(conn_2));
                 }
             }
         } else if (index_2 === -1 && objects_2 === 0) {
@@ -627,8 +650,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
             conn_1 = JSON.parse(localStorage.conn_1);
             conn_2 = JSON.parse(localStorage.conn_2);
 
-            con_rank_1 = conn_1.con_rank;
-            con_rank_2 = conn_2.con_rank;
+            con_rank_1 = conn_1.$$hashKey;
+            con_rank_2 = conn_2.$$hashKey;
 
             if (con_rank_1 > con_rank_2) {
                 $scope.notification = true;
@@ -637,21 +660,19 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
                 $scope.notification_button = "Close";
 
                 localStorage.setItem('conn_1', '');
-                $scope.conn_1 = '';
-                $scope.droppedObjects1 = [];
-
+                localStorage.setItem('conn_1', JSON.stringify(conn_2));
                 localStorage.setItem('conn_2', '');
-                $scope.conn_2 = '';
-                $scope.droppedObjects2 = [];
+                localStorage.setItem('conn_2', JSON.stringify(conn_1));
 
+                $scope.conn_1 = '';
                 $scope.conn_1 = conn_2;
+                $scope.conn_2 = '';
                 $scope.conn_2 = conn_1;
 
+                $scope.droppedObjects1 = [];
                 $scope.droppedObjects1.push(conn_2);
+                $scope.droppedObjects2 = [];
                 $scope.droppedObjects2.push(conn_1);
-
-                localStorage.setItem('conn_1', JSON.stringify(conn_1));
-                localStorage.setItem('conn_2', JSON.stringify(conn_2));
             }
         } else if (objects_1 > 0 && objects_2 > 0) {
             $scope.notification = true;

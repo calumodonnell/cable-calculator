@@ -6,7 +6,7 @@
         <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': !metric }">Select {{ metric ? 'Imperial' : 'Metric' }}</a></li>
       </ul>
       <div class="cartbar">
-        <a ui-sref="cart" class="cart-icon">Cart ({{ cartLength() }})</a>
+        <a ng-click="toCart()" class="cart-icon">Cart ({{ cartLength() }})</a>
       </div>
     </nav>
   </div>
@@ -19,7 +19,7 @@
         <form>
           <div class="form-group">
             <label>Max. Frequency (GHz)</label>
-            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" ng-change="storeFreq(search_freq)">
+            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq)">
           </div>
           <div class="form-group">
             <label>Connector 1 Series</label>

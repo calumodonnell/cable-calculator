@@ -42,7 +42,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // welcome message show if cart empty (assuming if empty, user has not used app)
     $scope.showWelcome = function () {
-        if ((localStorage.getItem('cart') === '[]' || localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null'  || localStorage.getItem('clength') === 'NaN') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
+        if ((localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null'  || localStorage.getItem('clength') === 'NaN') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
             $scope.notification = true;
             $scope.notification_title = "Welcome";
             $scope.notification_message = "Welcome to the Cable Calculator.";
@@ -109,11 +109,22 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         return element.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(element.className);
     }
 
+    $scope.toCart = function () {
+        var cart = JSON.parse(localStorage.getItem('cart'));
+
+        if (cart.length <= 0) {
+            $scope.notification = true;
+            $scope.notification_title = "Error";
+            $scope.notification_message = "There are currently no cables in your cart.";
+            $scope.notification_button = "Close";
+        } else {
+            $location.path("/cart");
+        }
+    };
+
     // direct to config if conditions met
     $scope.toConfig = function (id, conn_1, conn_2) {
-        var cart;
-
-        cart = JSON.parse(localStorage.getItem('cart'));
+        var cart = JSON.parse(localStorage.getItem('cart'));
 
         if (cart.length >= 12) {
             $scope.notification = true;
@@ -210,13 +221,13 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
 
     // store length to use on config page
     $scope.storeLength = function (val) {
-        if (val > 3024 && angular.element('#clength').hasClass("metric")) {
+        if (val > 3024 && hasClass(clength, 'metric')) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This program has a maximum length of 3024cm. Please contact the factory for custom lengths.";
             $scope.notification_button = "Close";
             val = 3024;
-        } else if (val > 1200 && angular.element('#clength').hasClass("imperial")) {
+        } else if (val > 1200 && hasClass(clength, 'imperial')) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "This program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
