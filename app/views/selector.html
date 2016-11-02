@@ -25,14 +25,14 @@
             <label>Connector 1 Series</label>
             <select class="form-control minimal" id="conn_1" ng-model="conn_1">
               <option value="">No Preference</option>
-              <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
+              <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.con_series }}">{{ connector.con_series }}</option>
             </select>
           </div>
           <div class="form-group">
             <label>Connector 2 Series</label>
             <select class="form-control minimal" id="conn_2" ng-model="conn_2">
               <option value="">No Preference</option>
-              <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.series }}">{{ connector.series }}</option>
+              <option ng-repeat="connector in series | filter: greaterThanFreq(search_freq)" value="{{ connector.con_series }}">{{ connector.con_series }}</option>
             </select>
           </div>
           <div class="form-group">

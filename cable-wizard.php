@@ -170,7 +170,8 @@ function cw_load() {
 
 	wp_enqueue_script('app', SR_URL .'/app/app.js');
 	wp_enqueue_script('cables', SR_URL .'/app/services/cables.js');
-	wp_enqueue_script('series', SR_URL .'/app/services/connector-series.js');
+	wp_enqueue_script('series', SR_URL .'/app/services/series.js');
+	wp_enqueue_script('covering', SR_URL .'/app/services/covering.js');
 	wp_enqueue_script('connectors', SR_URL .'/app/services/connectors.js');
 	wp_enqueue_script('back', SR_URL .'/app/directives/back.js');
 	wp_enqueue_script('metricWatch', SR_URL .'/app/directives/metricWatch.js');

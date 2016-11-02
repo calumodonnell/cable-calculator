@@ -2,10 +2,10 @@
 /*global $, jQuery, alert, angular, console, app*/
 
 // cable service to get json data
-app.factory('cables', ['$http', function ($http) {
+app.factory('covering', ['$http', function ($http) {
     "use strict";
-    return $http.get('../wp-content/plugins/cable-wizard/app/data/cables.php')
+    return $http.get('../wp-content/plugins/cable-wizard/app/data/covering.php')
         .then(function (response) {
-            return response.data.cables;
+            return response.data.covering;
         });
 }]);

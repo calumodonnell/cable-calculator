@@ -1,8 +1,34 @@
 <?php
 // @author calum o'donnell
 
-if (isset($_GET['cable_id'])) {
+if (isset($_GET['part_id'])) {
     $part_id = $_GET['part_id'];
+}
+
+if (isset($_GET['length'])) {
+    $length = $_GET['length'];
+} else {
+    $length = 0;
+}
+
+if (isset($_GET['covering'])) {
+    $covering = $_GET['covering'];
+} else {
+    $covering = '';
+}
+
+if (isset($_GET['conn_1'])) {
+    $conn_1 = $_GET['conn_1'];
+}
+
+if (isset($_GET['conn_2'])) {
+    $conn_2 = $_GET['conn_2'];
+}
+
+if (isset($_GET['quantity'])) {
+    $quantity = $_GET['quantity'];
+} else {
+    $quantity = 1;
 }
 
 $output = "";
@@ -12,26 +38,13 @@ require_once( $parse_uri[0] . 'wp-load.php' );
 
 global $wpdb;
 
-$cable_list = $wpdb->get_results("SELECT * FROM cw_cable_list WHERE id = '$cable_id' && available = 'on' ORDER BY name ASC LIMIT 1");
+$cable_list = $wpdb->get_results("SELECT * FROM cw_cable_list WHERE id = '$part_id' && available = 'on' ORDER BY name ASC LIMIT 1");
 
 $i = 0;
 $len = count($cable_list);
 
 foreach( $cable_list as $key => $cable ) {
-    $output .= ' { "name" : "' . $cable->name . '", ';
-    $output .= '"part_no" : "' . $cable->part_no . '", ';
-    $output .= '"max_freq" : "' . $cable->max_freq . '", ';
-    $output .= '"diameter" : "' . $cable->diameter . '", ';
-    $output .= '"min_bend" : "' . $cable->min_bend . '", ';
-    $output .= '"typ_atten_k1" : "' . $cable->typ_atten_k1 . '", ';
-    $output .= '"typ_atten_k2" : "' . $cable->typ_atten_k2 . '", ';
-    $output .= '"outdoor" : "' . $cable->outdoor . '", ';
-    $output .= '"indoor" : "' . $cable->indoor . '", ';
-    $output .= '"test" : "' . $cable->test . '", ';
-    $output .= '"price" : "' . $cable->price . '", ';
-    $output .= '"flex" : "' . $cable->flex . '", ';
-    $output .= '"cable_img" : "' . $cable->cable_img . '", ';
-    $output .= '"margin_rate" : "' . $cable->margin_rate . '", ';
+    $output .= ' { "margin_rate" : "' . $cable->margin_rate . '", ';
     $output .= '"hour_lab_rate" : "' . $cable->hour_lab_rate . '", ';
     $output .= '"overhead_rate" : "' . $cable->overhead_rate . '", ';
     $output .= '"ship_handling" : "' . $cable->ship_handling . '", ';
@@ -44,7 +57,6 @@ foreach( $cable_list as $key => $cable ) {
     $output .= '"qm6" : "' . $cable->qm6 . '", ';
     $output .= '"qm7" : "' . $cable->qm7 . '", ';
     $output .= '"qm8" : "' . $cable->qm8 . '", ';
-    $output .= '"available" : "' . $cable->name . '", ';
     $output .= '"coat_n_cable_base" : "' . $cable->coat_n_cable_base . '", ';
     $output .= '"coat_n_adder_back" : "' . $cable->coat_n_adder_back . '", ';
     $output .= '"coat_n_base" : "' . $cable->coat_n_base . '", ';
@@ -89,22 +101,105 @@ foreach( $cable_list as $key => $cable ) {
     $output .= '"coat_mc_adder_back" : "' . $cable->coat_mc_adder_back . '", ';
     $output .= '"coat_mc_base" : "' . $cable->coat_mc_base . '", ';
     $output .= '"coat_mc_adder_base_time" : "' . $cable->coat_mc_adder_base_time . '", ';
-    $output .= '"coat_mc_time_rp" : "' . $cable->coat_mc_time_rp . '", ';
-
-    $output .= '"connectors" : ' ;
-
-    $price_list = $wpdb->get_results("SELECT cw_cable_connector_pricing.id, cable_id, connector_id, cw_cable_connector_pricing.con_part_no, cw_cable_connector_pricing.con_series, price, cw_cable_connector_pricing.con_max_freq, con_rank FROM cw_cable_connector_pricing INNER JOIN cw_connector_list ON cw_cable_connector_pricing.connector_id = cw_connector_list.id WHERE cable_id = " . $cable_id);
-
-    if ( $i == $len - 1 ) {
-        $output .= json_encode($price_list) . '}';
-    } else {
-        $output .= json_encode($price_list) . '},';
-    }
-
-    $i++;
+    $output .= '"coat_mc_time_rp" : "' . $cable->coat_mc_time_rp . '"}';
 }
 
-$output ='{"cables":[ '.$output.']}';
+$conn_1_query = $wpdb->get_results("SELECT price FROM cw_cable_connector_pricing WHERE cable_id = '$part_id' && con_part_no = '$conn_1'");
+$conn_2_query = $wpdb->get_results("SELECT price FROM cw_cable_connector_pricing WHERE cable_id = '$part_id' && con_part_no = '$conn_2'");
 
-echo($output);
+foreach( $conn_1_query as $key => $conn ) {
+    $conn_1_price = $conn->price;
+}
+
+foreach( $conn_2_query as $key => $conn ) {
+    $conn_2_price = $conn->price;
+}
+
+switch ($covering) {
+case 'W':
+    $cableBase = $cable->coat_w_cable_base;
+    $adderBack = $cable->coat_w_adder_back;
+    $laborTime = $cable->coat_w_base;
+    $laborAdd = $cable->coat_w_adder_base_time;
+    $laborCalc = $cable->coat_w_time_rp;
+    break;
+case 'TV':
+    $cableBase = $cable->coat_tv_cable_base;
+    $adderBack = $cable->coat_tv_adder_back;
+    $laborTime = $cable->coat_tv_base;
+    $laborAdd = $cable->coat_tv_adder_base_time;
+    $laborCalc = $cable->coat_tv_time_rp;
+    break;
+case 'A':
+    $cableBase = $cable->coat_a_cable_base;
+    $adderBack = $cable->coat_a_adder_back;
+    $laborTime = $cable->coat_a_base;
+    $laborAdd = $cable->coat_a_adder_base_time;
+    $laborCalc = $cable->coat_a_time_rp;
+    break;
+case 'AW':
+    $cableBase = $cable->coat_aw_cable_base;
+    $adderBack = $cable->coat_aw_adder_back;
+    $laborTime = $cable->coat_aw_base;
+    $laborAdd = $cable->coat_aw_adder_base_time;
+    $laborCalc = $cable->coat_aw_time_rp;
+    break;
+case 'AN':
+    $cableBase = $cable->coat_an_cable_base;
+    $adderBack = $cable->coat_an_adder_back;
+    $laborTime = $cable->coat_an_base;
+    $laborAdd = $cable->coat_an_adder_base_time;
+    $laborCalc = $cable->coat_an_time_rp;
+    break;
+case 'E':
+    $cableBase = $cable->coat_ej_cable_base;
+    $adderBack = $cable->coat_ej_adder_back;
+    $laborTime = $cable->coat_ej_base;
+    $laborAdd = $cable->coat_ej_adder_base_time;
+    $laborCalc = $cable->coat_ej_time_rp;
+    break;
+case 'EW':
+    $cableBase = $cable->coat_ew_cable_base;
+    $adderBack = $cable->coat_ew_adder_back;
+    $laborTime = $cable->coat_ew_base;
+    $laborAdd = $cable->coat_ew_adder_base_time;
+    $laborCalc = $cable->coat_ew_time_rp;
+    break;
+case 'MC':
+    $cableBase = $cable->coat_mc_cable_base;
+    $adderBack = $cable->coat_mc_adder_back;
+    $laborTime = $cable->coat_mc_base;
+    $laborAdd = $cable->coat_mc_adder_base_time;
+    $laborCalc = $cable->coat_mc_time_rp;
+    break;
+default:
+    $cableBase = $cable->coat_n_cable_base;
+    $adderBack = $cable->coat_n_adder_back;
+    $laborTime = $cable->coat_n_base;
+    $laborAdd = $cable->coat_n_adder_base_time;
+    $laborCalc = $cable->coat_n_time_rp;
+    break;
+}
+
+$qm = 4;
+
+$conn1Price = $conn_1_price;
+$conn2Price = $conn_2_price;
+$matYield = $cable->material_yield;
+$shipHand = $cable->ship_handling;
+$hourlyRate = $cable->hour_lab_rate;
+$overHeadRate = $cable->overhead_rate;
+$marginRate = $cable->margin_rate;
+
+$cableCost = ($cableBase * $length / 12) + $adderBack;
+$laborCost = ($laborTime + $laborAdd) + $laborCalc * $length;
+$totalLoadedMaterial = ($conn1Price + $conn2Price + $cableCost) / $matYield * (1 + $shipHand);
+$totalLoadedLabor = ($laborCost / 60 * $hourlyRate) * $overHeadRate;
+$unitPrice = ($totalLoadedMaterial + ($totalLoadedLabor * $qm)) / (1 - $marginRate);
+
+$unitPrice = $unitPrice * $quantity;
+
+$unitPrice = number_format($unitPrice, 2, '.', '');
+
+echo $unitPrice;
 ?>

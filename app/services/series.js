@@ -4,7 +4,7 @@
 // series serivce to get json data
 app.factory('series', ['$http', function ($http) {
     "use strict";
-    return $http.get('../wp-content/plugins/cable-wizard/admin/includes/series-list.php')
+    return $http.get('../wp-content/plugins/cable-wizard/app/data/connector-series.php')
         .then(function (response) {
             return response.data.series;
         });
