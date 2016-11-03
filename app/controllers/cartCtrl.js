@@ -101,16 +101,13 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
 
     $scope.cableP = function (id, len, covering, conn_1, conn_2, quantity, index) {
         $http.get("../wp-content/plugins/cable-wizard/app/data/unit-price.php", {params: {'part_id': id, 'length': len, 'covering': covering, 'conn_1': conn_1, 'conn_2': conn_2, 'quantity': quantity}}).then(function (response) {
-            var cart,
-                unitPrice,
-                totalPrice;
+            var cart;
 
             localStorage.cart = localStorage.getItem('cart');
             cart = JSON.parse(localStorage.cart);
 
             cart[index].unitPrice = response.data.unitPrice;
             cart[index].totalPrice = response.data.totalPrice;
-
             cart[index].qm1 = response.data.qm1;
             cart[index].qm2 = response.data.qm2;
             cart[index].qm3 = response.data.qm3;
@@ -126,8 +123,7 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
         var cart,
             i;
 
-        localStorage.cart = localStorage.getItem('cart');
-        cart = JSON.parse(localStorage.cart);
+        cart = JSON.parse(localStorage.getItem('cart'));
 
         for (i = 0; i < cart.length; i += 1) {
             $scope.cableP(cart[i].id, cart[i].length, cart[i].covering, cart[i].conn_1_part_no, cart[i].conn_2_part_no, cart[i].quantity, i);

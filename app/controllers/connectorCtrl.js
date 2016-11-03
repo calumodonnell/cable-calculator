@@ -25,7 +25,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
 
     if (!$scope.part_id) { $window.location.href = './#/'; }
 
-    if (!localStorage.getItem('cart', '')) { $window.location.href = './#/'; }
+    if (!localStorage.getItem('cart', '') || !localStorage.getItem('cart', '[]')) { $window.location.href = './#/'; }
 
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;

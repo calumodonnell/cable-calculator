@@ -40,18 +40,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         $scope.notification = false;
     };
 
-    // welcome message show if cart empty (assuming if empty, user has not used app)
-    $scope.showWelcome = function () {
-        if ((localStorage.getItem('cart') === '') && (localStorage.getItem('clength') === '' || localStorage.getItem('clength') === 'null'  || localStorage.getItem('clength') === 'NaN') && (localStorage.getItem('max_freq') === '' || localStorage.getItem('max_freq') === 'null')) {
-            $scope.notification = true;
-            $scope.notification_title = "Welcome";
-            $scope.notification_message = "Welcome to the Cable Calculator.";
-            $scope.notification_button = "Enter";
-            localStorage.setItem('measure', 'false');
-        }
-    };
-    $scope.showWelcome();
-
     // display total rows
     $scope.totalRows = function () {
         var rowCount = document.getElementsByClassName('selector').length,
@@ -110,15 +98,22 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     }
 
     $scope.toCart = function () {
-        var cart = JSON.parse(localStorage.getItem('cart'));
+        if (localStorage.getItem('cart')) {
+            var cart = JSON.parse(localStorage.getItem('cart'));
 
-        if (cart.length <= 0) {
+            if (cart.length <= 0 || cart === null || cart === "" || cart === "[]") {
+                $scope.notification = true;
+                $scope.notification_title = "Error";
+                $scope.notification_message = "There are currently no cables in your cart.";
+                $scope.notification_button = "Close";
+            } else {
+                $location.path("/cart");
+            }
+        } else {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "There are currently no cables in your cart.";
             $scope.notification_button = "Close";
-        } else {
-            $location.path("/cart");
         }
     };
 
