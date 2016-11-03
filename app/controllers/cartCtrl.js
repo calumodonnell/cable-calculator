@@ -102,14 +102,22 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
     $scope.cableP = function (id, len, covering, conn_1, conn_2, quantity, index) {
         $http.get("../wp-content/plugins/cable-wizard/app/data/unit-price.php", {params: {'part_id': id, 'length': len, 'covering': covering, 'conn_1': conn_1, 'conn_2': conn_2, 'quantity': quantity}}).then(function (response) {
             var cart,
-                unitPrice;
+                unitPrice,
+                totalPrice;
 
             localStorage.cart = localStorage.getItem('cart');
             cart = JSON.parse(localStorage.cart);
 
-            unitPrice = response.data;
+            cart[index].unitPrice = response.data.unitPrice;
+            cart[index].totalPrice = response.data.totalPrice;
 
-            cart[index].price = unitPrice;
+            cart[index].qm1 = response.data.qm1;
+            cart[index].qm2 = response.data.qm2;
+            cart[index].qm3 = response.data.qm3;
+            cart[index].qm4 = response.data.qm4;
+            cart[index].qm5 = response.data.qm5;
+            cart[index].qm6 = response.data.qm6;
+
             localStorage.cart = JSON.stringify(cart);
         });
     };
@@ -126,16 +134,20 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
         }
     };
 
+    $scope.unitPrice = function (index) {
+        var cart;
+
+        cart = JSON.parse(localStorage.getItem('cart'));
+
+        return cart[index].unitPrice;
+    };
+
     $scope.cablePrice = function (index) {
-        var cart,
-            unitPrice;
+        var cart;
 
-        localStorage.cart = localStorage.getItem('cart');
-        cart = JSON.parse(localStorage.cart);
+        cart = JSON.parse(localStorage.getItem('cart'));
 
-        unitPrice = cart[index].price;
-
-        return unitPrice;
+        return cart[index].totalPrice;
     };
 
     $scope.cableCost();
@@ -148,7 +160,7 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
         cart = JSON.parse(localStorage.cart);
 
         angular.forEach(cart, function (value) {
-            total = total + parseFloat(value.price);
+            total = total + parseFloat(value.totalPrice);
         });
 
         return total;
@@ -213,7 +225,7 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
         $scope.cableCost();
     };
 
-    $scope.lengthCheck = function (len, index) {
+    $scope.lengthCheck = function (len) {
         if (len < 15 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";

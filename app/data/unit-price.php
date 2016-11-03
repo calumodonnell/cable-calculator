@@ -181,7 +181,23 @@ default:
     break;
 }
 
-$qm = 4;
+if ($quantity >= 1 && $quantity <= 3) {
+    $qm = $cable->qm1;
+} else if ($quantity >= 4 && $quantity <= 9) {
+    $qm = $cable->qm2;
+} else if ($quantity >= 10 && $quantity <= 24) {
+    $qm = $cable->qm3;
+} else if ($quantity >= 25 && $quantity <= 49) {
+    $qm = $cable->qm4;
+} else if ($quantity >= 50 && $quantity <= 99) {
+    $qm = $cable->qm5;
+} else if ($quantity >= 100 && $quantity <= 249) {
+    $qm = $cable->qm6;
+} else if ($quantity >= 250 && $quantity <= 499) {
+    $qm = $cable->qm7;
+} else if ($quantity >= 500 && $quantity <= 1000) {
+    $qm = $cable->qm8;
+}
 
 $conn1Price = $conn_1_price;
 $conn2Price = $conn_2_price;
@@ -197,9 +213,49 @@ $totalLoadedMaterial = ($conn1Price + $conn2Price + $cableCost) / $matYield * (1
 $totalLoadedLabor = ($laborCost / 60 * $hourlyRate) * $overHeadRate;
 $unitPrice = ($totalLoadedMaterial + ($totalLoadedLabor * $qm)) / (1 - $marginRate);
 
-$unitPrice = $unitPrice * $quantity;
+$totalPrice = $unitPrice * $quantity;
 
 $unitPrice = number_format($unitPrice, 2, '.', '');
+$totalPrice = number_format($totalPrice, 2, '.', '');
 
-echo $unitPrice;
+$quantities = [
+    "qm1" => "1",
+    "qm2" => "4",
+    "qm3" => "10",
+    "qm4" => "25",
+    "qm5" => "50",
+    "qm6" => "100",
+];
+
+$qms = [];
+
+foreach ($quantities as $k => $q) {
+  if ($q >= 1 && $q <= 3) {
+      $qm = $cable->qm1;
+  } else if ($q >= 4 && $q <= 9) {
+      $qm = $cable->qm2;
+  } else if ($q >= 10 && $q <= 24) {
+      $qm = $cable->qm3;
+  } else if ($q >= 25 && $q <= 49) {
+      $qm = $cable->qm4;
+  } else if ($q >= 50 && $q <= 99) {
+      $qm = $cable->qm5;
+  } else if ($q >= 100 && $q <= 249) {
+      $qm = $cable->qm6;
+  }
+
+  $cableCost = ($cableBase * $length / 12) + $adderBack;
+  $laborCost = ($laborTime + $laborAdd) + $laborCalc * $length;
+  $totalLoadedMaterial = ($conn1Price + $conn2Price + $cableCost) / $matYield * (1 + $shipHand);
+  $totalLoadedLabor = ($laborCost / 60 * $hourlyRate) * $overHeadRate;
+  $qmPrice = ($totalLoadedMaterial + ($totalLoadedLabor * $qm)) / (1 - $marginRate);
+
+  $qmPrice = number_format($qmPrice, 2, '.', '');
+
+  array_push($qms, $qmPrice);
+}
+
+
+
+echo '{"unitPrice": "' . $unitPrice . '", "totalPrice": "' . $totalPrice . '", "qm1": "' . $qms[0] . '", "qm2": "' . $qms[1] . '", "qm3": "' . $qms[2] . '", "qm4": "' . $qms[3] . '", "qm5": "' . $qms[4] . '", "qm6": "' . $qms[5] . '"}';
 ?>
