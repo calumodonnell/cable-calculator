@@ -2,7 +2,7 @@
 /*global $, jfalert, angular, console, app*/
 
 // cartCtrl controller
-app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', function ($scope, $filter, $window, $http, cables) {
+app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', 'connectors', function ($scope, $filter, $window, $http, cables, connectors) {
     "use strict";
 
     var initializing = true;
@@ -15,6 +15,10 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', f
 
     cables.then(function (data) {
         $scope.cables = data;
+    });
+
+    connectors.then(function (data) {
+        $scope.connectors = data;
     });
 
     if (localStorage.getItem('measure') === 'true') {
