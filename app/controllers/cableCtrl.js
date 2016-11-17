@@ -43,7 +43,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     // display total rows
     $scope.totalRows = function () {
         var rowCount = document.getElementsByClassName('selector').length,
-            rowHide = document.getElementsByClassName('selector.ng-hide').length,
+            rowHide = document.getElementsByClassName('selector ng-hide').length,
             rowTotal = rowCount - rowHide;
 
         return rowTotal;
@@ -64,6 +64,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         };
     };
 
+    // greater than frequency
     $scope.greaterThanFreq = function (val) {
         return function (item) {
             if (item.con_max_freq >= val) {

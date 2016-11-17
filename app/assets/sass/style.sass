@@ -10,6 +10,11 @@ $xs-device: "screen and (max-width: 543px)"
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
   display: none !important
 
+html,
+body
+  height: 100%
+  width: 100%
+
 .page-template-blank-slate-template
   .entry-content
     margin: 0!important
@@ -66,7 +71,6 @@ $xs-device: "screen and (max-width: 543px)"
     padding-left: 10px
     padding-right: 10px
 
-
   .container
     padding-left: 30px
     padding-right: 30px
@@ -84,12 +88,13 @@ $xs-device: "screen and (max-width: 543px)"
   .container-content
     display: table
     min-height: 600px
+    min-height: calc(100vh - 60px)
     padding: 0
     width: 100%
 
   .cable-content
-    height: 100%
     min-height: 600px
+    min-height: calc(100vh - 60px)
     width: 100%
 
   .content-wrap
@@ -104,7 +109,8 @@ $xs-device: "screen and (max-width: 543px)"
     border-right: 1px solid #E5E8EA
     bottom: 0
     float: none
-    height: 100%
+    min-height: 100%
+    min-height: calc(100vh - 60px)
     left: 0
     padding: 30px
     top: 0
@@ -221,6 +227,8 @@ $xs-device: "screen and (max-width: 543px)"
   .content
     display: table-cell
     float: none
+    min-height: 100%
+    min-height: calc(100vh - 60px)
     padding: 0
     position: relative
     vertical-align: top

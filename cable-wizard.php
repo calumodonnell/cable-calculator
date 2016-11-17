@@ -165,8 +165,8 @@ function cw_load() {
 	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
 
 	wp_enqueue_style('cw-app-style',  SR_URL . '/app/assets/css/style.css', '');
-	wp_enqueue_style('cw-app-drawing',  SR_URL . '/app/assets/css/drawing.css', array(), 1.0, 'print');
-	wp_enqueue_style('cw-app-quotation',  SR_URL . '/app/assets/css/quotation.css', array(), 1.0, 'print');
+	wp_enqueue_style('cw-app-drawing',  SR_URL . '/app/assets/css/drawing.css', 'print');
+	wp_enqueue_style('cw-app-quotation',  SR_URL . '/app/assets/css/quotation.css', 'print');
 
 	wp_enqueue_script('app', SR_URL .'/app/app.js');
 	wp_enqueue_script('cables', SR_URL .'/app/services/cables.js');

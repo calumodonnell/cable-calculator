@@ -27,30 +27,6 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         $scope.metric = false;
     }
 
-    $scope.rflabsPartNo = function (len, index) {
-        var cart,
-            part_no,
-            conn_1_part_no,
-            conn_2_part_no,
-            covering,
-            rflabsPart;
-
-        localStorage.cart = localStorage.getItem('cart');
-        cart = JSON.parse(localStorage.cart);
-
-        part_no = cart[index].part_no;
-        conn_1_part_no = cart[index].conn_1_part_no;
-        conn_2_part_no = cart[index].conn_2_part_no;
-        covering = cart[index].covering;
-
-        if (covering === undefined) { covering = ''; }
-
-        len = $filter('noComma')(len);
-
-        rflabsPart = conn_1_part_no + '-' + part_no + covering + '-' + len + '-' + conn_2_part_no;
-        return rflabsPart;
-    };
-
     $scope.cartLength = function () {
         var total,
             cart;
@@ -64,6 +40,37 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         }
 
         return total;
+    };
+
+    $scope.rflabsPartNo = function (index) {
+        var cart,
+            part_no,
+            conn_1_part_no,
+            conn_2_part_no,
+            len,
+            covering,
+            rflabsPart;
+
+        localStorage.cart = localStorage.getItem('cart');
+        cart = JSON.parse(localStorage.cart);
+
+        part_no = cart[index].part_no;
+        conn_1_part_no = cart[index].conn_1_part_no;
+        conn_2_part_no = cart[index].conn_2_part_no;
+        len = cart[index].length;
+        covering = cart[index].covering;
+
+        if (covering === undefined) { covering = ''; }
+
+        if ($scope.metric === true) {
+            len = len / 2.54;
+            len = len.toFixed(0);
+        }
+
+        len = $filter('noComma')(len);
+
+        rflabsPart = conn_1_part_no + '-' + part_no + covering + '-' + len + '-' + conn_2_part_no;
+        return rflabsPart;
     };
 
     $scope.totalQuantity = function () {
@@ -125,12 +132,20 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
 
     $scope.cableCost = function () {
         var cart,
+            len,
             i;
 
         cart = JSON.parse(localStorage.getItem('cart'));
 
         for (i = 0; i < cart.length; i += 1) {
-            $scope.cableP(cart[i].id, cart[i].length, cart[i].covering, cart[i].conn_1_part_no, cart[i].conn_2_part_no, cart[i].quantity, i);
+            len = cart[i].length;
+
+            if ($scope.metric === true) {
+                len = len / 2.54;
+                len = len.toFixed(0);
+            }
+
+            $scope.cableP(cart[i].id, len, cart[i].covering, cart[i].conn_1_part_no, cart[i].conn_2_part_no, cart[i].quantity, i);
         }
     };
 
@@ -142,12 +157,39 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         return cart[index].unitPrice;
     };
 
-    $scope.cablePrice = function (index) {
-        var cart;
+    $scope.unitPriceQM = function (index, qm) {
+        var cart,
+            q;
 
         cart = JSON.parse(localStorage.getItem('cart'));
 
-        return cart[index].totalPrice;
+        if (qm === 1) {
+            q = cart[index].qm1;
+        } else if (qm === 2) {
+            q = cart[index].qm2;
+        } else if (qm === 3) {
+            q = cart[index].qm3;
+        } else if (qm === 4) {
+            q = cart[index].qm4;
+        } else if (qm === 5) {
+            q = cart[index].qm5;
+        } else if (qm === 6) {
+            q = cart[index].qm6;
+        }
+
+        return q;
+    };
+
+    $scope.cablePrice = function (index) {
+        var cart,
+            price;
+
+        cart = JSON.parse(localStorage.getItem('cart'));
+        price = cart[index].totalPrice;
+
+        if (!price) { price = 0.00; }
+
+        return price;
     };
 
     $scope.cableCost();
@@ -162,6 +204,8 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         angular.forEach(cart, function (value) {
             total = total + parseFloat(value.totalPrice);
         });
+
+        if (!total) { total = 0.00; }
 
         return total;
     };
@@ -225,7 +269,10 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         $scope.cableCost();
     };
 
-    $scope.lengthCheck = function (len) {
+    $scope.lengthCheck = function (len, index) {
+        localStorage.cart = localStorage.getItem('cart');
+        var cart = JSON.parse(localStorage.cart);
+
         if (len < 15 && $scope.metric === true) {
             $scope.notification = true;
             $scope.notification_title = "Error";
@@ -251,6 +298,10 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
             $scope.notification_button = "Close";
             len = 1200;
         }
+
+        cart[index].length = len;
+
+        localStorage.cart = JSON.stringify(cart);
     };
 
     $scope.lengthStore = function (len, index) {
@@ -344,7 +395,26 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         if (initializing) {
             initializing = false;
         } else {
+            var cart, i;
+
             localStorage.setItem('measure', $scope.metric);
+
+            localStorage.cart = localStorage.getItem('cart');
+            cart = JSON.parse(localStorage.cart);
+
+            for (i = 0; i < cart.length; i += 1) {
+                if ($scope.metric === true) {
+                    cart[i].length = cart[i].length * 2.54;
+                } else if ($scope.metric === false) {
+                    cart[i].length = cart[i].length / 2.54;
+                }
+
+                cart[i].length = cart[i].length.toFixed(0);
+                cart[i].length = parseFloat(cart[i].length, 10);
+            }
+
+            localStorage.cart = JSON.stringify(cart);
+            $scope.cart = JSON.parse(localStorage.getItem('cart'));
         }
     });
 

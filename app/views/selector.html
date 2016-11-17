@@ -1,4 +1,3 @@
-<div class="darkness" ng-show="notification"></div>
 <div class="navbar-header">
   <div class="container">
     <nav class="navbar" id="selector-nav" role="navigation">
@@ -89,7 +88,7 @@
             </tr>
           </tbody>
         </table>
-        <p ng-if="!totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
+        <p ng-show="!totalRows()" id="no_cables">To search for cables please specify your requirements.<br> If you cannot find a cable please change your search specifications and try again.</p>
       </div>
     </div>
     <div class="notification" ng-show="notification">
@@ -101,3 +100,4 @@
     </div>
   </div>
 </div>
+<div class="darkness" ng-show="notification"></div>

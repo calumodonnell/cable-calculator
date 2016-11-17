@@ -252,7 +252,10 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
         }
 
         if (conn_1 !== undefined && conn_1 !== '' && conn_2 !== undefined && conn_2 !== '') {
-            if ($scope.metric === true) { len = len / 2.54; }
+            if ($scope.metric === true) {
+                len = len / 2.54;
+                len = len.toFixed(0);
+            }
 
             len = $filter('noComma')(len);
 
@@ -359,7 +362,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', '$wi
                 'covering': covering,
                 'quantity': 1,
                 'length': len,
-                'price': '',
                 'freq': $scope.search_freq
             };
 
