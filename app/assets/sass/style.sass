@@ -357,7 +357,8 @@ body
     .conn-box
       display: inline-block
       cursor: move
-      padding: 5px
+      margin: 5px
+      padding: 0
       transition: 0.2s ease
       z-index: 10
       .item
@@ -498,9 +499,12 @@ body
   #no_cables
     background-color: #FFFFFF
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15)
+    cursor: default!important
     font-size: 12px
     padding: 16px 14px
     text-align: center
+    &:hover
+      background-color: #FFFFFF!important
 
   #no_connectors
     p
@@ -634,8 +638,12 @@ body
 
   .darkness
     background-color: rgba(0, 0, 0, 0.5)
+    bottom: 0
     height: 100%
+    left: 0
     position: absolute
+    right: 0
+    top: 0
     width: 100%
     z-index: 100
 

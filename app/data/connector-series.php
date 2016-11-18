@@ -6,7 +6,7 @@ require_once( $parse_uri[0] . 'wp-load.php' );
 
 global $wpdb;
 
-$sql = "SELECT DISTINCT con_series, con_max_freq  FROM cw_connector_list ORDER BY con_series ASC";
+$sql = "SELECT con_series, max(con_max_freq) as max_freq FROM cw_connector_list GROUP BY(con_series) ORDER BY con_series ASC";
 
 $connector_list = $wpdb->get_results($sql);
 
@@ -15,7 +15,7 @@ $output = "";
 foreach($connector_list as $connector) :
   if ($output != "") {$output .= ",";}
   $output .= ' { "con_series" : "' . $connector->con_series . '", ';
-  $output .= '"con_max_freq" : "' . $connector->con_max_freq . '" } ';
+  $output .= '"con_max_freq" : "' . $connector->max_freq . '" } ';
 endforeach;
 
 $output ='{"series":[ '.$output.']}';

@@ -1,4 +1,3 @@
-<div class="darkness" ng-show="notification || print_drawing"></div>
 <div class="navbar-header">
   <div class="container">
     <nav class="navbar" id="configurator-nav" role="navigation">
@@ -21,7 +20,7 @@
         <form>
           <div class="form-group">
             <label>Max. Frequency (GHz)</label>
-            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-blur="storeFreq(search_freq, cable.max_freq)">
+            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq, cable.max_freq)">
           </div>
           <div class="form-group">
             <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
@@ -30,7 +29,7 @@
           <div class="form-group">
             <label>Covering</label>
             <select class="form-control minimal" id="covering" ng-options="cover.cover for cover in covers track by cover.letter" ng-model="covering" ng-change="cableCovering(covering.letter)">
-              <option value=""></option>
+              <option value="">None</option>
             </select>
           </div>
         </form>
@@ -59,7 +58,7 @@
       <div class="content-head">
         <div class="container">
           <h3>Configure Your Cable</h3>
-          <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, cable.typ_atten_k1, cable.typ_atten_k2, conn_1.price, conn_2.price, covering.letter)'>Add to Cart</a>
+          <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, cable.typ_atten_k1, cable.typ_atten_k2, covering.letter)'>Add to Cart</a>
         </div>
       </div>
       <div class="container content-wrap">
@@ -72,12 +71,12 @@
               <tr class="cable-holder">
                 <td class="bin" id="conn_1" ng-drop="true">
                   <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj">
-                      <div class="conn-image">
-                        <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
-                      </div>
-                      <div class="conn-title">
-                        <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
-                      </div>
+                    <div class="conn-image">
+                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                    </div>
+                    <div class="conn-title">
+                      <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                    </div>
                   </div>
                 </td>
                 <td class="image-holder">
@@ -90,12 +89,12 @@
                 </td>
                 <td class="bin" id="conn_2" ng-drop="true">
                   <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj">
-                      <div class="conn-image">
-                        <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
-                      </div>
-                      <div class="conn-title">
-                        <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
-                      </div>
+                    <div class="conn-image">
+                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                    </div>
+                    <div class="conn-title">
+                      <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -107,7 +106,7 @@
             </tbody>
           </table>
           <div class="row connector-selection">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in filerConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq) | orderBy: object)">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in filterConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq) | orderBy: object)">
               <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable ng-click="onClick(conn, $event)">
                 <div class="conn-image">
                   <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
@@ -117,7 +116,7 @@
                 </div>
               </div>
             </div>
-            <div id="no_connectors" ng-show="!filerConnectors.length">
+            <div id="no_connectors" ng-show="!filterConnectors.length">
               <p>There are no connectors available under the maximum frequency given.</p>
             </div>
           </div>
@@ -133,3 +132,4 @@
     </div>
   </div>
 </div>
+<div class="darkness" ng-show="notification || print_drawing"></div>

@@ -163,9 +163,9 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         if (initializing) {
             initializing = false;
         } else {
-            localStorage.setItem('measure', $scope.metric);
-
             var len;
+
+            localStorage.setItem('measure', $scope.metric);
 
             if ($scope.clength) {
                 if ($scope.metric === true) {
@@ -202,17 +202,22 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
     };
 
     // store frequency to use on config page
-    $scope.storeFreq = function (val) {
-        if (val > 65) {
+    $scope.storeFreq = function (freq) {
+        if (freq > 65) {
             $scope.notification = true;
             $scope.notification_title = "Error";
             $scope.notification_message = "The application has a maximum frequency of 65 GHz.";
             $scope.notification_button = "Close";
-            val = 65;
+            freq = 65;
         }
 
-        $scope.search_freq = val;
-        localStorage.setItem('max_freq', val);
+        $scope.search_freq = freq;
+
+        if (freq === null) {
+            localStorage.setItem('max_freq', 1);
+        } else {
+            localStorage.setItem('max_freq', freq);
+        }
     };
 
     // store length to use on config page
@@ -261,7 +266,7 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             return reverse // `-1 *` if want opposite order
                 * (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
                     .localeCompare(b.cells[col].textContent.trim())
-                   );
+                  );
         });
         for (i = 0; i < tr.length; i += 1) { tb.appendChild(tr[i]); } // append each row in order
     }

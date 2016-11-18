@@ -1,11 +1,9 @@
-<div class="darkness" ng-show="notification || print_drawing"></div>
 <div class="navbar-header">
   <div class="container">
     <nav class="navbar" id="configurator-nav" role="navigation">
       <ul class="nav navbar-nav">
-        <li class="nav-item"><a href="" ng-click='showDrawing()'>Print Drawing</a></li>
+        <li class="nav-item"><a href="" back>Back</a></li>
         <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">Select {{ metric ? 'Imperial' : 'Metric' }}</a></li>
-        <li class="nav-item"><a ui-sref="cart">Cancel</a></li>
       </ul>
       <div class="cartbar">
         <a ui-sref="cart" class="cart-icon">Cart ({{ cartLength() }})</a>
@@ -13,32 +11,24 @@
     </nav>
   </div>
 </div>
-<div class="cable-content" id="configurator" ng-repeat="cable in cables">
-  <div class="container container-content">
-    <div class="col-lg-3 col-md-12 sidebar">
+<div class="cable-content" id="configurator" ng-repeat="cable in cables" hotkey="{esc: notificationHide}">
+  <div class="container container-content" ng-repeat="ca in cart">
+    <div class="col-md-3 col-sm-12 sidebar">
       <div class="widget">
         <h3>Filter</h3>
         <form>
           <div class="form-group">
-            <label for="max_freq">Max. Frequency (GHz)</label>
-            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq)">
+            <label>Max. Frequency (GHz)</label>
+            <input type="number" class="form-control" id="max_freq" ng-model="search_freq" min="0" step="any" ng-change="storeFreq(search_freq, cable.mas_freq)">
           </div>
           <div class="form-group">
-            <label for="assem_length">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+            <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
             <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
           </div>
           <div class="form-group">
             <label for="coating">Covering</label>
-            <select class="form-control minimal" id="covering" ng-model="covering">
+            <select class="form-control minimal" id="covering" ng-options="obj.letter as obj.cover for obj in covering.covers" ng-model="covering.cov" ng-change="cableCovering(covering.letter)">
               <option value="">None</option>
-              <option value="W" ng-if="cable.coat_w_cable_base !== '0.00'">Weatherized</option>
-              <option value="TV" ng-if="cable.coat_tv_cable_base !== '0.00'">Thermal Vacuum</option>
-              <option value="A" ng-if="cable.coat_a_cable_base !== '0.00'">Armor</option>
-              <option value="AW" ng-if="cable.coat_aw_cable_base !== '0.00'">Armor/Weatherized</option>
-              <option value="AN" ng-if="cable.coat_an_cable_base !== '0.00'">Armor/Neoprene</option>
-              <option value="E" ng-if="cable.coat_ej_cable_base !== '0.00'">Extended Boot</option>
-              <option value="EW" ng-if="cable.coat_ew_cable_base !== '0.00'">Extended Boot/Weatherized</option>
-              <option value="MC" ng-if="cable.coat_mc_cable_base !== '0.00'">Monocoil</option>
             </select>
           </div>
         </form>
@@ -54,37 +44,9 @@
         <h3>Pricing <span>(By quantity)</span></h3>
         <table id="cable-prices">
           <tbody>
-            <tr>
-              <td>1 - 3</td>
-              <td>${{ cableCost(cable.qm1, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>4 - 9</td>
-              <td>${{ cableCost(cable.qm2, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>10 - 24</td>
-              <td>${{ cableCost(cable.qm3, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>25 - 49</td>
-              <td>${{ cableCost(cable.qm4, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>50 - 99</td>
-              <td>${{ cableCost(cable.qm5, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>100 - 249</td>
-              <td>${{ cableCost(cable.qm6, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>250 - 499</td>
-              <td>${{ cableCost(cable.qm7, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
-            </tr>
-            <tr>
-              <td>500 - 1000</td>
-              <td>${{ cableCost(cable.qm8, cable.margin_rate, cable.hour_lab_rate, cable.overhead_rate, cable.ship_handling, cable.material_yield, covering, cable.coat_n_cable_base, cable.coat_n_adder_back, cable.coat_n_base, cable.coat_n_adder_base_time, cable.coat_n_time_rp, cable.coat_w_cable_base, cable.coat_w_adder_back, cable.coat_w_base, cable.coat_w_adder_base_time, cable.coat_w_time_rp, cable.coat_tv_cable_base, cable.coat_tv_adder_back, cable.coat_tv_base, cable.coat_tv_adder_base_time, cable.coat_tv_time_rp, cable.coat_a_cable_base, cable.coat_a_adder_back, cable.coat_a_base, cable.coat_a_adder_base_time, cable.coat_a_time_rp, cable.coat_aw_cable_base, cable.coat_aw_adder_back, cable.coat_aw_base, cable.coat_aw_adder_base_time, cable.coat_aw_time_rp, cable.coat_an_cable_base, cable.coat_an_adder_back, cable.coat_an_base, cable.coat_an_adder_base_time, cable.coat_an_time_rp, cable.coat_ej_cable_base, cable.coat_ej_adder_back, cable.coat_ej_base, cable.coat_ej_adder_base_time, cable.coat_ej_time_rp, cable.coat_ew_cable_base, cable.coat_ew_adder_back, cable.coat_ew_base, cable.coat_ew_adder_base_time, cable.coat_ew_time_rp, cable.coat_mc_cable_base, cable.coat_mc_adder_back, cable.coat_mc_base, cable.coat_mc_adder_base_time, cable.coat_mc_time_rp) }}</td>
+            <tr ng-repeat="price in cable_price">
+              <td>{{ price.quantity }}</td>
+              <td>${{ price.qm }}</td>
             </tr>
           </tbody>
         </table>
@@ -94,41 +56,44 @@
     <div class="col-lg-9 col-md-12 content">
       <div class="content-head">
         <div class="container">
-          <h3>Configure Your Cable</h3>
-          <a href='' class='btn btn-primary btn-head' role='button' ng-click='editCart()'>Edit Cable</a>
+          <h3>Edit Your Cable</h3>
+          <a href='' class='btn btn-primary btn-head' role='button' ng-click='saveCart()'>Save Cable</a>
         </div>
       </div>
       <div class="container content-wrap">
         <div class="cable-configurator">
+          <div class="cable-info">
+            <p>{{ rflabsPartNo(conn_1.con_part_no, cable.part_no, ca.covering, clength, conn_2.con_part_no) }}</p>
+          </div>
           <table class="cable-assembly">
             <tbody>
               <tr class="cable-holder">
-                <td class="bin" id="conn_1" ng-drop-success="onDrop_1($data, $event)" ng-drop="true">
-                  <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess1($data,$event)" ng-center-anchor="{{centerAnchor}}">
-                      <div class="conn-image">
-                        <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
-                      </div>
-                      <div class="conn-title">
-                        <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
-                      </div>
+                <td class="bin" id="conn_1" ng-drop="true">
+                  <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj">
+                    <div class="conn-image">
+                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                    </div>
+                    <div class="conn-title">
+                      <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                    </div>
                   </div>
                 </td>
                 <td class="image-holder">
                   <div class="cable-covering">
-                    <img class="cover-img" ng-src="../wp-content/plugins/cable-wizard/img/covering/{{ cableCover(covering) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'" ng-if="covering">
+                    <img class="cover-img" ng-src="../wp-content/plugins/cable-wizard/app/assets/img/covering/{{ cableCover(covering) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'" ng-if="covering">
                   </div>
                   <div class="cable-base">
                     <img class="cable-img" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'">
                   </div>
                 </td>
-                <td class="bin" id="conn_2" ng-drop-success="onDrop_2($data, $event)" ng-drop="true">
-                  <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj" ng-drag-success="onDragSuccess2($data,$event)" ng-center-anchor="{{centerAnchor}}">
-                      <div class="conn-image">
-                        <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
-                      </div>
-                      <div class="conn-title">
-                        <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
-                      </div>
+                <td class="bin" id="conn_2" ng-drop="true">
+                  <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj">
+                    <div class="conn-image">
+                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                    </div>
+                    <div class="conn-title">
+                      <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -139,13 +104,9 @@
               </tr>
             </tbody>
           </table>
-          <div class="cable-info">
-            <p>Macola Part # - {{ macolaPartNo(cable.part_no, conn_1.con_part_no, conn_2.con_part_no, clength, covering) }}</p>
-            <p>Florida RF Labs Part # - {{ rflabsPartNo(conn_1.con_part_no, cable.part_no, covering, clength, conn_2.con_part_no) }}</p>
-          </div>
           <div class="row connector-selection">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in cable.connectors | filter: showConnector" >
-              <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable>
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in filterConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq) | orderBy: object)">
+              <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable ng-click="onClick(conn, $event)">
                 <div class="conn-image">
                   <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
                 </div>
@@ -154,23 +115,20 @@
                 </div>
               </div>
             </div>
+            <div id="no_connectors" ng-show="!filterConnectors.length">
+              <p>There are no connectors available under the maximum frequency given.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="notification" ng-show="notification" hotkey="{esc: notificationHide}">
+    <div class="notification" ng-show="notification">
       <div class="notification-content">
         <h3 class="notification-title">{{ notification_title }}</h3>
         <p>{{ notification_message }}</p>
         <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
       </div>
     </div>
-    <div class="print-screen" ng-show="print_drawing" hotkey="{esc: drawingHide}">
-      <div class="preview drawing-preview" ng-include="'../wp-content/plugins/cable-wizard/partials/print-drawing.html'"></div>
-      <div class="print-buttons">
-        <a href="" class="btn btn-primary" ng-click="printDrawing()">Print</a>
-        <a href="" class="btn btn-primary" ng-click="drawingHide()">Close</a>
-      </div>
-    </div>
   </div>
 </div>
+<div class="darkness" ng-show="notification || print_drawing"></div>
