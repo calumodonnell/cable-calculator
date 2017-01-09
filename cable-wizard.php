@@ -157,10 +157,7 @@ add_action('admin_init', 'cw_admin_load');
 function cw_load() {
 	wp_enqueue_script('angularjs', '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js');
 	wp_enqueue_script('angularjs-ui-route', '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js');
-	wp_enqueue_script('angularjs-storage', '//cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js');
-	wp_enqueue_script('angularjs-draggable', SR_URL . '/app/assets/libs/ngDraggable.js');
 	wp_enqueue_script('hotkeys', SR_URL . '/app/assets/libs/hotkeys.min.js');
-	wp_enqueue_script('angularjs-sanitize', '//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-sanitize.js');
 	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');
 	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
 

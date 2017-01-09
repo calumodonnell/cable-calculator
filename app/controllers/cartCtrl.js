@@ -2,7 +2,7 @@
 /*global $, jfalert, angular, console, app*/
 
 // cartCtrl controller
-app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', 'connectors', function ($scope, $filter, $window, $http, cables, connectors) {
+app.controller('CartController', ['$scope', '$filter', '$window', '$http', 'cables', 'connectors', function ($scope, $filter, $window, $http, cables, connectors) {
     "use strict";
 
     var initializing = true;
@@ -49,6 +49,7 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
             conn_2_part_no,
             len,
             covering,
+            boots,
             rflabsPart;
 
         localStorage.cart = localStorage.getItem('cart');
@@ -59,6 +60,9 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         conn_2_part_no = cart[index].conn_2_part_no;
         len = cart[index].length;
         covering = cart[index].covering;
+        boots = cart[index].boots;
+
+        if (boots === 'on') { boots = ''; }
 
         if (covering === undefined) { covering = ''; }
 
@@ -69,7 +73,9 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
 
         len = $filter('noComma')(len);
 
-        rflabsPart = conn_1_part_no + '-' + part_no + covering + '-' + len + '-' + conn_2_part_no;
+        if (!boots) {boots = '';}
+
+        rflabsPart = conn_1_part_no + '-' + part_no + boots + covering + '-' + len + '-' + conn_2_part_no;
         return rflabsPart;
     };
 
@@ -111,7 +117,7 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
     };
 
     $scope.cableP = function (id, len, covering, conn_1, conn_2, quantity, index) {
-        $http.get("../wp-content/plugins/cable-wizard/app/data/unit-price.php", {params: {'part_id': id, 'length': len, 'covering': covering, 'conn_1': conn_1, 'conn_2': conn_2, 'quantity': quantity}}).then(function (response) {
+        $http.get("./wp-content/plugins/cable-wizard/app/data/unit-price.php", {params: {'part_id': id, 'length': len, 'covering': covering, 'conn_1': conn_1, 'conn_2': conn_2, 'quantity': quantity}}).then(function (response) {
             var cart;
 
             localStorage.cart = localStorage.getItem('cart');
@@ -356,7 +362,10 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         domClone = elem.cloneNode(true);
         $printSection.innerHTML = '';
         $printSection.appendChild(domClone);
+
+        window.focus();
         window.print();
+
         $printSection.innerHTML = '';
     }
 
@@ -395,6 +404,24 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
         if (initializing) {
             initializing = false;
         } else {
+            var len;
+
+            localStorage.setItem('measure', $scope.metric);
+
+            len = localStorage.getItem('clength');
+
+            if (len) {
+                if ($scope.metric === true) {
+                    len = len * 2.54;
+                } else if ($scope.metric === false) {
+                    len = len / 2.54;
+                }
+                len = len.toFixed(1);
+                len = parseFloat(len, 10);
+
+                localStorage.setItem('clength', len);
+            }
+
             var cart, i;
 
             localStorage.setItem('measure', $scope.metric);
@@ -409,7 +436,7 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
                     cart[i].length = cart[i].length / 2.54;
                 }
 
-                cart[i].length = cart[i].length.toFixed(0);
+                cart[i].length = cart[i].length.toFixed(1);
                 cart[i].length = parseFloat(cart[i].length, 10);
             }
 
@@ -417,12 +444,4 @@ app.controller('cartCtrl', ['$scope', '$filter', '$window', '$http', 'cables', '
             $scope.cart = JSON.parse(localStorage.getItem('cart'));
         }
     });
-
-    $scope.calcLoss = function (k1, k2, len, freq) {
-        var loss = 0;
-
-        loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-
-        return loss.toFixed(2);
-    };
 }]);

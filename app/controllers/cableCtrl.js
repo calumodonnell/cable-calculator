@@ -3,7 +3,7 @@
 /*global $, alert, angular, console, app, element*/
 
 // cableCtrl controller
-app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
+app.controller('CableController', ['$scope', '$location', 'cables', 'series', function ($scope, $location, cables, series) {
     "use strict";
 
     var initializing = true,
@@ -163,8 +163,6 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
         if (initializing) {
             initializing = false;
         } else {
-            var len;
-
             localStorage.setItem('measure', $scope.metric);
 
             if ($scope.clength) {
@@ -173,11 +171,30 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
                 } else if ($scope.metric === false) {
                     $scope.clength = $scope.clength / 2.54;
                 }
-                len = $scope.clength.toFixed(0);
-                $scope.clength = parseInt(len, 10);
+                $scope.clength = $scope.clength.toFixed(1);
+                $scope.clength = parseFloat($scope.clength, 10);
 
                 localStorage.setItem('clength', $scope.clength);
             }
+
+            var cart, i;
+
+            localStorage.cart = localStorage.getItem('cart');
+            cart = JSON.parse(localStorage.cart);
+
+            for (i = 0; i < cart.length; i += 1) {
+                if ($scope.metric === true) {
+                    cart[i].length = cart[i].length * 2.54;
+                } else if ($scope.metric === false) {
+                    cart[i].length = cart[i].length / 2.54;
+                }
+
+                cart[i].length = cart[i].length.toFixed(1);
+                cart[i].length = parseFloat(cart[i].length, 10);
+            }
+
+            localStorage.cart = JSON.stringify(cart);
+            $scope.cart = JSON.parse(localStorage.getItem('cart'));
         }
     });
 
@@ -188,11 +205,10 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             len = $scope.clength;
 
         if (freq && len) {
-            if ($scope.metric === false) {
-                loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-            } else if ($scope.metric === true) {
-                len = len / 2.54;
-                loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
+            if ($scope.metric === true) {
+                loss = ((Math.sqrt(freq) * k1) + (k2 * freq)) * (len / 100);
+            } else if ($scope.metric === false) {
+                loss = ((Math.sqrt(freq) * k1) + (k2 * freq)) * (len / 12);
             }
         } else {
             loss = 0;
@@ -262,11 +278,8 @@ app.controller('cableCtrl', ['$scope', '$location', 'cables', 'series', function
             tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
             i;
         reverse = -((+reverse) || -1);
-        tr = tr.sort(function (a, b) { // sort rows
-            return reverse // `-1 *` if want opposite order
-                * (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
-                    .localeCompare(b.cells[col].textContent.trim())
-                  );
+        tr = tr.sort(function (a, b) {
+            return reverse * (a.cells[col].textContent.trim().localeCompare(b.cells[col].textContent.trim()));
         });
         for (i = 0; i < tr.length; i += 1) { tb.appendChild(tr[i]); } // append each row in order
     }

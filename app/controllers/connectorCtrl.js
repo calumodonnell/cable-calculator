@@ -2,7 +2,7 @@
 /*global $, alert, angular, console, app*/
 
 // connectorCtrl controller
-app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
+app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
     "use strict";
 
     var initializing = true;
@@ -15,6 +15,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
     $scope.conn_1 = '';
     $scope.conn_2 = '';
+    $scope.cable = '';
 
     $location.search();
     $scope.part_id = $location.search().part_id;
@@ -26,7 +27,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
     if (localStorage.getItem('max_freq')) { $scope.search_freq = parseFloat(localStorage.getItem('max_freq'), 10); }
 
     // if values set are for length, set to stored value
-    if (localStorage.getItem('clength')) { $scope.clength = parseInt(localStorage.getItem('clength'), 10); }
+    if (localStorage.getItem('clength')) { $scope.clength = parseFloat(localStorage.getItem('clength'), 10); }
 
     if (localStorage.getItem('measure') === 'true') {
         $scope.metric = true;
@@ -38,8 +39,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         $scope.connectors = data;
     });
 
-    $http.get("../wp-content/plugins/cable-wizard/app/data/covering.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.covers = response.data.covering; });
-    $http.get("../wp-content/plugins/cable-wizard/app/data/cable-info.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.cables = response.data.cables; });
+    $http.get("./wp-content/plugins/cable-wizard/app/data/covering.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.covers = response.data.covering; });
+    $http.get("./wp-content/plugins/cable-wizard/app/data/cable-info.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.cables = response.data.cables; });
 
     $scope.sortType     = 'name';
     $scope.sortReverse  = false;
@@ -160,16 +161,18 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         $scope.cableCost();
     };
 
+
     $scope.notificationHide = function () {
         $scope.notification = false;
     };
 
+
     $scope.cableCost = function () {
-        $http.get("../wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
+        $http.get("./wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
     };
 
-    $scope.cableCost = function (cover) {
-        $http.get("../wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'covering': cover, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
+    $scope.cableCost = function (cover, extended_boots) {
+        $http.get("./wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'covering': cover, 'boots': extended_boots, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
     };
 
     $scope.calcLoss = function (k1, k2) {
@@ -178,11 +181,10 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             len = $scope.clength;
 
         if (freq && len) {
-            if ($scope.metric === false) {
-                loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * (len / 12);
-            } else if ($scope.metric === true) {
-                len = len / 2.54;
-                loss = ((Math.sqrt((freq * 1000)) * k1) + (k2 * (freq * 1000))) / 100 * ((len * 3.2808333) / 12);
+            if ($scope.metric === true) {
+                loss = ((Math.sqrt(freq) * k1) + (k2 * freq)) * (len / 100);
+            } else if ($scope.metric === false) {
+                loss = ((Math.sqrt(freq) * k1) + (k2 * freq)) * (len / 12);
             }
         } else {
             loss = 0;
@@ -190,6 +192,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
         return loss.toFixed(2);
     };
+
 
     // update length depending on measurement type
     $scope.$watch('metric', function () {
@@ -204,15 +207,34 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                 } else if ($scope.metric === false) {
                     $scope.clength = $scope.clength / 2.54;
                 }
-                $scope.clength = $scope.clength.toFixed(0);
-                $scope.clength = parseInt($scope.clength, 10);
+                $scope.clength = $scope.clength.toFixed(1);
+                $scope.clength = parseFloat($scope.clength, 10);
 
                 localStorage.setItem('clength', $scope.clength);
             }
+
+            var cart, i;
+
+            localStorage.cart = localStorage.getItem('cart');
+            cart = JSON.parse(localStorage.cart);
+
+            for (i = 0; i < cart.length; i += 1) {
+                if ($scope.metric === true) {
+                    cart[i].length = cart[i].length * 2.54;
+                } else if ($scope.metric === false) {
+                    cart[i].length = cart[i].length / 2.54;
+                }
+
+                cart[i].length = cart[i].length.toFixed(1);
+                cart[i].length = parseFloat(cart[i].length, 10);
+            }
+
+            localStorage.cart = JSON.stringify(cart);
+            $scope.cart = JSON.parse(localStorage.getItem('cart'));
         }
     });
 
-    $scope.rflabsPartNo = function (conn_1_part_no, part_no, covering, len, conn_2_part_no) {
+    $scope.rflabsPartNo = function (conn_1_part_no, part_no, covering, extended_boots, len, conn_2_part_no) {
         var conn_1 = localStorage.getItem('conn_1'),
             conn_2 = localStorage.getItem('conn_2'),
             rflabsPart;
@@ -235,12 +257,14 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
 
             len = $filter('noComma')(len);
 
-            rflabsPart = conn_1_part_no + '-' + part_no + covering + '-' + len + '-' + conn_2_part_no;
+            if (!extended_boots) {extended_boots = '';}
+
+            rflabsPart = conn_1_part_no + '-' + part_no + extended_boots + covering + '-' + len + '-' + conn_2_part_no;
             return rflabsPart;
         }
     };
 
-    $scope.addCart = function (name, part_no, k1, k2, covering) {
+    $scope.addCart = function (name, part_no, k1, k2, covering, boots) {
         var cart = JSON.parse(localStorage.getItem('cart')) || [],
             conn_1,
             conn_1_part_no,
@@ -358,6 +382,7 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
                 'conn_2_rank': conn_2_rank,
                 'conn_2_hash': conn_2_hash,
                 'covering': covering,
+                'boots': boots,
                 'quantity': 1,
                 'length': len,
                 'freq': $scope.search_freq
@@ -376,8 +401,8 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
         }
     };
 
-    $scope.cableCovering = function (cover) {
-        $scope.cableCost(cover);
+    $scope.cableCovering = function (cover, extended_boots) {
+        $scope.cableCost(cover, extended_boots);
     };
 
     $scope.cableCover = function (covering) {
@@ -516,4 +541,6 @@ app.controller('connectorCtrl', ['$scope', '$http', '$location', '$filter', 'con
             }
         };
     };
+
+    $scope.cableCost();
 }]);

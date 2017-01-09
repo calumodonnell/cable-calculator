@@ -19,10 +19,14 @@ if (isset($_GET['covering'])) {
 
 if (isset($_GET['conn_1'])) {
     $conn_1 = $_GET['conn_1'];
+} else {
+    $conn_1 = '';
 }
 
 if (isset($_GET['conn_2'])) {
     $conn_2 = $_GET['conn_2'];
+} else {
+    $conn_2 = '';
 }
 
 if (isset($_GET['quantity'])) {
@@ -87,16 +91,6 @@ foreach( $cable_list as $key => $cable ) {
     $output .= '"coat_an_base" : "' . $cable->coat_an_base . '", ';
     $output .= '"coat_an_adder_base_time" : "' . $cable->coat_an_adder_base_time . '", ';
     $output .= '"coat_an_time_rp" : "' . $cable->coat_an_time_rp . '", ';
-    $output .= '"coat_ej_cable_base" : "' . $cable->coat_ej_cable_base . '", ';
-    $output .= '"coat_ej_adder_back" : "' . $cable->coat_ej_adder_back . '", ';
-    $output .= '"coat_ej_base" : "' . $cable->coat_ej_base . '", ';
-    $output .= '"coat_ej_adder_base_time" : "' . $cable->coat_ej_adder_base_time . '", ';
-    $output .= '"coat_ej_time_rp" : "' . $cable->coat_ej_time_rp . '", ';
-    $output .= '"coat_ew_cable_base" : "' . $cable->coat_ew_cable_base . '", ';
-    $output .= '"coat_ew_adder_back" : "' . $cable->coat_ew_adder_back . '", ';
-    $output .= '"coat_ew_base" : "' . $cable->coat_ew_base . '", ';
-    $output .= '"coat_ew_adder_base_time" : "' . $cable->coat_ew_adder_base_time . '", ';
-    $output .= '"coat_ew_time_rp" : "' . $cable->coat_ew_time_rp . '", ';
     $output .= '"coat_mc_cable_base" : "' . $cable->coat_mc_cable_base . '", ';
     $output .= '"coat_mc_adder_back" : "' . $cable->coat_mc_adder_back . '", ';
     $output .= '"coat_mc_base" : "' . $cable->coat_mc_base . '", ';
@@ -104,15 +98,24 @@ foreach( $cable_list as $key => $cable ) {
     $output .= '"coat_mc_time_rp" : "' . $cable->coat_mc_time_rp . '"}';
 }
 
-$conn_1_query = $wpdb->get_results("SELECT price FROM cw_cable_connector_pricing WHERE cable_id = '$part_id' && con_part_no = '$conn_1'");
-$conn_2_query = $wpdb->get_results("SELECT price FROM cw_cable_connector_pricing WHERE cable_id = '$part_id' && con_part_no = '$conn_2'");
+if ($conn_1) {
+    $conn_1_query = $wpdb->get_results("SELECT price FROM cw_cable_connector_pricing WHERE cable_id = '$part_id' && con_part_no = '$conn_1'");
 
-foreach( $conn_1_query as $key => $conn ) {
-    $conn_1_price = $conn->price;
+    foreach( $conn_1_query as $key => $conn ) {
+        $conn_1_price = $conn->price;
+    }
+} else {
+    $conn_1_price = 0;
 }
 
-foreach( $conn_2_query as $key => $conn ) {
-    $conn_2_price = $conn->price;
+if ($conn_2) {
+    $conn_2_query = $wpdb->get_results("SELECT price FROM cw_cable_connector_pricing WHERE cable_id = '$part_id' && con_part_no = '$conn_2'");
+
+    foreach( $conn_2_query as $key => $conn ) {
+        $conn_2_price = $conn->price;
+    }
+} else {
+    $conn_2_price = 0;
 }
 
 switch ($covering) {
@@ -230,29 +233,33 @@ $quantities = [
 $qms = [];
 
 foreach ($quantities as $k => $q) {
-  if ($q >= 1 && $q <= 3) {
-      $qm = $cable->qm1;
-  } else if ($q >= 4 && $q <= 9) {
-      $qm = $cable->qm2;
-  } else if ($q >= 10 && $q <= 24) {
-      $qm = $cable->qm3;
-  } else if ($q >= 25 && $q <= 49) {
-      $qm = $cable->qm4;
-  } else if ($q >= 50 && $q <= 99) {
-      $qm = $cable->qm5;
-  } else if ($q >= 100 && $q <= 249) {
-      $qm = $cable->qm6;
-  }
+    if ($length && $conn_1 && $conn_2) {
+        if ($q >= 1 && $q <= 3) {
+            $qm = $cable->qm1;
+        } else if ($q >= 4 && $q <= 9) {
+            $qm = $cable->qm2;
+        } else if ($q >= 10 && $q <= 24) {
+            $qm = $cable->qm3;
+        } else if ($q >= 25 && $q <= 49) {
+            $qm = $cable->qm4;
+        } else if ($q >= 50 && $q <= 99) {
+            $qm = $cable->qm5;
+        } else if ($q >= 100 && $q <= 249) {
+            $qm = $cable->qm6;
+        }
 
-  $cableCost = ($cableBase * $length / 12) + $adderBack;
-  $laborCost = ($laborTime + $laborAdd) + $laborCalc * $length;
-  $totalLoadedMaterial = ($conn1Price + $conn2Price + $cableCost) / $matYield * (1 + $shipHand);
-  $totalLoadedLabor = ($laborCost / 60 * $hourlyRate) * $overHeadRate;
-  $qmPrice = ($totalLoadedMaterial + ($totalLoadedLabor * $qm)) / (1 - $marginRate);
+        $cableCost = ($cableBase * $length / 12) + $adderBack;
+        $laborCost = ($laborTime + $laborAdd) + $laborCalc * $length;
+        $totalLoadedMaterial = ($conn1Price + $conn2Price + $cableCost) / $matYield * (1 + $shipHand);
+        $totalLoadedLabor = ($laborCost / 60 * $hourlyRate) * $overHeadRate;
+        $qmPrice = ($totalLoadedMaterial + ($totalLoadedLabor * $qm)) / (1 - $marginRate);
 
-  $qmPrice = number_format($qmPrice, 2, '.', '');
+        $qmPrice = number_format($qmPrice, 2, '.', '');
+    } else {
+        $qmPrice = number_format(0, 2, '.', '');
+    }
 
-  array_push($qms, $qmPrice);
+    array_push($qms, $qmPrice);
 }
 
 

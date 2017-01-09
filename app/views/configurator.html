@@ -2,19 +2,18 @@
   <div class="container">
     <nav class="navbar" id="configurator-nav" role="navigation">
       <ul class="nav navbar-nav">
-        <li class="nav-item"><a href="" back>Back</a></li>
-        <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">Select {{ metric ? 'Imperial' : 'Metric' }}</a></li>
-        <li class="nav-item"><a ui-sref="cart">Cancel</a></li>
+        <li class="nav-item"><a id="back-icon" href="" back>Back</a></li>
+        <li class="nav-item"><a id="cancel-icon" ui-sref="cart">Cancel</a></li>
       </ul>
       <div class="cartbar">
-        <a ng-click="toCart()" class="cart-icon">Cart ({{ cartLength() }})</a>
+        <a ng-click="toCart()" id="cart-icon">Cart ({{ cartLength() }})</a>
       </div>
     </nav>
   </div>
 </div>
-<div class="cable-content" id="configurator" ng-repeat="cable in cables" hotkey="{esc: notificationHide}">
+<div class="cable-content" id="configurator" hotkey="{esc: notificationHide}">
   <div class="container container-content">
-    <div class="col-md-3 col-sm-12 sidebar">
+    <div class="col-lg-3 col-md-12 sidebar">
       <div class="widget">
         <h3>Filter</h3>
         <form>
@@ -24,24 +23,33 @@
           </div>
           <div class="form-group">
             <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+            <a class="btn btn-primary btn-measure" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Imperial' : 'Metric' }}</a>
             <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
           </div>
           <div class="form-group">
             <label>Covering</label>
-            <select class="form-control minimal" id="covering" ng-options="cover.cover for cover in covers track by cover.letter" ng-model="covering" ng-change="cableCovering(covering.letter)">
+            <select class="form-control minimal" id="covering" ng-options="cover.cover for cover in covers track by cover.letter" ng-model="covering" ng-change="cableCovering(covering.letter, cable.extended_boot)">
               <option value="">None</option>
             </select>
           </div>
+          <div class="form-group" ng-repeat="cable in cables" ng-if="cable.extended_boots_price > '0.00'">
+            <label>Optional</label>
+            <br/>
+            <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" ng-model="cable.extended_boot" ng-false-value="''" ng-true-value="'E'" ng-change="cableCovering(covering.letter, cable.extended_boot)">
+              Extended Boots
+            </label>
+          </div>
         </form>
       </div>
-      <div class="widget">
+      <div class="widget" ng-repeat="cable in cables">
         <h3>Cable Overview</h3>
         <p>{{ cable.name }}</p>
-        <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(cm)' : '(in)' }} - {{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2) }} dB</p>
-        <p id="conn_1_overview" ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{conn_1.con_part_no}} - {{ connector.con_description }}</p>
-        <p id="conn_2_overview" ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{conn_2.con_part_no}} - {{ connector.con_description }}</p>
+        <p id="loss" ng:class="{ 'metric': metric, 'imperial': ! metric }">Insertion Loss {{ metric ? '(m)' : '(ft)' }} - {{ calcLoss(cable.typ_atten_k1, cable.typ_atten_k2) }} dB</p>
+        <p id="conn_1_overview">Connector 1 - <span ng-repeat="connector in connectors" ng-if="conn_1.con_part_no === connector.con_part_no">{{ conn_1.con_part_no }} ({{ connector.con_description }})</span></p>
+        <p id="conn_2_overview">Connector 2 - <span ng-repeat="connector in connectors" ng-if="conn_2.con_part_no === connector.con_part_no">{{ conn_2.con_part_no }} ({{ connector.con_description }})</span></p>
       </div>
-      <div class="widget" ng-show="conn_1 !== defined && conn_1 !== '' && conn_2 !== defined && conn_2 !== ''">
+      <div class="widget">
         <h3>Pricing <span>(By quantity)</span></h3>
         <table id="cable-prices">
           <tbody>
@@ -54,17 +62,17 @@
         <p>($250 per line item min.)</p>
       </div>
     </div>
-    <div class="col-lg-9 col-md-12 content">
+    <div class="col-lg-9 col-md-12 content" ng-repeat="cable in cables">
       <div class="content-head">
         <div class="container">
           <h3>Configure Your Cable</h3>
-          <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, cable.typ_atten_k1, cable.typ_atten_k2, covering.letter)'>Add to Cart</a>
+          <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, cable.typ_atten_k1, cable.typ_atten_k2, covering.letter, cable.extended_boot)'>Add to Cart</a>
         </div>
       </div>
-      <div class="container content-wrap">
+      <div id="config-content" class="container content-wrap">
         <div class="cable-configurator">
           <div class="cable-info">
-            <p>{{ rflabsPartNo(conn_1.con_part_no, cable.part_no, covering.letter, clength, conn_2.con_part_no) }}</p>
+            <p>{{ rflabsPartNo(conn_1.con_part_no, cable.part_no, covering.letter, cable.extended_boot, clength, conn_2.con_part_no) }}</p>
           </div>
           <table class="cable-assembly">
             <tbody>
@@ -72,7 +80,7 @@
                 <td class="bin" id="conn_1" ng-drop="true">
                   <div ng-repeat="conn in droppedObjects1" ng-drag="true" ng-drag-data="obj">
                     <div class="conn-image">
-                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'"/>
                     </div>
                     <div class="conn-title">
                       <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
@@ -81,16 +89,16 @@
                 </td>
                 <td class="image-holder">
                   <div class="cable-covering">
-                    <img class="cover-img" ng-src="../wp-content/plugins/cable-wizard/app/assets/img/covering/{{ cableCover(covering.letter) }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'" ng-if="covering">
+                    <img class="cover-img" ng-src="./wp-content/plugins/cable-wizard/app/assets/img/covering/{{ cableCover(covering.letter) }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'" ng-if="covering">
                   </div>
                   <div class="cable-base">
-                    <img class="cable-img" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'">
+                    <img class="cable-img" ng-src="./wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'">
                   </div>
                 </td>
                 <td class="bin" id="conn_2" ng-drop="true">
                   <div ng-repeat="conn in droppedObjects2" ng-drag="true" ng-drag-data="obj">
                     <div class="conn-image">
-                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                      <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'"/>
                     </div>
                     <div class="conn-title">
                       <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>
@@ -106,10 +114,10 @@
             </tbody>
           </table>
           <div class="row connector-selection">
-            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-2 conn-box" ng-repeat="conn in filterConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq) | orderBy: object)">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 conn-box" ng-repeat="conn in filterConnectors = (cable.connectors | filter: showConnector | filter: greaterThanFreq(search_freq) | orderBy: object)">
               <div class="item" id="{{ conn.con_part_no }}" ng-drag="true" ng-drag-data="conn" data-allow-transform="true" draggable="true" draggable ng-click="onClick(conn, $event)">
                 <div class="conn-image">
-                  <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                  <img ng-repeat="connector in connectors" ng-if="conn.con_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'"/>
                 </div>
                 <div class="conn-title">
                   <p>{{ conn.con_part_no }} - {{ conn.con_series }}</p>

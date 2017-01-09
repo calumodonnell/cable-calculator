@@ -83,7 +83,7 @@
 				<td>
 					<select class = "cw_input" name ="flex" id="flex" required>
 						<option value=''>&nbsp;</option>
-						<option value='Good' <?php if($cable[0]['flex'] == 'Good'){echo "selected";}?>>Good</option>
+						<option value='Excellent' <?php if($cable[0]['flex'] == 'Excellent'){echo "selected";}?>>Excellent</option>
 						<option value='Fair' <?php if($cable[0]['flex'] == 'Fair'){echo "selected";}?>>Fair</option>
 						<option value='Poor' <?php if($cable[0]['flex'] == 'Poor'){echo "selected";}?>>Poor</option>
 					</select>
@@ -157,6 +157,19 @@
 			<tr>
 				<td>QM8 *</td>
 				<td><input type="text" class="cw_input" name="qm8" id="qm8" value="<?php echo stripslashes($cable[0]['qm8']);?>" required /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<h2>Optional</h2>
+				</td>
+			</tr>
+			<tr>
+				<td>Extended Boots</td>
+				<td><input type="checkbox" class="cw_input" name="extended_boots" id="extended_boots" <?php if($cable[0]['extended_boots'] == 'on'){echo "checked";}?>/></td>
+			</tr>
+			<tr>
+				<td>Extended Boots Price</td>
+				<td><input type="text" class="cw_input" name="extended_boots_price" id="extended_boots_price" value="<?php echo stripslashes($cable[0]['extended_boots_price']);?>"/></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -312,56 +325,6 @@
 			<tr>
 				<td>Time R/P</td>
 				<td><input type="text" class="cw_input" name="coat_an_time_rp" id="coat_an_time_rp" value="<?php echo stripslashes($cable[0]['coat_an_time_rp']);?>"/>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<b>Extended Jacket</b>
-				</td>
-			</tr>
-			<tr>
-				<td>Cable Base</td>
-				<td><input type="text" class="cw_input" name="coat_ej_cable_base" id="coat_ej_cable_base" value="<?php echo stripslashes($cable[0]['coat_ej_cable_base']);?>"/>
-			</tr>
-			<tr>
-				<td>Adder Back</td>
-				<td><input type="text" class="cw_input" name="coat_ej_adder_back" id="coat_ej_adder_back" value="<?php echo stripslashes($cable[0]['coat_ej_adder_back']);?>"/>
-			</tr>
-			<tr>
-				<td>Base</td>
-				<td><input type="text" class="cw_input" name="coat_ej_base" id="coat_ej_base" value="<?php echo stripslashes($cable[0]['coat_ej_base']);?>"/>
-			</tr>
-			<tr>
-				<td>Adder Base Time</td>
-				<td><input type="text" class="cw_input" name="coat_ej_adder_base_time" id="coat_ej_adder_base_time" value="<?php echo stripslashes($cable[0]['coat_ej_adder_base_time']);?>"/>
-			</tr>
-			<tr>
-				<td>Time R/P</td>
-				<td><input type="text" class="cw_input" name="coat_ej_time_rp" id="coat_ej_time_rp" value="<?php echo stripslashes($cable[0]['coat_ej_time_rp']);?>"/>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<b>Extended Boots/Weatherized</b>
-				</td>
-			</tr>
-			<tr>
-				<td>Cable Base</td>
-				<td><input type="text" class="cw_input" name="coat_ew_cable_base" id="coat_ew_cable_base" value="<?php echo stripslashes($cable[0]['coat_ew_cable_base']);?>"/>
-			</tr>
-			<tr>
-				<td>Adder Back</td>
-				<td><input type="text" class="cw_input" name="coat_ew_adder_back" id="coat_ew_adder_back" value="<?php echo stripslashes($cable[0]['coat_ew_adder_back']);?>"/>
-			</tr>
-			<tr>
-				<td>Base</td>
-				<td><input type="text" class="cw_input" name="coat_ew_base" id="coat_ew_base" value="<?php echo stripslashes($cable[0]['coat_ew_base']);?>"/>
-			</tr>
-			<tr>
-				<td>Adder Base Time</td>
-				<td><input type="text" class="cw_input" name="coat_ew_adder_base_time" id="coat_ew_adder_base_time" value="<?php echo stripslashes($cable[0]['coat_ew_adder_base_time']);?>"/>
-			</tr>
-			<tr>
-				<td>Time R/P</td>
-				<td><input type="text" class="cw_input" name="coat_ew_time_rp" id="coat_ew_time_rp" value="<?php echo stripslashes($cable[0]['coat_ew_time_rp']);?>"/>
 			</tr>
 			<tr>
 				<td colspan="2">

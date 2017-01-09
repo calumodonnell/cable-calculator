@@ -19,9 +19,9 @@
         <td class="part_length">
           <table>
             <tr class="cable-length">
-              <td><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/length_left.png" class="length"></td>
+              <td><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/length_left.png" class="length"></td>
               <td>2.0"</td>
-              <td><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/length_right.png" class="length"></td>
+              <td><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/length_right.png" class="length"></td>
             </tr>
             <tr class="cable-marker">
               <td colspan="3">
@@ -31,7 +31,7 @@
             </tr>
             <tr class="part_4">
               <td colspan="3">
-                <img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/part_4_2.png">
+                <img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/part_4_2.png">
               </td>
             </tr>
           </table>
@@ -41,29 +41,29 @@
         <td class="assembly_cable">
           <table class="assembly_length">
             <tr>
-              <td><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/arrow_left.png" class="length"></td>
+              <td><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/arrow_left.png" class="length"></td>
               <td class="cable-length">{{ ca.length }} inches *</td>
-              <td><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/arrow_right.png" class="length"></td>
+              <td><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/arrow_right.png" class="length"></td>
             </tr>
           </table>
           <table>
             <tr class="assembly_image">
-              <td id="conn_1"><img ng-repeat="connector in connectors" ng-if="ca.conn_1_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/></td>
+              <td id="conn_1"><img ng-repeat="connector in connectors" ng-if="ca.conn_1_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'"/></td>
               <td class="cable" colspan="2">
-                <img ng-repeat="cable in cables" ng-if="ca.part_no === cable.part_no" ng-src="../wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/>
+                <img ng-repeat="cable in cables" ng-if="ca.part_no === cable.part_no" ng-src="./wp-content/uploads/cable-wizard/{{ cable.cable_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'"/>
                 <div class="marker">
                   <p>MARKER</p>
                 </div>
               </td>
-              <td id="conn_2"><img ng-repeat="connector in connectors" ng-if="ca.conn_2_part_no === connector.con_part_no" ng-src="../wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='../wp-content/uploads/cable-wizard/none.png'"/></td>
+              <td id="conn_2"><img ng-repeat="connector in connectors" ng-if="ca.conn_2_part_no === connector.con_part_no" ng-src="./wp-content/uploads/cable-wizard/{{ connector.con_img }}" onerror="this.src='./wp-content/uploads/cable-wizard/none.png'"/></td>
             </tr>
           </table>
           <table class="assembly_parts">
             <tr>
-              <td class="part_no" id="part_1"><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/part_1.png" class="length"></td>
-              <td class="part_no" id="part_4"><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/part_4.png" class="length"></td>
-              <td class="part_no" id="part_3"><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/part_3.png" class="length"></td>
-              <td class="part_no" id="part_2"><img src="../wp-content/plugins/cable-wizard/app/assets/img/drawing/part_2.png" class="length"></td>
+              <td class="part_no" id="part_1"><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/part_1.png" class="length"></td>
+              <td class="part_no" id="part_4"><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/part_4.png" class="length"></td>
+              <td class="part_no" id="part_3"><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/part_3.png" class="length"></td>
+              <td class="part_no" id="part_2"><img src="./wp-content/plugins/cable-wizard/app/assets/img/drawing/part_2.png" class="length"></td>
             </tr>
           </table>
         </td>
@@ -111,7 +111,7 @@
     <table>
       <tr>
         <td class="logo-address">
-          <img src='../wp-content/plugins/cable-wizard/app/assets/img/rflabs.jpg'>
+          <img src='./wp-content/plugins/cable-wizard/app/assets/img/rflabs.jpg'>
           <p>Florida RF Labs</p>
           <p>8851 SW Old Kansas Ave.</p>
           <p>Stuart FL, 34997</p>

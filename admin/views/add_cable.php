@@ -70,7 +70,7 @@
 				<td>
 					<select class = "cw_input" name ="flex" id="flex" required>
 						<option value=''>&nbsp;</option>
-						<option value='Good'>Good</option>
+						<option value='Excellent'>Excellent</option>
 						<option value='Fair'>Fair</option>
 						<option value='Poor'>Poor</option>
 					</select>
@@ -138,6 +138,19 @@
 			<tr>
 				<td>QM8 *</td>
 				<td><input type="text" class="cw_input" name="qm8" id="qm8" required /></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<h2>Optional</h2>
+				</td>
+			</tr>
+			<tr>
+				<td>Extended Boots</td>
+				<td><input type="checkbox" class="cw_input" name="extended_boots" id="extended_boots"/></td>
+			</tr>
+			<tr>
+				<td>Extended Boots Price</td>
+				<td><input type="text" class="cw_input" name="extended_boots_price" id="extended_boots_price"/></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -293,56 +306,6 @@
 			<tr>
 				<td>Time R/P</td>
 				<td><input type="text" class="cw_input" name="coat_an_time_rp" id="coat_an_time_rp"/></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-						<b>Extended Jacket</b>
-				</td>
-			</tr>
-			<tr>
-				<td>Cable Base</td>
-				<td><input type="text" class="cw_input" name="coat_ej_cable_base" id="coat_ej_cable_base"/></td>
-			</tr>
-			<tr>
-				<td>Adder Back</td>
-				<td><input type="text" class="cw_input" name="coat_ej_adder_back" id="coat_ej_adder_back"/></td>
-			</tr>
-			<tr>
-				<td>Base</td>
-				<td><input type="text" class="cw_input" name="coat_ej_base" id="coat_ej_base"/></td>
-			</tr>
-			<tr>
-				<td>Adder Base Time</td>
-				<td><input type="text" class="cw_input" name="coat_ej_adder_base_time" id="coat_ej_adder_base_time"/></td>
-			</tr>
-			<tr>
-				<td>Time R/P</td>
-				<td><input type="text" class="cw_input" name="coat_ej_time_rp" id="coat_ej_time_rp"/></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-						<b>Extended Boots/Weatherized</b>
-				</td>
-			</tr>
-			<tr>
-				<td>Cable Base</td>
-				<td><input type="text" class="cw_input" name="coat_ew_cable_base" id="coat_ew_cable_base"/></td>
-			</tr>
-			<tr>
-				<td>Adder Back</td>
-				<td><input type="text" class="cw_input" name="coat_ew_adder_back" id="coat_ew_adder_back"/></td>
-			</tr>
-			<tr>
-				<td>Base</td>
-				<td><input type="text" class="cw_input" name="coat_ew_base" id="coat_ew_base"/></td>
-			</tr>
-			<tr>
-				<td>Adder Base Time</td>
-				<td><input type="text" class="cw_input" name="coat_ew_adder_base_time" id="coat_ew_adder_base_time"/></td>
-			</tr>
-			<tr>
-				<td>Time R/P</td>
-				<td><input type="text" class="cw_input" name="coat_ew_time_rp" id="coat_ew_time_rp"/></td>
 			</tr>
 			<tr>
 				<td colspan="2">

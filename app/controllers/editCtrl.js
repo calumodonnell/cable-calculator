@@ -3,7 +3,7 @@
 
 // editCtrl controller
 
-app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
+app.controller('EditController', ['$scope', '$http', '$location', '$filter', 'connectors', function ($scope, $http, $location, $filter, connectors) {
     "use strict";
 
     var initializing = true;
@@ -42,8 +42,8 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
 
     $scope.covering = {};
 
-    $http.get("../wp-content/plugins/cable-wizard/app/data/covering.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.covering.covers = response.data.covering; });
-    $http.get("../wp-content/plugins/cable-wizard/app/data/cable-info.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.cables = response.data.cables; });
+    $http.get("./wp-content/plugins/cable-wizard/app/data/covering.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.covering.covers = response.data.covering; });
+    $http.get("./wp-content/plugins/cable-wizard/app/data/cable-info.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.cables = response.data.cables; });
 
     $scope.covering.cov = $scope.cart[$scope.assembly_id].covering;
 
@@ -171,11 +171,11 @@ app.controller('editCtrl', ['$scope', '$http', '$location', '$filter', 'connecto
     };
 
     $scope.cableCost = function () {
-        $http.get("../wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
+        $http.get("./wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
     };
 
     $scope.cableCost = function (cover) {
-        $http.get("../wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'covering': cover, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
+        $http.get("./wp-content/plugins/cable-wizard/app/data/cable-cost.php", {params: {'part_id': $scope.part_id, 'length': $scope.clength, 'covering': cover, 'conn_1': $scope.conn_1.con_part_no, 'conn_2': $scope.conn_2.con_part_no}}).then(function (response) { $scope.cable_price = response.data.prices; });
     };
 
     $scope.calcLoss = function (k1, k2) {

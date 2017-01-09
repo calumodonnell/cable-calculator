@@ -27,6 +27,8 @@ foreach( $cable_list as $key => $cable ) {
     $output .= '"price" : "' . $cable->price . '", ';
     $output .= '"flex" : "' . $cable->flex . '", ';
     $output .= '"cable_img" : "' . $cable->cable_img . '", ';
+    $output .= '"extended_boots" : "' . $cable->extended_boots . '", ';
+    $output .= '"extended_boots_price" : "' . $cable->extended_boots_price . '", ';
 
     $output .= '"connectors" : [' ;
 

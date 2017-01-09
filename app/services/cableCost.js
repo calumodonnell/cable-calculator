@@ -8,7 +8,7 @@ app.factory('cableCost', ['$http', function ($http) {
         getData: function () {
             var request = {
                 method: 'GET',
-                url: '../wp-content/plugins/cable-wizard/app/data/cable-cost.php',
+                url: './wp-content/plugins/cable-wizard/app/data/cable-cost.php',
                 params: {
                     'part_id': 72,
                     'length': 20,

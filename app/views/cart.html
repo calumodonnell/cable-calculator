@@ -3,12 +3,11 @@
   <div class="container">
     <nav class="navbar" id="cart-nav" role="navigation">
       <ul class="nav navbar-nav">
-        <li class="nav-item"><a ui-sref="selector">Add Cable</a></li>
-        <li class="nav-item"><a href="" ng-click="showQuotation()">Print Quotation</a></li>
-        <li class="nav-item"><a ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a></li>
+        <li class="nav-item"><a id="add-icon" ui-sref="selector">Add Cable</a></li>
+        <li class="nav-item"><a href="" id="print-icon" ng-click="showQuotation('print-quotation')">Print Quotation</a></li>
       </ul>
       <div class="cartbar">
-        <a ui-sref="cart" class="cart-icon">Cart ({{ cartLength() }})</a>
+        <a ui-sref="cart" id="cart-icon">Cart ({{ cartLength() }})</a>
       </div>
     </nav>
   </div>
@@ -20,9 +19,10 @@
         <div class="container">
           <h3>Cart</h3>
           <a href="" class="btn btn-primary btn-head" role="button" ng-click="clearCart()" aria-disabled="true">Clear Cart</a>
+          <a href="" class="btn btn-primary btn-head btn-measure" role="button" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }" aria-disabled="true">{{ metric ? 'Select Imperial' : 'Select Metric' }}</a>
         </div>
       </div>
-      <div class="container content-wrap">
+      <div id="cart-content" class="container content-wrap">
         <div class="order-items">
           <table class="table cart">
             <thead>
@@ -72,14 +72,14 @@
       </div>
     </div>
     <div class="print-screen" ng-show="print_quotation">
-      <div class="preview quotation-preview" id='quotation' ng-include="'../wp-content/plugins/cable-wizard/app/partials/print-quotation.html'"></div>
+      <div class="preview quotation-preview" id='quotation' ng-include="'./wp-content/plugins/cable-wizard/app/partials/print-quotation.html'"></div>
       <div class="print-buttons">
         <a href="" class="btn btn-primary" ng-click="printQuotation()">Print</a>
         <a href="" class="btn btn-primary" ng-click="quotationHide()">Close</a>
       </div>
     </div>
     <div class="print-screen" ng-show="print_drawing">
-      <div class="preview drawing-preview" ng-include="'../wp-content/plugins/cable-wizard/app/partials/print-drawing.html'"></div>
+      <div class="preview drawing-preview" ng-include="'./wp-content/plugins/cable-wizard/app/partials/print-drawing.html'"></div>
       <div class="print-buttons">
         <a href="" class="btn btn-primary" ng-click="printDrawing()">Print</a>
         <a href="" class="btn btn-primary" ng-click="drawingHide()">Close</a>
