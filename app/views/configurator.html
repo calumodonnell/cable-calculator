@@ -23,7 +23,6 @@
           </div>
           <div class="form-group">
             <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
-            <a class="btn btn-primary btn-measure" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'Imperial' : 'Metric' }}</a>
             <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
           </div>
           <div class="form-group">
@@ -39,6 +38,10 @@
               <input type="checkbox" class="form-check-input" ng-model="cable.extended_boot" ng-false-value="''" ng-true-value="'E'" ng-change="cableCovering(covering.letter, cable.extended_boot)">
               Extended Boots
             </label>
+          </div>
+          <div class="form-group">
+            <label>Measurement (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+            <a class="btn btn-primary btn-measure" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'Imperial' : 'Metric' }}</a>
           </div>
         </form>
       </div>

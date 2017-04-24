@@ -44,9 +44,8 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
+            <label>Measurement (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
             <a class="btn btn-primary btn-measure" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'Imperial' : 'Metric' }}</a>
-            <input type="number" class="form-control" id="clength" ng-model="clength" min="0" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="storeLength(clength)">
           </div>
         </form>
       </div>

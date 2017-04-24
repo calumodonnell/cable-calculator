@@ -20,13 +20,6 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         localStorage.setItem('max_freq', '');
     }
 
-    // if values set are for length, set to stored value
-    if (localStorage.getItem('clength')) {
-        $scope.clength = parseFloat(localStorage.getItem('clength'), 10);
-    } else {
-        localStorage.setItem('clength', '');
-    }
-
     // if cart or measure items not created, set new items
     if (!localStorage.getItem('cart')) { localStorage.setItem('cart', '[]'); }
     if (!localStorage.getItem('measure')) { localStorage.setItem('measure', 'false'); }
@@ -132,22 +125,7 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
             $scope.notification_title = "Error";
             $scope.notification_message = "You have not specified the maximum frequency.";
             $scope.notification_button = "Close";
-        } else if (!$scope.clength || $scope.clength === null) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "You have not specified the cable length.";
-            $scope.notification_button = "Close";
-        } else if ($scope.clength < 15 && hasClass(clength, 'metric')) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "This application has a minimum length of 15 cm. Please contact the factory for custom lengths.";
-            $scope.notification_button = "Close";
-        } else if ($scope.clength < 6 && hasClass(clength, 'imperial')) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "This application has a minimum length of 6 in. Please contact the factory for custom lengths.";
-            $scope.notification_button = "Close";
-        } else if (localStorage.getItem("max_freq") && localStorage.getItem("clength")) {
+        } else if (localStorage.getItem("max_freq")) {
             $location.path("/configurator").search("part_id", id).search("conn_1", conn_1).search("conn_2", conn_2);
         }
     };
@@ -158,7 +136,6 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         $scope.metric = false;
     }
 
-    // update length depending on measurement type
     $scope.$watch('metric', function () {
         if (initializing) {
             initializing = false;
@@ -234,26 +211,6 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         } else {
             localStorage.setItem('max_freq', freq);
         }
-    };
-
-    // store length to use on config page
-    $scope.storeLength = function (val) {
-        if (val > 3024 && hasClass(clength, 'metric')) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "This program has a maximum length of 3024cm. Please contact the factory for custom lengths.";
-            $scope.notification_button = "Close";
-            val = 3024;
-        } else if (val > 1200 && hasClass(clength, 'imperial')) {
-            $scope.notification = true;
-            $scope.notification_title = "Error";
-            $scope.notification_message = "This program has a maximum length of 1200 in. Please contact the factory for custom lengths.";
-            $scope.notification_button = "Close";
-            val = 1200;
-        }
-
-        $scope.clength = val;
-        localStorage.setItem('clength', val);
     };
 
     // show cart total to user
