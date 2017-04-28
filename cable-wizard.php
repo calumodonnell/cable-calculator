@@ -141,8 +141,10 @@ function cw_admin_menu() {
 	add_menu_page("", "Cable Wizard", 'read', $parent_slug, "cw_cable_list", 'dashicons-screenoptions', 81);
 	add_submenu_page($parent_slug, 'Cable List', 'Cable List', 'read', $parent_slug, 'cw_cable_list');
 	add_submenu_page($parent_slug, 'Connector List', 'Connector List', 'read', 'connector-list', 'cw_connector_list');
+	add_submenu_page($parent_slug, 'Standard Cable List', 'Standard Cable List', 'read', 'standard-list', 'cw_standard_list');
 	add_submenu_page($parent_slug, 'Add New Cable', 'Add New Cable', 'read', 'add-cable', 'cw_cable_functions');
 	add_submenu_page($parent_slug, 'Add New Connector', 'Add New Connector', 'read', 'add-connector', 'cw_connector_functions');
+	add_submenu_page($parent_slug, 'Add New Standard Cable', 'Add New Standard Cable', 'read', 'add-standard-cable', 'cw_standard_functions');
 }
 add_action('admin_menu', 'cw_admin_menu');
 
@@ -197,6 +199,11 @@ function cw_connector_list(){
 }
 
 
+function cw_standard_list(){
+	include('admin/views/standard_list.php');
+}
+
+
 function cw_cable_functions(){
 	global $wpdb;
 
@@ -243,6 +250,23 @@ function cw_connector_functions() {
 
 	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete' && $_REQUEST['action'] != 'edit') :
 		cw_delete_connector();
+	endif;
+}
+
+
+function cw_standard_functions() {
+	global $wpdb;
+
+	if (!isset($_REQUEST['action'])) :
+		include('admin/views/add_standard_cable.php');
+	endif;
+
+	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'add') :
+		cw_add_standard_cable();
+	endif;
+
+	if (isset($_REQUEST['action']) && $_REQUEST['action'] == 'delete' && $_REQUEST['action'] != 'edit') :
+		cw_delete_standard_cable();
 	endif;
 }
 ?>

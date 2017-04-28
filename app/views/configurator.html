@@ -39,7 +39,7 @@
               Extended Boots
             </label>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="measure">
             <label>Measurement (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
             <a class="btn btn-primary btn-measure" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'Imperial' : 'Metric' }}</a>
           </div>
@@ -62,7 +62,7 @@
             </tr>
           </tbody>
         </table>
-        <p>($250 per line item min.)</p>
+        <p>($500 min. line item / $1500 min. order value)</p>
       </div>
     </div>
     <div class="col-lg-9 col-md-12 content" ng-repeat="cable in cables">
@@ -70,6 +70,7 @@
         <div class="container">
           <h3>Configure Your Cable</h3>
           <a href='' class='btn btn-primary btn-head' role='button' ng-click='addCart(cable.name, cable.part_no, cable.typ_atten_k1, cable.typ_atten_k2, covering.letter, cable.extended_boot)'>Add to Cart</a>
+          <a href='' class='btn btn-primary btn-head margin-right' role='button' ng-click="standardShow()" ng-show="standard.length > 0">Available Cables</a>
         </div>
       </div>
       <div id="config-content" class="container content-wrap">
@@ -141,6 +142,23 @@
         <a href="" class="btn btn-primary" ng-click="notificationHide()">{{ notification_button }}</a>
       </div>
     </div>
+    <div class="standard-cables" ng-show="standard_cable_screen">
+      <h3>Cables Available</h3>
+      <p ng-repeat="cable in cables">We have a number of standard {{ cable.name }} cables available.</p>
+      <div class="standard-table-holder">
+        <table class="table" id="standard-table">
+          <tbody>
+            <tr class="selector" ng-click="configStandard()" ng-repeat="stan in standard">
+              <td class="collapse collapse-top">{{ stan.conn_1 }}-{{ stan.part_no}}-{{ stan.length | number : 2 }}-{{ stan.conn_2 }}</td>
+              <td class="text-align-right"><span class="next"></span></a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="screen-buttons">
+        <a href="" class="btn btn-primary" ng-click="standardHide()">Close</a>
+      </div>
+    </div>
   </div>
 </div>
-<div class="darkness" ng-show="notification || print_drawing"></div>
+<div class="darkness" ng-show="notification || print_drawing || standard_cable_screen"></div>

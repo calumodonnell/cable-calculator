@@ -41,6 +41,7 @@ app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter'
 
     $http.get("./wp-content/plugins/cable-wizard/app/data/covering.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.covers = response.data.covering; });
     $http.get("./wp-content/plugins/cable-wizard/app/data/cable-info.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.cables = response.data.cables; });
+    $http.get("./wp-content/plugins/cable-wizard/app/data/standard-cables.php", {params: {"part_id": $scope.part_id}}).then(function (response) { $scope.standard = response.data.standard; });
 
     $scope.sortType     = 'name';
     $scope.sortReverse  = false;
@@ -531,6 +532,21 @@ app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter'
             $scope.notification_message = "Only one connector allowed.";
             $scope.notification_button = "Close";
         }
+    };
+
+    $scope.standardShow = function () {
+        $http.get("./wp-content/plugins/cable-wizard/app/data/standard-cables.php", {params: {"part_id": $scope.part_id}}).then(function (response) {
+            $scope.standard = response.data.standard;
+
+            if ($scope.standard.length) {
+                $scope.standard_cable_screen = true;
+            }
+        });
+    };
+    $scope.standardShow();
+
+    $scope.standardHide = function () {
+        $scope.standard_cable_screen = false;
     };
 
     // filter connectors by frequency

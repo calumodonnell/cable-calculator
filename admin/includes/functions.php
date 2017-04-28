@@ -350,6 +350,57 @@ function cw_delete_connector(){
 }
 
 
+// add new Standard cable function
+function cw_add_standard_cable() {
+  global $wpdb;
+
+  $part_id = "";
+
+  $cable_sql = "SELECT id FROM cw_cable_list WHERE part_no = '" . $_POST['part_no'] . "' LIMIT 1";
+  $cable_list = $wpdb->get_results($cable_sql);
+
+  foreach($cable_list as $cable) :
+    $part_id = $cable->id;
+  endforeach;
+
+  if (!isset($error)) :
+  	$standard_sql = "INSERT INTO cw_standard_cable_list (`part_id`, `part_no`, `length`, `conn_1`, `conn_2`) VALUES ('" . $part_id . "', '" . $_POST['part_no'] . "', '" . $_POST['length'] . "', '" . $_POST['conn_1'] . "', '" . $_POST['conn_2'] . "')";
+  	$standard = $wpdb->query($standard_sql);
+  endif;
+
+	if(isset($cable_query)) :
+		$_SESSION['added'] = "A new standard cable was added successfully";
+  else :
+    if(isset($error)) :
+      $_SESSION['edited'] = $error;
+    else :
+      $_SESSION['edited'] = "There was a problem adding the ne standard cable. Please try again";
+    endif;
+  endif;
+
+  echo "<script> location.replace('admin.php?page=standard-list'); </script>";
+}
+
+
+// delete standard cable
+function cw_delete_standard_cable() {
+	global $wpdb;
+
+  $standard_id = $_GET['standard_id'];
+
+  $delete_standard_sql = "DELETE FROM cw_standard_cable_list WHERE id='$standard_id'";
+  $delete_standard_query = $wpdb->query($delete_standard_sql);
+
+	if($delete_standard_sql) :
+		$_SESSION['deleted']="Standard cable deleted successfully";
+		?>
+		<script>window.location.href ="<?php echo admin_url("admin.php?page=standard-list");?>";</script>
+		<?php
+		exit();
+	endif;
+}
+
+
 // pagination on all list pages
 function pagination($location, $total_record, $total_posts, $pages, $lpm1, $prev, $next) {
   if($total_posts > 1) {

@@ -43,7 +43,7 @@
               <option value="test">Test</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="measure">
             <label>Measurement (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</label>
             <a class="btn btn-primary btn-measure" ng-click="metric = !metric;" ng:class="{ 'metric': metric, 'imperial': !metric }">{{ metric ? 'Imperial' : 'Metric' }}</a>
           </div>
