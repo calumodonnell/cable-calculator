@@ -549,6 +549,30 @@ app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter'
         $scope.standard_cable_screen = false;
     };
 
+    $scope.toConfigStandard = function(len, conn_1, conn_2) {
+        len = parseInt(len, 10);
+
+        $scope.storeLength(len);
+
+        $http.get("./wp-content/plugins/cable-wizard/app/data/connector.php", {params: {"conn": conn_1}}).then(function (response) {
+            localStorage.setItem('conn_1', '{"con_part_no":"' + response.data.con_part_no + '","con_series":"' + response.data.con_series + '","con_max_freq":"' + response.data.con_max_freq + '","con_rank":"' + response.data.con_rank + '"}');
+
+            $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
+
+            console.log($scope.conn_1);
+        });
+
+        $http.get("./wp-content/plugins/cable-wizard/app/data/connector.php", {params: {"conn": conn_2}}).then(function (response) {
+            localStorage.setItem('conn_2', '{"con_part_no":"' + response.data.con_part_no + '","con_series":"' + response.data.con_series + '","con_max_freq":"' + response.data.con_max_freq + '","con_rank":"' + response.data.con_rank + '"}');
+
+            $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
+
+            console.log($scope.conn_2);
+        });
+
+        $scope.standard_cable_screen = false;
+    };
+
     // filter connectors by frequency
     $scope.greaterThanFreq = function (val) {
         return function (item) {
