@@ -442,6 +442,8 @@ app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter'
     $scope.onClick = function (data) {
         var index_1, index_2, objects_1, objects_2, jsonString, conn_1, conn_2, con_rank_1, con_rank_2;
 
+        console.log(data);
+
         index_1 = $scope.droppedObjects1.indexOf(data);
         index_2 = $scope.droppedObjects2.indexOf(data);
         objects_1 = $scope.droppedObjects1.length;
@@ -552,22 +554,30 @@ app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter'
     $scope.toConfigStandard = function(len, conn_1, conn_2) {
         len = parseInt(len, 10);
 
+        if ($scope.metric === true) {
+            len = len * 2.54;
+        }
+
         $scope.storeLength(len);
 
         $http.get("./wp-content/plugins/cable-wizard/app/data/connector.php", {params: {"conn": conn_1}}).then(function (response) {
+            $scope.clearBin_1();
+
             localStorage.setItem('conn_1', '{"con_part_no":"' + response.data.con_part_no + '","con_series":"' + response.data.con_series + '","con_max_freq":"' + response.data.con_max_freq + '","con_rank":"' + response.data.con_rank + '"}');
 
             $scope.conn_1 = JSON.parse(localStorage.getItem('conn_1'));
 
-            console.log($scope.conn_1);
+            $scope.onClick($scope.conn_1);
         });
 
         $http.get("./wp-content/plugins/cable-wizard/app/data/connector.php", {params: {"conn": conn_2}}).then(function (response) {
+            $scope.clearBin_2();
+
             localStorage.setItem('conn_2', '{"con_part_no":"' + response.data.con_part_no + '","con_series":"' + response.data.con_series + '","con_max_freq":"' + response.data.con_max_freq + '","con_rank":"' + response.data.con_rank + '"}');
 
             $scope.conn_2 = JSON.parse(localStorage.getItem('conn_2'));
 
-            console.log($scope.conn_2);
+            $scope.onClick($scope.conn_2);
         });
 
         $scope.standard_cable_screen = false;
