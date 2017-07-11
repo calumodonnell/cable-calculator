@@ -157,29 +157,34 @@ add_action('admin_init', 'cw_admin_load');
 
 
 function cw_load() {
+	wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.1.1.slim.min.js', array(), null, true);
+	wp_enqueue_script('tether', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js', array(), null, true);
+	//wp_enqueue_script('bootstrap-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js', array(), null, true);
 	wp_enqueue_script('angularjs', '//ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js');
-	wp_enqueue_script('angularjs-ui-route', '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js');
-	wp_enqueue_script('hotkeys', SR_URL . '/app/assets/libs/hotkeys.min.js');
-	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.3/css/bootstrap.min.css');
-	wp_enqueue_style('font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css');
+	wp_enqueue_script('angularjs-ui-route', '//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js', array(), null, true);
+	wp_enqueue_script('hotkeys', SR_URL . '/app/assets/libs/hotkeys.min.js', array(), null, true);
+	wp_enqueue_script('ui-bootstrap', SR_URL . '/app/assets/libs/ui-bootstrap.min.js', array(), null, true);
 
-	wp_enqueue_style('cw-app-style',  SR_URL . '/app/assets/css/style.css', '');
-	wp_enqueue_style('cw-app-drawing',  SR_URL . '/app/assets/css/drawing.css', 'print');
-	wp_enqueue_style('cw-app-quotation',  SR_URL . '/app/assets/css/quotation.css', 'print');
+	wp_enqueue_style('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+	wp_enqueue_style('bootstrap-css', '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css');;
+	wp_enqueue_style('google-font', 'https://fonts.googleapis.com/css?family=Raleway:300|Source+Sans+Pro:300,400,600', array(), null);
 
-	wp_enqueue_script('app', SR_URL .'/app/app.js');
-	wp_enqueue_script('cables', SR_URL .'/app/services/cables.js');
-	wp_enqueue_script('series', SR_URL .'/app/services/series.js');
-	wp_enqueue_script('covering', SR_URL .'/app/services/covering.js');
-	wp_enqueue_script('connectors', SR_URL .'/app/services/connectors.js');
-	wp_enqueue_script('back', SR_URL .'/app/directives/back.js');
-	wp_enqueue_script('metricWatch', SR_URL .'/app/directives/metricWatch.js');
-	wp_enqueue_script('noComma', SR_URL .'/app/filters/noComma.js');
-	wp_enqueue_script('rfLength', SR_URL .'/app/filters/rfLength.js');
-	wp_enqueue_script('cableCtrl', SR_URL .'/app/controllers/cableCtrl.js');
-	wp_enqueue_script('connectorCtrl', SR_URL .'/app/controllers/connectorCtrl.js');
-	wp_enqueue_script('cartCtrl', SR_URL .'/app/controllers/cartCtrl.js');
-	wp_enqueue_script('editCtrl', SR_URL .'/app/controllers/editCtrl.js');
+	wp_enqueue_style('cw-app-style',  SR_URL . '/app/assets/css/style.css', array(), null, '');
+	wp_enqueue_style('cw-app-print',  SR_URL . '/app/assets/css/print.css', array(), null, 'print');
+
+	wp_enqueue_script('app', SR_URL .'/app/app.js', array(), null, true);
+	wp_enqueue_script('cables', SR_URL .'/app/services/cables.js', array(), null, true);
+	wp_enqueue_script('series', SR_URL .'/app/services/series.js', array(), null, true);
+	wp_enqueue_script('covering', SR_URL .'/app/services/covering.js', array(), null, true);
+	wp_enqueue_script('connectors', SR_URL .'/app/services/connectors.js', array(), null, true);
+	wp_enqueue_script('back', SR_URL .'/app/directives/back.js', array(), null, true);
+	wp_enqueue_script('metricWatch', SR_URL .'/app/directives/metricWatch.js', array(), null, true);
+	wp_enqueue_script('noComma', SR_URL .'/app/filters/noComma.js', array(), null, true);
+	wp_enqueue_script('rfLength', SR_URL .'/app/filters/rfLength.js', array(), null, true);
+	wp_enqueue_script('cableCtrl', SR_URL .'/app/controllers/cableCtrl.js', array(), null, true);
+	wp_enqueue_script('connectorCtrl', SR_URL .'/app/controllers/connectorCtrl.js', array(), null, true);
+	wp_enqueue_script('cartCtrl', SR_URL .'/app/controllers/cartCtrl.js', array(), null, true);
+	wp_enqueue_script('editCtrl', SR_URL .'/app/controllers/editCtrl.js', array(), null, true);
 }
 add_action('wp_loaded', 'cw_load');
 

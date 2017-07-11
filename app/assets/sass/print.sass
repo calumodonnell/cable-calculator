@@ -1,0 +1,506 @@
+*
+  outline: none
+  padding: 0
+  margin: 0
+  border: 0
+
+html,
+body
+  height: 100%
+  width: 100%
+
+h1, h2, h3, h4, h5, h6
+  color: #1A1A1A
+  font-weight: 300
+  margin-bottom: 10px
+
+b, strong
+  font-weight: 400!important
+
+p
+  margin-bottom: 1.5em
+
+img
+  max-width: none
+  user-drag: none
+  -webkit-user-drag: none
+
+#print-drawing
+  color: #58595B
+  font-family: "Source Sans Pro", sans-serif
+  table
+    width: 100%
+    border-collapse: collapse
+  .rows
+    clear: both
+    display: block
+  .heading
+    font-size: 12px!important
+  .row-1
+    margin-bottom: 40px
+    .part-electrical
+      p
+        font-size: 11px
+        margin-bottom: 0
+    .part-numbers
+      border: 3px solid #000
+      text-align: center
+      h3, p
+        margin-bottom: 0
+  .row-2
+    margin-bottom: 40px
+    .row-gap
+      width: 100px
+    .part_length
+      width: 200px
+      .cable-length
+        text-align: center
+        .length
+          width: 60px
+      .cable-marker
+        border: 1px solid #000
+        font-size: 11px
+        text-align: center
+        p
+          margin-bottom: 0
+      .part_4
+        text-align: right
+        img
+          width: 60px
+    .assembly_cable
+      width: 540px
+      .assembly_length
+        margin: 0 auto
+        width: auto
+        .cable-length
+          padding: 0 10px
+        img
+          width: 80px
+      .assembly_image
+        .cable
+          text-align: center
+        #conn_1,
+        #conn_2
+          position: relative
+          bottom: 3px
+        #conn_1
+          left: 35px
+          text-align: right
+        #conn_2
+          right: 35px
+          text-align: left
+          img
+            filter: FlipH
+            transform: scaleX(-1)
+        .marker
+          border: 1px solid #000
+          background-color: #A4A4A4
+          margin: 0 auto
+          position: relative
+          text-align: center
+          top: -30px
+          width: 60px
+          z-index: 10
+          p
+            color: white
+            margin-bottom: 0
+      .assembly_parts
+        text-align: center
+        img
+          width: 25px
+        .part_no
+          vertical-align: top
+        #part_1
+          width: 110px
+          text-align: right
+        #part_2
+          text-align: left
+          width: 120px
+        #part_3
+          width: 140px
+        #part_4
+          width: 168px
+          text-align: right
+  .row-3
+    margin-bottom: 5px
+    .cable-parts
+      float: right
+      font-size: 11px
+      width: 400px
+      th, td
+        border: 1px solid #000
+        padding: 5px 8px
+    p
+      font-size: 11px
+      margin-bottom: 0
+  .row-4
+    .row-gap
+      width: 20px
+    td
+      vertical-align: top
+    .logo-address
+      text-align: center
+      width: 120px
+      img
+        height: auto
+        margin-top: 25px
+        margin-bottom: 30px
+        width: 100%
+      p
+        text-align: left
+    .cable-tolerance,
+    .cable-covering,
+    .logo-address,
+    .cable-measurement
+      border: 1px solid #000
+      height: 200px
+      padding: 10px
+      p
+        font-size: 11px
+        margin-bottom: 0
+    .cable-tolerance
+      text-align: center
+      vertical-align: top
+      width: 200px
+      p
+        margin-bottom: 10px
+      table
+        font-size: 10px
+        thead
+          border-bottom: 1px solid #000
+          td
+            vertical-align: bottom
+        tr
+          td:first-child
+            border-right: 1px solid #000
+    .cable-covering
+      padding: 0
+      .marking,
+      .material,
+      .finish
+        border-bottom: 1px solid #000
+      .marking
+        height: 90px
+      .material,
+      .finish,
+      .coating
+        height: 36px
+    .cable-measurement
+      padding: 0
+      width: 240px
+      .length-measurement
+        height: 80px
+      .scale,
+      .code-id,
+      .size,
+      .pn,
+      .drawn,
+      .sheet
+        height: 45px
+      .length-measurement,
+      .scale,
+      .code-id,
+      .size,
+      .pn
+        border-bottom: 1px solid #000
+      .scale,
+      .code-id,
+      .drawn
+        border-right: 1px solid #000
+      .scale,
+      .code-id,
+      .size,
+      .pn,
+      .drawn,
+      .sheet
+        text-align: center
+      .scale
+        hr
+          width: 40px
+          height: 1px
+          background-color: #000
+          margin-bottom: 10px
+          margin-top: 10px
+
+#print-quotation
+  color: #58595B
+  font-family: "Source Sans Pro", sans-serif
+  font-size: 14px
+  font-weight: 300
+  .pdf-header
+    margin-bottom: 40px
+    .address-header
+      p
+        margin-bottom: 5px
+    .logo-header
+      vertical-align: top
+      text-align: right
+      img
+        width: 200px
+        height: 24px
+  .pdf-content
+    margin-bottom: 80px
+  table
+    width: 100%
+    white-space: normal
+    margin-bottom: 20px
+    tr
+      &:nth-child(even)
+        background-color: #F2F2F2
+      td, th
+        //padding: 4px 8px
+    table
+      margin-bottom: 0
+  #total-price
+    text-align: right
+  .sales-disclaimer
+    p
+      margin-bottom: 5px
+  .printed-date
+    text-align: right
+    vertical-align: bottom
+    p
+      margin-bottom: 5px
+
+@media print
+  #print-quotation
+    table
+      width: 100%
+    p
+      font-size: 13px
+    td
+      font-size: 11px
+    .pdf-header
+      margin-bottom: 50px
+      .address-header p
+        margin-bottom: 0
+        b
+          font-weight: bold
+      .logo-header
+        img
+          float: right
+          right: 0
+          position: absolute
+          top: 0
+          width: 200px
+          vertical-align: top
+    .pdf-content
+      margin-bottom: 80px
+      .cart-summary
+        margin-bottom: 20px
+        .cart-summary-head
+          td
+            font-weight: bold
+      h1
+        font-size: 24px
+      #total-price
+        text-align: right
+      .price-breaks
+        background-color: #F2F2F2
+        -webkit-print-color-adjust: exact
+    .pdf-footer
+      position: absolute
+      bottom: 0
+      p
+        font-size: 11px
+        margin-bottom: 0
+      .sales-disclaimer
+        padding-right: 30px
+      .printed-date
+        vertical-align: bottom
+  #print-drawing
+    -webkit-transform: rotate(90deg)
+    -moz-transform: rotate(90deg)
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1)
+    position: relative
+    top: 150px
+    width: 800px
+    table
+      width: 100%
+    .rows
+      clear: both
+      display: block
+    .heading
+      font-size: 12px!important
+    .row-1
+      margin-bottom: 40px
+      .part-electrical
+        p
+          font-size: 11px
+          margin-bottom: 0
+      .part-numbers
+        border: 3px solid #000
+        text-align: center
+        h3, p
+          margin-bottom: 0
+    .row-2
+      margin-bottom: 40px
+      .row-gap
+        width: 200px
+      .part_length
+        width: 200px
+        .cable-length
+          text-align: center
+          .length
+            width: 60px
+        .cable-marker
+          border: 1px solid #000
+          font-size: 11px
+          text-align: center
+          p
+            margin-bottom: 0
+        .part_4
+          text-align: right
+          img
+            width: 60px
+      .assembly_cable
+        width: 540px
+        .assembly_length
+          margin: 0 auto
+          width: auto
+          .cable-length
+            padding: 0 10px
+          img
+            width: 80px
+        .assembly_image
+          .cable
+            text-align: center
+          #conn_1,
+          #conn_2
+            position: relative
+            bottom: 3px
+          #conn_1
+            left: 35px
+            text-align: right
+          #conn_2
+            right: 35px
+            text-align: left
+            img
+              filter: FlipH
+              transform: scaleX(-1)
+          .marker
+            border: 1px solid #000
+            background-color: #A4A4A4
+            margin: 0 auto
+            position: relative
+            text-align: center
+            top: -30px
+            width: 60px
+            z-index: 10
+            p
+              color: white
+              font-size: x-small
+              margin-bottom: 0
+        .assembly_parts
+          text-align: center
+          img
+            width: 25px
+          #part_1
+            width: 110px
+            text-align: right
+          #part_2
+            text-align: left
+            width: 120px
+          #part_3
+            width: 140px
+          #part_4
+            width: 168px
+            text-align: right
+    .row-3
+      margin-bottom: 5px
+      .cable-parts
+        float: right
+        font-size: 11px
+        width: 400px
+        th, td
+          border: 1px solid #000
+          padding: 5px 8px
+      p
+        font-size: 11px
+        margin-bottom: 0
+    .row-4
+      .row-gap
+        width: 10px
+      td
+        vertical-align: top
+      .logo-address
+        text-align: center
+        width: 125px
+        img
+          height: auto
+          margin-bottom: 10px
+          width: 60px
+        p
+          text-align: left
+      .cable-tolerance,
+      .cable-covering,
+      .logo-address,
+      .cable-measurement
+        border: 1px solid #000
+        height: 200px
+        padding: 10px
+        p
+          font-size: x-small
+          margin-bottom: 0
+      .cable-tolerance
+        text-align: center
+        vertical-align: top
+        p
+          margin-bottom: 10px
+        table
+          font-size: 10px
+          thead
+            border-bottom: 1px solid #000
+            td
+              vertical-align: bottom
+          tr
+            td:first-child
+              border-right: 1px solid #000
+      .cable-covering
+        padding: 0
+        width: 200px
+        .marking,
+        .material,
+        .finish
+          border-bottom: 1px solid #000
+        .marking
+          height: 90px
+        .material,
+        .finish,
+        .coating
+          height: 36px
+      .cable-measurement
+        padding: 0
+        .length-measurement
+          height: 90px
+        .scale,
+        .code-id,
+        .size,
+        .pn,
+        .drawn,
+        .sheet
+          height: 45px
+        .length-measurement,
+        .scale,
+        .code-id,
+        .size,
+        .pn
+          border-bottom: 1px solid #000
+        .scale,
+        .code-id,
+        .drawn
+          border-right: 1px solid #000
+        .scale,
+        .code-id,
+        .size,
+        .pn,
+        .drawn,
+        .sheet
+          text-align: center
+        .scale
+          hr
+            width: 40px
+            height: 1px
+            background-color: #000
+            margin-bottom: 10px
+            margin-top: 10px

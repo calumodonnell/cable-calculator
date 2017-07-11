@@ -42,6 +42,22 @@ app.controller('CartController', ['$scope', '$filter', '$window', '$http', 'cabl
         return total;
     };
 
+    $scope.calcLoss = function (k1, k2, len, freq) {
+        var loss;
+
+        if (freq && len) {
+            if ($scope.metric === true) {
+                loss = ((Math.sqrt(freq) * k1) + (k2 * freq)) * (len / 100);
+            } else if ($scope.metric === false) {
+                loss = ((Math.sqrt(freq) * k1) + (k2 * freq)) * (len / 12);
+            }
+        } else {
+            loss = 0;
+        }
+
+        return loss.toFixed(2);
+    };
+
     $scope.rflabsPartNo = function (index) {
         var cart,
             part_no,
@@ -369,22 +385,33 @@ app.controller('CartController', ['$scope', '$filter', '$window', '$http', 'cabl
         $printSection.innerHTML = '';
     }
 
-    $scope.printQuotation = function () {
-        printElement(document.getElementById("print-quotation"));
+    $scope.printScreen = function (divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-        var divContents = $("#print-quotation").html();
-        var printWindow = window.open('', '', 'height=400,width=800');
-        printWindow.document.write('<html><head><title>DIV Contents</title>');
-        printWindow.document.write('</head><body >');
-        printWindow.document.write(divContents);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-    };
+        if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+          var popupWin = window.open('', '_blank', 'height=400,width=800,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
 
-    $scope.printDrawing = function () {
-        printElement(document.getElementById("print-drawing"));
+          popupWin.window.focus();
+          popupWin.document.write('<!DOCTYPE html><html><head><link rel="stylesheet" type="text/css" href="./wp-content/plugins/cable-wizard/app/assets/css/print.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway:300|Source+Sans+Pro:300,400,600"></head><body>' + printContents + '</body></html>');
+          popupWin.onbeforeunload = function (event) {
+            popupWin.close();
+            return '.\n';
+          };
+          popupWin.onabort = function (event) {
+            popupWin.document.close();
+            popupWin.close();
+          };
+
+          setTimeout(function () { popupWin.print(); }, 1000);
+        } else {
+          var popupWin = window.open('', '_blank', 'height=400,width=800');
+          popupWin.document.open();
+          popupWin.document.write('<!DOCTYPE html><html><head><link rel="stylesheet" type="text/css" href="./wp-content/plugins/cable-wizard/app/assets/css/print.css" /><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway:300|Source+Sans+Pro:300,400,600"></head><body>' + printContents + '</body></html>');
+          popupWin.document.close();
+
+          setTimeout(function () { popupWin.print(); }, 1000);
+        }
     };
 
     $scope.covering = function (cover) {

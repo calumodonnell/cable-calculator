@@ -1,17 +1,21 @@
 {
-  "name": "node-tutorial",
-  "version": "1.0.0",
-  "main": "app.js",
+  "name": "cable-wizard",
+  "version": "0.0.0",
+  "description": "Configuration tool for creating cable assemblies",
+  "main": "Gruntfile.js",
+  "author": "Calum O'Donnell <calumodonnell@icloud.com> (http://calumodonnell.co.uk)",
+  "license": "MIT",
+  "keywords": [],
   "dependencies": {
-    "express": "^4.13.4",
-    "request": "^2.65.0"
+    "grunt": "^1.0.1",
+    "grunt-autoprefixer": "^3.0.4",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-contrib-watch": "^1.0.0"
   },
   "devDependencies": {
-    "jasmine-node": "^1.14.5"
-  },
-  "scripts": {
-    "test": "jasmine-node spec"
-  },
-  "author": "",
-  "license": "ISC"
+    "grunt-contrib-sass": "^1.0.0"
+  }
 }

@@ -1,0 +1,48 @@
+.cable-wizard
+  .sidebar
+    background-color: #FFFFFF
+    display: table-cell
+    border: 0
+    border-right: 1px solid #E5E8EA
+    bottom: 0
+    float: none
+    min-height: 100%
+    //min-height: calc(100vh - 60px)
+    left: 0
+    padding: 30px!important
+    top: 0
+    vertical-align: top
+
+    @media #{$md-device}
+      border-bottom: 1px solid #E5E8EA
+      border-right: 0
+      display: block
+
+    h3
+      font-size: 18px
+      margin-bottom: 10px
+      span
+        font-size: 12px
+
+    p
+      font-size: 12px
+      margin-bottom: 10px
+
+    .widget
+      border-bottom: 1px solid #E5E8EA
+      margin-bottom: 20px
+      padding-bottom: 20px
+      position: relative
+      &:last-child
+        border-bottom: 0
+        margin-bottom: 0
+        padding-bottom: 0
+
+      table
+        tr
+          td
+            border-bottom: 1px solid #E5E8EA
+            font-size: 12px
+            padding: 14px 0
+            &:last-child
+              text-align: right

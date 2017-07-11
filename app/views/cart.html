@@ -13,7 +13,7 @@
   </div>
 </div>
 <div class="cable-content" id="cart" hotkey="{'esc': notificationHide}">
-  <div class="container container-content">
+  <div class="container content-container">
     <div class="col-md-12 content">
       <div class="content-head">
         <div class="container">
@@ -28,10 +28,10 @@
             <thead>
               <tr>
                 <th>Cable</th>
-                <th>Quantity</th>
-                <th>Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</th>
-                <th>Price</th>
-                <th></th>
+                <th class="hide">Quantity</th>
+                <th class="hide">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</th>
+                <th class="hide">Price</th>
+                <th class="hide"></th>
               </tr>
             </thead>
             <tbody>
@@ -43,9 +43,9 @@
                   <p>{{ ca.conn_2_part_no }} - {{ ca.conn_2_description }}</p>
                 </td>
                 <td class="collapse"><span class="show-mobile">Quantity </span><input class="form-control" id="quantity" ng-model="ca.quantity" type="number" ng-change="storeQuantity(ca.quantity, $index)"></td>
-                <td class="collapse"><span class="show-mobile">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>) -</span> <input class="form-control" id="length" ng-model="ca.length" type="number" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="lengthStore(ca.length, $index)" ng-blur="lengthCheck(ca.length, $index)"></td>
-                <td class="collapse"><span class="show-mobile">Price: </span>{{ cablePrice($index) | currency: '$' : 2 }} USD</td>
-                <td><!--<a href="#/edit?part_id={{ca.id}}&assembly_id={{$index}}" title="Edit Cable Assembly"><span class="icons edit"></span></a>--><a><span class="icons duplicate" ng-click="duplicateItem($index)" title="Duplicate Cable Assembly"></span></a><a ng-click="showDrawing($index)" title="Print Cable Assembly Drawing"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)" title="Delete Cable Assembly"></span></a></td>
+                <td class="collapse"><span class="show-mobile">Length (<span ng:class="{ 'metric': metric, 'imperial': ! metric }">{{ metric ? 'cm' : 'in' }}</span>)</span> <input class="form-control" id="length" ng-model="ca.length" type="number" step="any" ng:class="{ 'metric': metric, 'imperial': ! metric }" ng-change="lengthStore(ca.length, $index)" ng-blur="lengthCheck(ca.length, $index)"></td>
+                <td class="collapse cart-price">{{ cablePrice($index) | currency: '$' : 2 }} USD</td>
+                <td class="collapse cart-buttons"><!--<a href="#/edit?part_id={{ca.id}}&assembly_id={{$index}}" title="Edit Cable Assembly"><span class="icons edit"></span></a>--><a><span class="icons duplicate" ng-click="duplicateItem($index)" title="Duplicate Cable Assembly"></span></a><a ng-click="showDrawing($index)" title="Print Cable Assembly Drawing"><span class="icons print"></span></a><a><span class="icons delete" ng-click="deleteItem($index)" title="Delete Cable Assembly"></span></a></td>
               </tr>
               <tr ng-hide="cart.length">
                 <td id="no_cables" colspan="6">You have no cables in your cart.<br>To add cables to your cart please click 'Add Cable' in the top left of the application.</td>
@@ -53,11 +53,11 @@
             </tbody>
             <tfoot>
               <tr>
-                <td>Total</td>
-                <td>{{ totalQuantity() }} cable(s)</td>
-                <td></td>
-                <td>{{ totalPrice() | currency: '$' : 2 }} USD</td>
-                <td></td>
+                <td class="collapse total-title">Total</td>
+                <td class="collapse hide"></td>
+                <td class="collapse hide"></td>
+                <td class="collapse total-price td-right">{{ totalPrice() | currency: '$' : 2 }} USD</td>
+                <td class="collapse hide"></td>
               </tr>
             </tfoot>
           </table>
@@ -74,14 +74,14 @@
     <div class="print-screen" ng-show="print_quotation">
       <div class="preview quotation-preview" id='quotation' ng-include="'./wp-content/plugins/cable-wizard/app/partials/print-quotation.html'"></div>
       <div class="print-buttons">
-        <a href="" class="btn btn-primary" ng-click="printQuotation()">Print</a>
+        <a href="" class="btn btn-primary" ng-click="printScreen('quotation')">Print</a>
         <a href="" class="btn btn-primary" ng-click="quotationHide()">Close</a>
       </div>
     </div>
     <div class="print-screen" ng-show="print_drawing">
-      <div class="preview drawing-preview" ng-include="'./wp-content/plugins/cable-wizard/app/partials/print-drawing.html'"></div>
+      <div class="preview drawing-preview" id="drawing" ng-include="'./wp-content/plugins/cable-wizard/app/partials/print-drawing.html'"></div>
       <div class="print-buttons">
-        <a href="" class="btn btn-primary" ng-click="printDrawing()">Print</a>
+        <a href="" class="btn btn-primary" ng-click="printScreen('drawing')">Print</a>
         <a href="" class="btn btn-primary" ng-click="drawingHide()">Close</a>
       </div>
     </div>

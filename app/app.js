@@ -1,7 +1,7 @@
 /*jslint browser:true*/
 /*global $, jQuery, alert, angular, console, app: true*/
 
-var app = angular.module('cable-wizard', ['ui.router', 'cfp.hotkeys']);
+var app = angular.module('cable-wizard', ['ui.router', 'cfp.hotkeys', 'ui.bootstrap']);
 
 app.config(function ($stateProvider, $urlRouterProvider) {
     "use strict";

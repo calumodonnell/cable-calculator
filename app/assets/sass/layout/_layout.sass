@@ -1,0 +1,77 @@
+@import "footer"
+@import "header"
+@import "main"
+@import "sidebar"
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+  display: none !important
+
+@media (min-width: 950px)
+  .col-lg-3
+    width: 25%!important
+  .col-lg-9
+    width: 75%!important
+
+.page-template-blank-slate-template
+  .entry-content
+    margin: 0!important
+  .hentry
+    margin: 0!important
+  .cable-wizard
+    margin-bottom: 0!important
+
+.cable-wizard
+  background-color: #F7F7F7
+  color: #58595B
+  font-family: "Source Sans Pro", sans-serif
+  font-size: 14px
+  font-weight: 300
+  margin-bottom: 30px
+  position: relative
+
+  .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3,
+  .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9,
+  .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3,
+  .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,
+  .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3,
+  .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9,
+  .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3,
+  .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9,
+  .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3,
+  .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9
+    padding-left: 10px
+    padding-right: 10px
+
+  .container.content-container
+    display: table
+    padding: 0 !important
+    width: 100%
+
+  .container
+    padding-left: 30px
+    padding-right: 30px
+    width: auto
+    @media #{$xl-device}
+      max-width: 100%
+    @media #{$lg-device}
+      max-width: 100%
+    @media #{$md-device}
+      max-width: 100%
+    @media #{$sm-device}
+      max-width: 100%
+    @media #{$xs-device}
+      max-width: 100%
+
+    .row
+      margin-left: -10px
+      margin-right: -10px
+
+    ::-webkit-scrollbar
+      -webkit-appearance: none
+      width: 7px
+      height: 7px
+
+    ::-webkit-scrollbar-thumb
+      border-radius: 4px
+      background-color: rgba(0,0,0,.5)
+      -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5)

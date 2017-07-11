@@ -1,7 +1,7 @@
 <div class="navbar-header">
   <div class="container">
     <nav class="navbar" id="selector-nav" role="navigation">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav" ng-if="cartLength() > 0">
         <li class="nav-item"><a id="cancel-icon" ui-sref="cart">Cancel</a></li>
       </ul>
       <div class="cartbar">
@@ -10,8 +10,8 @@
     </nav>
   </div>
 </div>
-<div class="cable-content" id="selector" hotkey="{esc: notificationHide}">
-  <div class="container container-content">
+<div class="cable-content" id="selector" ng-keydown="keypress($event)" tabindex="0">
+  <div class="container content-container">
     <div class="col-lg-3 col-md-12 sidebar" setHeight>
       <div class="widget">
         <h3>Filter</h3>

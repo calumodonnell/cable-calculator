@@ -1,0 +1,123 @@
+.cable-wizard
+  //tables
+  .table
+    font-size: 12px
+    max-width: 100%
+    table-layout: auto
+    width: auto
+    thead
+      tr
+        border-top: 0
+        .hide
+          @media #{$sm-device}
+            display: none
+        th
+          background-color: #0f558f
+          border-bottom: 0
+          border-top: 0
+          color: #FFFFFF
+          a
+            color: #FFFFFF
+            &:hover,
+            &:focus
+              color: #FFFFFF
+    tbody
+      tr
+        background-color: #FFFFFF
+        transition: 0.2s ease
+        .collapse
+          display: table-cell
+          @media #{$sm-device}
+            display: block
+            padding: 4px 14px 4px 14px
+            &:first-child
+              padding: 16px 14px 0 14px
+            &:last-child
+              padding: 8px 14px 16px 14px
+        .collapse-top
+          @media #{$sm-device}
+            padding-top: 12px
+        .collapse-bottom
+          @media #{$sm-device}
+            padding-bottom: 12px
+        &:first-child
+          border-top: 0
+    tfoot
+      @media #{$sm-device}
+        text-align: right
+      tr
+        .collapse
+          display: table-cell
+          @media #{$sm-device}
+            display: block
+        .collapse.hide
+          @media #{$sm-device}
+            display: none
+        td
+          font-weight: 400
+    th
+      padding: 20px 16px
+    td
+      padding: 16px 14px
+    tr
+      border-top: 1px solid #E5E8EA
+    td, th
+      border: 0
+      color: #58595B
+      font-weight: 300
+      vertical-align: middle
+
+  .table#selector-table
+    .th-click
+      cursor: pointer
+    thead
+      th
+        -webkit-touch-callout: none
+        -webkit-user-select: none
+        -khtml-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
+    tbody
+      tr
+        cursor: pointer
+        &:hover,
+        &:focus
+          background-color: #F9F9F9
+    tfoot
+      tr
+        td
+          font-weight: 300
+
+  table.cart
+    margin-bottom: 0
+    width: 100%
+    tr
+      td
+        vertical-align: top
+        @media #{$sm-device}
+          vertical-align: middle
+        a
+          color: #0f558f
+          display: inline-block
+          height: auto
+          padding: 0
+          width: auto
+          &:hover,
+          &:focus
+            color: #0f558f
+        p
+          margin-bottom: 8px
+      #no_cables
+        box-shadow: none
+    input
+      @media #{$sm-device}
+        width: auto
+
+  .total-title
+    @media #{$sm-device}
+      padding: 16px 14px 4px 14px!important
+
+  .total-price
+    @media #{$sm-device}
+      padding: 4px 14px 16px 14px!important

@@ -442,8 +442,6 @@ app.controller('ConnectorController', ['$scope', '$http', '$location', '$filter'
     $scope.onClick = function (data) {
         var index_1, index_2, objects_1, objects_2, jsonString, conn_1, conn_2, con_rank_1, con_rank_2;
 
-        console.log(data);
-
         index_1 = $scope.droppedObjects1.indexOf(data);
         index_2 = $scope.droppedObjects2.indexOf(data);
         objects_1 = $scope.droppedObjects1.length;

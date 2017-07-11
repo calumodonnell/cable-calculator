@@ -1,0 +1,58 @@
+.cable-wizard
+  .navbar-header
+    background-color: #4B4C54
+    .navbar
+      border-radius: 0
+      padding: 0
+      display: inline-block
+      width: 100%
+      .nav
+        padding-left: 0
+        margin-bottom: 0
+        list-style: none
+        display: inline-block
+        .nav-item
+          display: inline-block
+      a
+        color: #cbccd1
+        cursor: pointer
+        display: inline-block
+        font-weight: 300
+        font-size: 13px
+        padding: 20px 26px
+        position: relative
+        transition: 0.2s ease
+        -webkit-touch-callout: none
+        -webkit-user-select: none
+        -khtml-user-select: none
+        -moz-user-select: none
+        -ms-user-select: none
+        user-select: none
+        &:hover,
+        &:focus
+          color: #F2F2F2
+        &:first-child
+          padding-left: 0
+      #back-icon, #cancel-icon, #print-icon, #add-icon, #cart-icon
+        &:before
+          font-family: 'FontAwesome'
+          padding-right: 8px
+      #back-icon
+        &:before
+          content: '\f104'
+      #cancel-icon
+        &:before
+          content: '\f00d'
+      #print-icon
+        &:before
+          content: '\f02f'
+      #add-icon
+        &:before
+          content: '\f067'
+      .cartbar
+        float: right
+        display: inline-block
+        #cart-icon
+          padding-right: 0
+          &:before
+            content: '\f07a'

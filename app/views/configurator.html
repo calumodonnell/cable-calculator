@@ -12,7 +12,7 @@
   </div>
 </div>
 <div class="cable-content" id="configurator" hotkey="{esc: notificationHide}">
-  <div class="container container-content">
+  <div class="container content-container">
     <div class="col-lg-3 col-md-12 sidebar">
       <div class="widget">
         <h3>Filter</h3>
@@ -149,7 +149,7 @@
         <table class="table" id="standard-table">
           <tbody>
             <tr class="selector" ng-click="toConfigStandard(stan.length, stan.conn_1, stan.conn_2)" ng-repeat="stan in standard">
-              <td class="collapse collapse-top">{{ stan.conn_1 }}-{{ stan.part_no}}-{{ stan.length | number : 2 }}-{{ stan.conn_2 }}</td>
+              <td class="collapse collapse-top">{{ stan.conn_1 }}-{{ stan.part_no}}-{{ stan.length | number : 1 }}-{{ stan.conn_2 }}</td>
               <td class="text-align-right"><span class="next"></span></a></td>
             </tr>
           </tbody>

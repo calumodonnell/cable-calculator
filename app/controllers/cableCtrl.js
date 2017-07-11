@@ -33,6 +33,12 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         $scope.notification = false;
     };
 
+    $scope.keypress = function($event) {
+        if ($event.keyCode == 27 || $event.keyCode == 13) {
+            $scope.notification = false;
+        }
+    };
+
     // display total rows
     $scope.totalRows = function () {
         var rowCount = document.getElementsByClassName('selector').length,
@@ -194,7 +200,7 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         return loss.toFixed(2);
     };
 
-    // store frequency to use on config page
+    // store max frequency
     $scope.storeFreq = function (freq) {
         if (freq > 65) {
             $scope.notification = true;
@@ -205,12 +211,7 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         }
 
         $scope.search_freq = freq;
-
-        if (freq === null) {
-            localStorage.setItem('max_freq', 1);
-        } else {
-            localStorage.setItem('max_freq', freq);
-        }
+        localStorage.setItem('max_freq', freq);
     };
 
     // show cart total to user
@@ -263,7 +264,6 @@ app.controller('CableController', ['$scope', '$location', 'cables', 'series', fu
         var t = parent.getElementsByTagName('table'), i = t.length;
         while (--i >= 0) { makeSortable(t[i]); }
     }
-
     makeAllSortable();
 
     $scope.toggleSort = false;

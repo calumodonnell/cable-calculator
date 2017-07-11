@@ -1,0 +1,71 @@
+.cable-wizard
+  //form
+  input, select
+    background-color: #FFFFFF!important
+    border: solid 1px #C3C5C6!important
+    border-radius: 0!important
+    box-sizing: border-box
+    color: #58595B!important
+    font-size: 12px
+    font-weight: 300
+    margin-bottom: 12px
+    padding: 12px 14px!important
+    outline: none
+    transition: 0.2s ease
+    width: 100%
+    &:hover,
+    &:focus
+      border-color: #7E7F7F!important
+  .form-group
+    margin-bottom: 16px
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button
+    -webkit-appearance: none
+    margin: 0
+
+  input[type=number]
+    -moz-appearance: textfield
+
+  button::-moz-focus-inner
+    border: 0
+
+  select
+    appearance: none
+    color: rgba(0,0,0,0)
+    height: auto!important
+    text-shadow: 0 0 0 #000
+    -moz-appearance: none
+    -o-appearance: none
+    -webkit-appearance: none
+    &:-moz-focusring
+      color: transparent
+      text-shadow: 0 0 0 #000
+    &:-moz-focusring *
+      color: #000
+      text-shadow: none
+    &:-ms-expand
+      display: none
+
+  select::-ms-expand
+    display: none
+
+  select.minimal
+    background-image: linear-gradient(45deg, transparent 50%, #C3C5C6 50%), linear-gradient(135deg, #C3C5C6 50%, transparent 50%), linear-gradient(to right, #C3C5C6, #C3C5C6)
+    background-position: calc(100% - 15px) calc(1.3em + 2px), calc(100% - 10px) calc(1.3em + 2px), calc(100% - 2.5em) 0.88em
+    background-repeat: no-repeat
+    background-size: 5px 5px, 5px 5px, 1px 1.5em
+
+  .form-check-label
+    .form-check-input
+      margin-bottom: 0
+      width: auto
+
+  .next
+    &:after
+      content: "\f054"
+      font-family: "FontAwesome"
+      font-size: 12px
+
+  .text-align-right
+    text-align: right
