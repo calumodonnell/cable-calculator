@@ -14,12 +14,18 @@ define('SR_FILE_PATH', dirname(__FILE__));
 define('SR_DIR_NAME', basename(SR_FILE_PATH));
 
 global $wpdb;
-global $cw_db_version;
-
-$cw_db_version = '1.0';
 
 include('admin/includes/functions.php');
 
+$cw_table_prefix = 'cw_';
+
+define('CW_TABLE_PREFIX', $cw_table_prefix);
+
+register_activation_hook(__FILE__, 'cw_install');
+register_deactivation_hook(__FILE__, 'cw_uninstall');
+
+add_action('admin_menu', 'cw_admin_menu');
+add_action('admin_init', 'cw_admin_load');
 add_shortcode('show_cable_wizard', 'cw_show_cable_wizard');
 
 function cw_install() {
@@ -132,7 +138,23 @@ function cw_install() {
 
 	add_option("table_db_version", $cw_db_version);
 }
-register_activation_hook(__FILE__, 'cw_install');
+
+
+function cw_uninstall () {
+	global $wpdb;
+
+	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_list";
+	$wpdb->query($sql);
+
+	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "connector_list";
+	$wpdb->query($sql);
+
+	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_connector_pricing";
+	$wpdb->query($sql);
+
+	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "standard_cable_list";
+	$wpdb->query($sql);
+}
 
 
 function cw_admin_menu() {
@@ -146,14 +168,12 @@ function cw_admin_menu() {
 	add_submenu_page($parent_slug, 'Add New Connector', 'Add New Connector', 'read', 'add-connector', 'cw_connector_functions');
 	add_submenu_page($parent_slug, 'Add New Standard Cable', 'Add New Standard Cable', 'read', 'add-standard-cable', 'cw_standard_functions');
 }
-add_action('admin_menu', 'cw_admin_menu');
 
 
 function cw_admin_load() {
 	wp_enqueue_style('cw-admin-style',  SR_URL . '/admin/css/style.css', '');
 	wp_enqueue_style('cw-admin-style',  SR_URL . '/admin/js/custom.min.js', '');
 }
-add_action('admin_init', 'cw_admin_load');
 
 
 function cw_load() {
