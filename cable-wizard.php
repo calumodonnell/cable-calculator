@@ -31,125 +31,137 @@ add_shortcode('show_cable_wizard', 'cw_show_cable_wizard');
 function cw_install() {
 	global $wpdb;
 
-	$con_price_sql = "CREATE TABLE cw_cable_connector_pricing (
-		`id` int(250) NOT NULL AUTO_INCREMENT,
-	  `cable_id` int(11) NOT NULL,
-	  `connector_id` int(11) NOT NULL,
-		`con_part_no` varchar(20) NOT NULL,
-		`con_series` varchar(20) NOT NULL,
-	  `price` decimal(5,2) NOT NULL,
-		PRIMARY KEY (`id`))";
+	// create new table for cable connector pricing
+	$table_pricing = CW_TABLE_PREFIX . "cw_cable_connector_pricing";
+	$structure = "CREATE TABLE $table_pricing (
+		id int(11) NOT NULL AUTO_INCREMENT,
+	  cable_id int(11) NOT NULL,
+	  connector_id int(11) NOT NULL,
+		con_part_no varchar(20) NOT NULL,
+		con_series varchar(20) NOT NULL,
+		con_max_freq decimal(10,2) NOT NULL,
+	  price decimal(5,2) NOT NULL,
+		UNIQUE KEY id (id)
+	)";
+	$wpdb->query($structure);
 
-	require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
-	dbDelta( $con_price_sql );
+	// create new table for the cable list
+	$table_cable_list = CW_TABLE_PREFIX . "cw_cable_list";
+	$structure = "CREATE TABLE $table_cable_list (
+	  id int(20) NOT NULL,
+	  name varchar(80) DEFAULT NULL,
+	  part_no varchar(20) DEFAULT NULL,
+	  max_freq decimal(10,2) DEFAULT NULL,
+	  diameter decimal(10,2) DEFAULT NULL,
+	  min_bend decimal(10,2) DEFAULT NULL,
+	  typ_atten_k1 decimal(10,6) DEFAULT NULL,
+	  typ_atten_k2 decimal(10,6) DEFAULT NULL,
+	  outdoor varchar(20) DEFAULT NULL,
+	  indoor varchar(20) DEFAULT NULL,
+	 	test varchar(20) DEFAULT NULL,
+	  price varchar(20) DEFAULT NULL,
+	  flex varchar(20) DEFAULT NULL,
+	  cable_img varchar(120) DEFAULT NULL,
+	  margin_rate decimal(10,2) DEFAULT NULL,
+	  hour_lab_rate decimal(10,2) DEFAULT NULL,
+	  overhead_rate decimal(10,2) DEFAULT NULL,
+	  ship_handling decimal(10,2) DEFAULT NULL,
+	  material_yield decimal(10,2) NOT NULL,
+	  qm1 decimal(10,2) DEFAULT NULL,
+	  qm2 decimal(10,2) DEFAULT NULL,
+	  qm3 decimal(10,2) DEFAULT NULL,
+	  qm4 decimal(10,2) DEFAULT NULL,
+	  qm5 decimal(10,2) DEFAULT NULL,
+	  qm6 decimal(10,2) DEFAULT NULL,
+	  qm7 decimal(10,2) DEFAULT NULL,
+	  qm8 decimal(10,2) DEFAULT NULL,
+	  available varchar(20) DEFAULT NULL,
+	  coat_n_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_n_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_n_base decimal(10,2) DEFAULT NULL,
+	  coat_n_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_n_time_rp decimal(10,2) DEFAULT NULL,
+	  coat_w_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_w_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_w_base decimal(10,2) DEFAULT NULL,
+	  coat_w_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_w_time_rp decimal(10,2) DEFAULT NULL,
+	  coat_tv_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_tv_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_tv_base decimal(10,2) DEFAULT NULL,
+	  coat_tv_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_tv_time_rp decimal(10,2) DEFAULT NULL,
+	  coat_a_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_a_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_a_base decimal(10,2) DEFAULT NULL,
+	  coat_a_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_a_time_rp decimal(10,2) DEFAULT NULL,
+	  coat_aw_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_aw_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_aw_base decimal(10,2) DEFAULT NULL,
+	  coat_aw_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_aw_time_rp decimal(10,2) DEFAULT NULL,
+	  coat_an_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_an_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_an_base decimal(10,2) DEFAULT NULL,
+	  coat_an_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_an_time_rp decimal(10,2) DEFAULT NULL,
+	  coat_mc_cable_base decimal(10,2) DEFAULT NULL,
+	  coat_mc_adder_back decimal(10,2) DEFAULT NULL,
+	  coat_mc_base decimal(10,2) DEFAULT NULL,
+	  coat_mc_adder_base_time decimal(10,2) DEFAULT NULL,
+	  coat_mc_time_rp decimal(10,2) DEFAULT NULL,
+	  extended_boots varchar(22) DEFAULT NULL,
+	  extended_boots_price decimal(10,2) DEFAULT NULL,
+	  date_created date NOT NULL,
+	  date_modified date NOT NULL
+		UNIQUE KEY id (id)
+	)";
+	$wpdb->query($structure);
 
-	$cable_sql = "CREATE TABLE cw_cable_list (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-	  `name` varchar(80) DEFAULT NULL,
-	  `part_no` varchar(20) DEFAULT NULL,
-	  `max_freq` decimal(10,2) DEFAULT NULL,
-	  `diameter` decimal(10,3) DEFAULT NULL,
-	  `min_bend` decimal(10,2) DEFAULT NULL,
-	  `typ_atten_k1` decimal(10,7) DEFAULT NULL,
-	  `typ_atten_k2` decimal(10,7) DEFAULT NULL,
-	  `outdoor` varchar(20) DEFAULT NULL,
-	  `indoor` varchar(20) DEFAULT NULL,
-	  `test` varchar(20) DEFAULT NULL,
-	  `price` varchar(20) DEFAULT NULL,
-	  `flex` varchar(20) DEFAULT NULL,
-	  `cable_img` varchar(120) DEFAULT NULL,
-	  `margin_rate` decimal(10,2) DEFAULT NULL,
-	  `hour_lab_rate` decimal(10,2) DEFAULT NULL,
-	  `overhead_rate` decimal(10,2) DEFAULT NULL,
-	  `ship_handling` decimal(10,2) DEFAULT NULL,
-	  `qm1` decimal(10,2) DEFAULT NULL,
-	  `qm2` decimal(10,2) DEFAULT NULL,
-	  `qm3` decimal(10,2) DEFAULT NULL,
-	  `qm4` decimal(10,2) DEFAULT NULL,
-	  `qm5` decimal(10,2) DEFAULT NULL,
-	  `qm6` decimal(10,2) DEFAULT NULL,
-	  `qm7` decimal(10,2) DEFAULT NULL,
-	  `qm8` decimal(10,2) DEFAULT NULL,
-	  `status` varchar(20) DEFAULT NULL,
-		`coat_n_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_n_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_n_base` decimal(10,2) DEFAULT NULL,
-	  `coat_n_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_n_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_w_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_w_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_w_base` decimal(10,2) DEFAULT NULL,
-	  `coat_w_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_w_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_tv_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_tv_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_tv_base` decimal(10,2) DEFAULT NULL,
-	  `coat_tv_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_tv_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_a_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_a_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_a_base` decimal(10,2) DEFAULT NULL,
-	  `coat_a_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_a_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_aw_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_aw_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_aw_base` decimal(10,2) DEFAULT NULL,
-	  `coat_aw_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_aw_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_an_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_an_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_an_base` decimal(10,2) DEFAULT NULL,
-	  `coat_an_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_an_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_ej_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_ej_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_ej_base` decimal(10,2) DEFAULT NULL,
-	  `coat_ej_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_ej_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_ew_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_ew_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_ew_base` decimal(10,2) DEFAULT NULL,
-	  `coat_ew_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_ew_time_rp` decimal(10,2) DEFAULT NULL,
-	  `coat_mc_cable_base` decimal(10,2) DEFAULT NULL,
-	  `coat_mc_adder_back` decimal(10,2) DEFAULT NULL,
-	  `coat_mc_base` decimal(10,2) DEFAULT NULL,
-	  `coat_mc_adder_base_time` decimal(10,2) DEFAULT NULL,
-	  `coat_mc_time_rp` decimal(10,2) DEFAULT NULL,
-		PRIMARY KEY (`id`))";
+	// create new table for connector list
+	$table_connectors = CW_TABLE_PREFIX . "connector_list";
+	$connector_sql = "CREATE TABLE $table_connectors (
+		id int(11) NOT NULL,
+	  con_series varchar(40) DEFAULT NULL,
+	  con_part_no varchar(40) DEFAULT NULL,
+	  con_description varchar(100) DEFAULT NULL,
+	  con_max_freq int(11) NOT NULL,
+	  con_loss decimal(3,3) DEFAULT NULL,
+	  con_img varchar(120) DEFAULT NULL,
+	  con_status varchar(20) DEFAULT NULL,
+	  con_rank int(11) NOT NULL,
+	  date_created date NOT NULL,
+	  date_modified date NOT NULL
+		UNIQUE KEY id (id)
+	)";
+	$wpdb->query($structure);
 
-	require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
-	dbDelta( $cable_sql );
-
-	$connector_sql = "CREATE TABLE cw_connector_list (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-	  `con_series` varchar(40) DEFAULT NULL,
-	  `con_part_no` varchar(40) DEFAULT NULL,
-	  `con_description` varchar(100) DEFAULT NULL,
-		`con_loss` decimal(3,3) DEFAULT NULL,
-	  `con_mac_code` varchar(40) DEFAULT NULL,
-	  `con_max_freq` int(11) DEFAULT NULL,
-	  `con_img` varchar(120) DEFAULT NULL,
-	  `con_status` varchar(20) DEFAULT NULL,
-		PRIMARY KEY (`id`))";
-
-	require_once( ABSPATH . '/wp-admin/includes/upgrade.php' );
-	dbDelta( $connector_sql );
-
-	add_option("table_db_version", $cw_db_version);
+	// create new table for standard cable list
+	$table_standard = CW_TABLE_PREFIX . "standard_cable_list";
+	$connector_sql = "CREATE TABLE $table_standard (
+		id int(20) NOT NULL,
+	  part_id varchar(20) NOT NULL,
+	  part_no varchar(20) NOT NULL,
+	  length varchar(20) NOT NULL,
+	  conn_1 varchar(20) NOT NULL,
+	  conn_2 varchar(20) NOT NULL
+		UNIQUE KEY id (id)
+	)";
+	$wpdb->query($structure);
 }
 
 
 function cw_uninstall () {
 	global $wpdb;
 
+	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_connector_pricing";
+	$wpdb->query($sql);
+
 	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_list";
 	$wpdb->query($sql);
 
 	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "connector_list";
-	$wpdb->query($sql);
-
-	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_connector_pricing";
 	$wpdb->query($sql);
 
 	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "standard_cable_list";
