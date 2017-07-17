@@ -32,7 +32,7 @@ function cw_install() {
 	global $wpdb;
 
 	// create new table for cable connector pricing
-	$table_pricing = CW_TABLE_PREFIX . "cw_cable_connector_pricing";
+	$table_pricing = CW_TABLE_PREFIX . "cable_connector_pricing";
 	$structure = "CREATE TABLE $table_pricing (
 		id int(11) NOT NULL AUTO_INCREMENT,
 	  cable_id int(11) NOT NULL,
@@ -42,11 +42,11 @@ function cw_install() {
 		con_max_freq decimal(10,2) NOT NULL,
 	  price decimal(5,2) NOT NULL,
 		UNIQUE KEY id (id)
-	)";
+	);";
 	$wpdb->query($structure);
 
 	// create new table for the cable list
-	$table_cable_list = CW_TABLE_PREFIX . "cw_cable_list";
+	$table_cable_list = CW_TABLE_PREFIX . "cable_list";
 	$structure = "CREATE TABLE $table_cable_list (
 	  id int(20) NOT NULL,
 	  name varchar(80) DEFAULT NULL,
@@ -114,14 +114,14 @@ function cw_install() {
 	  extended_boots varchar(22) DEFAULT NULL,
 	  extended_boots_price decimal(10,2) DEFAULT NULL,
 	  date_created date NOT NULL,
-	  date_modified date NOT NULL
+	  date_modified date NOT NULL,
 		UNIQUE KEY id (id)
-	)";
+	);";
 	$wpdb->query($structure);
 
 	// create new table for connector list
 	$table_connectors = CW_TABLE_PREFIX . "connector_list";
-	$connector_sql = "CREATE TABLE $table_connectors (
+	$structure = "CREATE TABLE $table_connectors (
 		id int(11) NOT NULL,
 	  con_series varchar(40) DEFAULT NULL,
 	  con_part_no varchar(40) DEFAULT NULL,
@@ -132,22 +132,22 @@ function cw_install() {
 	  con_status varchar(20) DEFAULT NULL,
 	  con_rank int(11) NOT NULL,
 	  date_created date NOT NULL,
-	  date_modified date NOT NULL
+	  date_modified date NOT NULL,
 		UNIQUE KEY id (id)
-	)";
+	);";
 	$wpdb->query($structure);
 
 	// create new table for standard cable list
 	$table_standard = CW_TABLE_PREFIX . "standard_cable_list";
-	$connector_sql = "CREATE TABLE $table_standard (
+	$structure = "CREATE TABLE $table_standard (
 		id int(20) NOT NULL,
 	  part_id varchar(20) NOT NULL,
 	  part_no varchar(20) NOT NULL,
 	  length varchar(20) NOT NULL,
 	  conn_1 varchar(20) NOT NULL,
-	  conn_2 varchar(20) NOT NULL
+	  conn_2 varchar(20) NOT NULL,
 		UNIQUE KEY id (id)
-	)";
+	);";
 	$wpdb->query($structure);
 }
 
@@ -155,16 +155,16 @@ function cw_install() {
 function cw_uninstall () {
 	global $wpdb;
 
-	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_connector_pricing";
+	$sql = "DROP TABLE IF EXISTS " . CW_TABLE_PREFIX . "cable_connector_pricing";
 	$wpdb->query($sql);
 
-	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "cable_list";
+	$sql = "DROP TABLE IF EXISTS " . CW_TABLE_PREFIX . "cable_list";
 	$wpdb->query($sql);
 
-	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "connector_list";
+	$sql = "DROP TABLE IF EXISTS " . CW_TABLE_PREFIX . "connector_list";
 	$wpdb->query($sql);
 
-	$sql = "DROP TABLE " . CW_TABLE_PREFIX . "standard_cable_list";
+	$sql = "DROP TABLE IF EXISTS " . CW_TABLE_PREFIX . "standard_cable_list";
 	$wpdb->query($sql);
 }
 
