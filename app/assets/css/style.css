@@ -965,7 +965,9 @@ body {
   .cable-wizard .container.content-container {
     display: table;
     padding: 0 !important;
-    width: 100%; }
+    width: 100%;
+    min-height: 600px;
+    min-height: calc(100vh - 60px); }
   .cable-wizard .container {
     padding-left: 30px;
     padding-right: 30px;
