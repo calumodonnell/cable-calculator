@@ -47,15 +47,15 @@ module.exports = function (grunt) {
             }
         },
         sass: {
+            options: {
+                style: 'compressed'
+            },
             dist: {
-                options: {
-                    style: 'compressed'
-                },
-                files: {
-                    'app/assets/css/style.css': 'app/assets/sass/style.sass',
-                    'app/assets/css/print.css': 'app/assets/sass/print.sass',
-                    'admin/css/style.css': 'admin/sass/style.sass'
-                }
+              files: {
+                  'app/assets/css/style.css': 'app/assets/sass/style.sass',
+                  'app/assets/css/print.css': 'app/assets/sass/print.sass',
+                  'admin/css/style.css': 'admin/sass/style.sass'
+              }
             }
         },
         autoprefixer: {
@@ -85,7 +85,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
