@@ -1,8 +1,8 @@
 <div class="navbar-header">
   <div class="container">
     <nav class="navbar" id="selector-nav" role="navigation">
-      <ul class="nav navbar-nav" ng-if="cartLength() > 0">
-        <li class="nav-item"><a id="cancel-icon" ui-sref="cart">Cancel</a></li>
+      <ul class="nav navbar-nav">
+        <li class="nav-item" ng-if="cartLength() > 0"><a id="cancel-icon" ui-sref="cart">Cancel</a></li>
       </ul>
       <div class="cartbar">
         <a ng-click="toCart()" id="cart-icon">Cart ({{ cartLength() }})</a>
