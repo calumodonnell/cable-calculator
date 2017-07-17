@@ -1,10 +1,10 @@
 {
   "name": "cable-wizard",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Configuration tool for creating cable assemblies",
   "main": "Gruntfile.js",
   "author": "Calum O'Donnell <calumodonnell@icloud.com> (http://calumodonnell.co.uk)",
-  "license": "MIT",
+  "license": "GNU",
   "keywords": [],
   "dependencies": {
     "grunt": "^1.0.1",
@@ -16,5 +16,16 @@
   },
   "devDependencies": {
     "grunt-sass": "^2.0.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calumodonnell/cable-calculator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/calumodonnell/cable-calculator/issues"
+  },
+  "homepage": "https://github.com/calumodonnell/cable-calculator#readme"
 }
